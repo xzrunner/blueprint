@@ -1,0 +1,5 @@
+blueprint/
+projects/*
+
+!projects/blueprint.vcxproj
+!projects/blueprint.vcxproj.filters

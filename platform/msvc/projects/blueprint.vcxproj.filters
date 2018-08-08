@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="component">
+      <UniqueIdentifier>{b2e45854-1001-4123-9d90-9609cca35ed0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dataset">
+      <UniqueIdentifier>{fb5939b0-6fe4-4262-adbb-bd4ca892873e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script">
+      <UniqueIdentifier>{38cdd3aa-1a75-48a7-bc45-e53ab1be8ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dataset\flowcontrol">
+      <UniqueIdentifier>{e528935e-fa81-4096-8489-457aa6e29601}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view">
+      <UniqueIdentifier>{810705db-a6f2-4b64-b4ae-58b258fb5312}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\Node.cpp">
+      <Filter>dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\CompNode.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\wrap_Blueprint.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Group.cpp">
+      <Filter>dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\CompGroup.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Blueprint.cpp" />
+    <ClCompile Include="..\..\..\source\BranchNode.cpp">
+      <Filter>dataset\flowcontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\RenderSystem.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\blueprint\Node.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\Group.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\CompGroup.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\Blueprint.h" />
+    <ClInclude Include="..\..\..\include\blueprint\BranchNode.h">
+      <Filter>dataset\flowcontrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\RenderSystem.h">
+      <Filter>view</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
