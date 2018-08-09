@@ -4,11 +4,13 @@
 
 namespace bp
 {
+namespace node
+{
 
-class BranchNode : public Node
+class FlowCtrlBranch : public Node
 {
 public:
-	BranchNode();
+	FlowCtrlBranch();
 
 private:
 	// input
@@ -19,6 +21,7 @@ private:
 	std::shared_ptr<Pins> m_true;
 	std::shared_ptr<Pins> m_false;
 
-}; // BranchNode
+}; // FlowCtrlBranch
 
+}
 }

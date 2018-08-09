@@ -12,20 +12,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\Blueprint.h" />
-    <ClInclude Include="..\..\..\include\blueprint\BranchNode.h" />
-    <ClInclude Include="..\..\..\include\blueprint\CompGroup.h" />
+    <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h" />
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h" />
-    <ClInclude Include="..\..\..\include\blueprint\Group.h" />
+    <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h" />
     <ClInclude Include="..\..\..\include\blueprint\Node.h" />
+    <ClInclude Include="..\..\..\include\blueprint\NodeFactory.h" />
+    <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h" />
+    <ClInclude Include="..\..\..\include\blueprint\Pins.h" />
     <ClInclude Include="..\..\..\include\blueprint\RenderSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\Blueprint.cpp" />
-    <ClCompile Include="..\..\..\source\BranchNode.cpp" />
-    <ClCompile Include="..\..\..\source\CompGroup.cpp" />
+    <ClCompile Include="..\..\..\source\FlowCtrlBranch.cpp" />
     <ClCompile Include="..\..\..\source\CompNode.cpp" />
-    <ClCompile Include="..\..\..\source\Group.cpp" />
+    <ClCompile Include="..\..\..\source\EventBeginPlay.cpp" />
     <ClCompile Include="..\..\..\source\Node.cpp" />
+    <ClCompile Include="..\..\..\source\NodeFactory.cpp" />
+    <ClCompile Include="..\..\..\source\NodeLayout.cpp" />
+    <ClCompile Include="..\..\..\source\Pins.cpp" />
     <ClCompile Include="..\..\..\source\RenderSystem.cpp" />
     <ClCompile Include="..\..\..\source\wrap_Blueprint.cpp" />
   </ItemGroup>

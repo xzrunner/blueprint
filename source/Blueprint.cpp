@@ -14,7 +14,7 @@ void Blueprint::Init()
 		[](const n0::CompAsset& casset, const n2::RenderParams& rp)
 	{
 		auto& cnode = static_cast<const CompNode&>(casset);
-		RenderSystem::Draw(cnode.GetNode(), rp.GetMatrix());
+		RenderSystem::Instance()->DrawNode(*cnode.GetNode(), rp.GetMatrix());
 	});
 }
 

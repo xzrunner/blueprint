@@ -1,4 +1,5 @@
 #include "blueprint/CompNode.h"
+#include "blueprint/NodeFactory.h"
 
 #include <ee0/MsgHelper.h>
 
@@ -30,20 +31,29 @@ public:
 
 #define INSTANCE() (moon::Blackboard::Instance()->GetContext()->GetModuleMgr().GetModule<Blueprint>())
 
+moon::SceneNode* luax_checknode(lua_State* L, int idx)
+{
+	return moon::luax_checktype<moon::SceneNode>(L, idx, moon::SCENE_NODE_ID);
+}
+
 int w_new_node(lua_State* L)
 {
 	auto bb = moon::Blackboard::Instance();
 
-//	const char* type = luaL_checkstring(L, 1);
+	const char* type = luaL_checkstring(L, 1);
+	auto bp_node = bp::node::NodeFactory::Create(type);
+	if (!bp_node) {
+		luaL_error(L, "fail to create node %s\n", type);
+	}
 
 	auto node = std::make_shared<n0::SceneNode>();
-	// todo
-	auto& cnode = node->AddSharedComp<bp::CompNode>();
+	auto& cnode = node->AddSharedComp<bp::CompNode>(bp_node);
+	auto& style = cnode.GetNode()->GetStyle();
 	node->AddUniqueComp<n2::CompTransform>();
-	sm::vec2 size(100, 100);
-	cnode.GetNode().SetStyle(size, pt2::Color(255, 255, 0));
 	node->AddUniqueComp<n0::CompIdentity>();
-	node->AddUniqueComp<n2::CompBoundingBox>(sm::rect(size.x, size.y));
+	node->AddUniqueComp<n2::CompBoundingBox>(
+		sm::rect(style.width, style.height)
+	);
 
 	moon::SceneNode* moon_node = nullptr;
 	moon::luax_catchexcept(L, [&]() {
@@ -56,6 +66,15 @@ int w_new_node(lua_State* L)
 	ee0::MsgHelper::InsertNode(*bb->GetSubMgr(), node);
 #endif // EASYEDITOR
 
+	return 1;
+}
+
+int w_set_pos(lua_State* L)
+{
+	auto node = luax_checknode(L, 1);
+	float x = static_cast<float>(luaL_optnumber(L, 2, 0));
+	float y = static_cast<float>(luaL_optnumber(L, 3, 0));
+	node->SetPosition(sm::vec2(x, y));
 	return 0;
 }
 
@@ -68,6 +87,7 @@ namespace moon
 static const luaL_Reg functions[] =
 {
 	{ "new_node", w_new_node },
+	{ "set_pos", w_set_pos },
 
 	{ 0, 0 }
 };

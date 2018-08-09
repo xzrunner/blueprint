@@ -16,6 +16,9 @@
     <Filter Include="view">
       <UniqueIdentifier>{810705db-a6f2-4b64-b4ae-58b258fb5312}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dataset\event">
+      <UniqueIdentifier>{b768ccab-acf3-4af0-ac5e-ce0e90da21ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\Node.cpp">
@@ -27,18 +30,24 @@
     <ClCompile Include="..\..\..\source\wrap_Blueprint.cpp">
       <Filter>script</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\Group.cpp">
-      <Filter>dataset</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\CompGroup.cpp">
-      <Filter>component</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\Blueprint.cpp" />
-    <ClCompile Include="..\..\..\source\BranchNode.cpp">
-      <Filter>dataset\flowcontrol</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\RenderSystem.cpp">
       <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Pins.cpp">
+      <Filter>dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\NodeFactory.cpp">
+      <Filter>dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\NodeLayout.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\EventBeginPlay.cpp">
+      <Filter>dataset\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\FlowCtrlBranch.cpp">
+      <Filter>dataset\flowcontrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -48,18 +57,24 @@
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
       <Filter>component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\Group.h">
-      <Filter>dataset</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\CompGroup.h">
-      <Filter>component</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\Blueprint.h" />
-    <ClInclude Include="..\..\..\include\blueprint\BranchNode.h">
-      <Filter>dataset\flowcontrol</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\RenderSystem.h">
       <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\Pins.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\NodeFactory.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h">
+      <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h">
+      <Filter>dataset\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h">
+      <Filter>dataset\flowcontrol</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

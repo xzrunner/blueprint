@@ -8,35 +8,44 @@
 
 namespace bp
 {
+namespace node
+{
+
+class Pins;
 
 class Node
 {
 public:
+	Node(const std::string& title);
 	virtual ~Node() {}
 
-	void SetStyle(const sm::vec2& size, const pt2::Color& color);
+	auto& GetTitle() const { return m_title; }
+
+	auto& GetAllInput() const { return m_all_input; }
+	auto& GetAllOutput() const { return m_all_output; }
 
 public:
 	struct Style
 	{
-		sm::vec2   size;
-		pt2::Color color;
-	};
+		float width;
+		float height;
 
-	struct Pins
-	{
-		Pins(const std::string& name, const Node& parent)
-			: name(name), parent(parent) {}
-
-		std::string           name;
-		std::shared_ptr<Pins> connected = nullptr;
-
-		const Node& parent;
+		int line_num;
 	};
 
 	const Style& GetStyle() const { return m_style; }
+	void SetStyle(const Style& style) { m_style = style; }
 
 protected:
+	void AddPins(const std::shared_ptr<Pins>& pins, bool input);
+
+	void SetWidth(float width);
+
+	void Layout();
+
+private:
+	std::string m_title;
+
 	Style m_style;
 
 	std::vector<std::shared_ptr<Pins>> m_all_input;
@@ -44,4 +53,5 @@ protected:
 
 }; // Node
 
+}
 }
