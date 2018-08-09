@@ -99,6 +99,45 @@ float RenderSystem::GetTextPinsScale() const
 	return TEXT_PINS_SCALE;
 }
 
+pt2::Color RenderSystem::GetPinsColor(const node::PinsType& type)
+{
+	pt2::Color col = COL_WHITE;
+	switch (type)
+	{
+	case node::PINS_PORT:
+		col = COL_PINS_PORT;
+		break;
+	case node::PINS_BOOLEAN:
+		col = COL_PINS_BOOLEAN;
+		break;
+	case node::PINS_INTEGER:
+		col = COL_PINS_INTEGER;
+		break;
+	case node::PINS_FLOAT:
+		col = COL_PINS_FLOAT;
+		break;
+	case node::PINS_STRING:
+		col = COL_PINS_STRING;
+		break;
+	case node::PINS_TEXT:
+		col = COL_PINS_TEXT;
+		break;
+	case node::PINS_VECTOR:
+		col = COL_PINS_VECTOR;
+		break;
+	case node::PINS_ROTATOR:
+		col = COL_PINS_ROTATOR;
+		break;
+	case node::PINS_TRANSFORM:
+		col = COL_PINS_TRANSFORM;
+		break;
+	case node::PINS_OBJECT:
+		col = COL_PINS_OBJECT;
+		break;
+	}
+	return col;
+}
+
 void RenderSystem::DrawPanel(const node::Node& node, const sm::vec2& pos, float hw, float hh)
 {
 	// background
@@ -142,38 +181,7 @@ void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos, bool le
 	}
 	else if (type >= node::PINS_BOOLEAN && type <= node::PINS_OBJECT)
 	{
-		pt2::Color col = COL_WHITE;
-		switch (type)
-		{
-		case node::PINS_BOOLEAN:
-			col = COL_PINS_BOOLEAN;
-			break;
-		case node::PINS_INTEGER:
-			col = COL_PINS_INTEGER;
-			break;
-		case node::PINS_FLOAT:
-			col = COL_PINS_FLOAT;
-			break;
-		case node::PINS_STRING:
-			col = COL_PINS_STRING;
-			break;
-		case node::PINS_TEXT:
-			col = COL_PINS_TEXT;
-			break;
-		case node::PINS_VECTOR:
-			col = COL_PINS_VECTOR;
-			break;
-		case node::PINS_ROTATOR:
-			col = COL_PINS_ROTATOR;
-			break;
-		case node::PINS_TRANSFORM:
-			col = COL_PINS_TRANSFORM;
-			break;
-		case node::PINS_OBJECT:
-			col = COL_PINS_OBJECT;
-			break;
-		}
-		pt2::PrimitiveDraw::SetColor(col);
+		pt2::PrimitiveDraw::SetColor(GetPinsColor(type));
 		if (connected) {
 			pt2::PrimitiveDraw::Circle(nullptr, pos, PINS_RADIUS, true);
 		} else {

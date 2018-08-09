@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Pins.h"
+
 #include <cu/cu_macro.h>
 #include <SM_Matrix2D.h>
 #include <painting2/Textbox.h>
@@ -16,9 +18,11 @@ public:
 
 	auto& GetTitleTB() const { return m_title_tb; }
 	auto& GetInputTB() const { return m_input_tb; }
-	
+
 	float GetTextTitleScale() const;
 	float GetTextPinsScale() const;
+
+	static pt2::Color GetPinsColor(const node::PinsType& type);
 
 private:
 	void DrawPanel(const node::Node& node, const sm::vec2& pos, float hw, float hh);

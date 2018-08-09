@@ -19,6 +19,9 @@
     <Filter Include="dataset\event">
       <UniqueIdentifier>{b768ccab-acf3-4af0-ac5e-ce0e90da21ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="editor">
+      <UniqueIdentifier>{d1e6efea-ec30-4e2a-b5e0-3684be2213c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\Node.cpp">
@@ -49,6 +52,9 @@
     <ClCompile Include="..\..\..\source\FlowCtrlBranch.cpp">
       <Filter>dataset\flowcontrol</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\ConnectPinsOP.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\Node.h">
@@ -75,6 +81,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h">
       <Filter>dataset\flowcontrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h">
+      <Filter>editor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
