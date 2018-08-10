@@ -4,6 +4,8 @@
 #include "blueprint/Pins.h"
 
 #include <painting2/Callback.h>
+#include <node0/SceneNode.h>
+#include <node2/CompTransform.h>
 
 #include <algorithm>
 
@@ -14,6 +16,7 @@ const uint32_t NodeLayout::DEFAULT_WIDTH  = 100;
 const uint32_t NodeLayout::DEFAULT_HEIGHT = 20;
 const uint32_t NodeLayout::TITLE_HEIGHT   = 20;
 const float    NodeLayout::PINS_RADIUS    = 5;
+const float    NodeLayout::CONNECTING_BEZIER_DIST = 0.3f;
 
 void NodeLayout::UpdateNodeStyle(node::Node& node)
 {
@@ -54,6 +57,32 @@ void NodeLayout::UpdateNodeStyle(node::Node& node)
 	}
 
 	node.SetStyle(s);
+}
+
+sm::vec2 NodeLayout::GetPinsPos(const node::Pins& pins)
+{
+	auto& node = pins.GetParent();
+
+	auto& style = node.GetStyle();
+	float hw = style.width  * 0.5f;
+	float hh = style.height * 0.5f;
+
+	sm::vec2 pos;
+
+	bool left = pins.IsInput();
+	if (left) {
+		pos.x = -hw + PINS_RADIUS * 2;
+	} else {
+		pos.x = hw - PINS_RADIUS * 2;
+	}
+
+	int pos_idx = pins.GetPosIdx();
+	pos.y = hh - NodeLayout::DEFAULT_HEIGHT - (pos_idx + 0.5f) * NodeLayout::DEFAULT_HEIGHT;
+
+	auto& snode = node.GetParent();
+	auto& mat = snode->GetUniqueComp<n2::CompTransform>().GetTrans().GetMatrix();
+
+	return mat * pos;
 }
 
 }

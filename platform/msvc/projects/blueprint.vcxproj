@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\Blueprint.h" />
+    <ClInclude Include="..\..\..\include\blueprint\Connecting.h" />
     <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h" />
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h" />
     <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h" />
@@ -21,9 +22,11 @@
     <ClInclude Include="..\..\..\include\blueprint\Pins.h" />
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h" />
     <ClInclude Include="..\..\..\include\blueprint\RenderSystem.h" />
+    <ClInclude Include="..\..\..\include\blueprint\WxCreateNodeDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\Blueprint.cpp" />
+    <ClCompile Include="..\..\..\source\Connecting.cpp" />
     <ClCompile Include="..\..\..\source\FlowCtrlBranch.cpp" />
     <ClCompile Include="..\..\..\source\CompNode.cpp" />
     <ClCompile Include="..\..\..\source\EventBeginPlay.cpp" />
@@ -34,6 +37,7 @@
     <ClCompile Include="..\..\..\source\ConnectPinsOP.cpp" />
     <ClCompile Include="..\..\..\source\RenderSystem.cpp" />
     <ClCompile Include="..\..\..\source\wrap_Blueprint.cpp" />
+    <ClCompile Include="..\..\..\source\WxCreateNodeDlg.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>4.blueprint</ProjectName>

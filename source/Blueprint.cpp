@@ -1,6 +1,7 @@
 #include "blueprint/Blueprint.h"
 #include "blueprint/CompNode.h"
 #include "blueprint/RenderSystem.h"
+#include "blueprint/NodeFactory.h"
 
 #include <node2/RenderSystem.h>
 

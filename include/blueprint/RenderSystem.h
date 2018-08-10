@@ -26,7 +26,8 @@ public:
 
 private:
 	void DrawPanel(const node::Node& node, const sm::vec2& pos, float hw, float hh);
-	void DrawPins(const node::Pins& pins, const sm::vec2& pos, bool left);
+	void DrawPins(const node::Pins& pins, const sm::vec2& pos);
+	void DrawConnecting(const node::Node& node, const sm::Matrix2D& mat);
 
 private:
 	pt2::Textbox m_title_tb;

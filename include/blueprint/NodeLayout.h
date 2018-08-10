@@ -19,8 +19,12 @@ public:
 
 	static const float PINS_RADIUS;
 
+	static const float CONNECTING_BEZIER_DIST;
+
 public:
 	static void UpdateNodeStyle(node::Node& node);
+
+	static sm::vec2 GetPinsPos(const node::Pins& pins);
 
 }; // NodeLayout
 

@@ -22,6 +22,9 @@
     <Filter Include="editor">
       <UniqueIdentifier>{d1e6efea-ec30-4e2a-b5e0-3684be2213c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gui">
+      <UniqueIdentifier>{8ad78659-c4bd-4b6d-9714-987edae39897}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\Node.cpp">
@@ -55,6 +58,12 @@
     <ClCompile Include="..\..\..\source\ConnectPinsOP.cpp">
       <Filter>editor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\Connecting.cpp">
+      <Filter>dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\WxCreateNodeDlg.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\Node.h">
@@ -84,6 +93,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h">
       <Filter>editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\Connecting.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\WxCreateNodeDlg.h">
+      <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

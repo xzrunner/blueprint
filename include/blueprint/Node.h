@@ -2,6 +2,7 @@
 
 #include <SM_Vector.h>
 #include <painting2/Color.h>
+#include <node0/typedef.h>
 
 #include <vector>
 #include <memory>
@@ -19,10 +20,21 @@ public:
 	Node(const std::string& title);
 	virtual ~Node() {}
 
+	virtual std::string TypeName() const = 0;
+	virtual std::shared_ptr<Node> Create() const = 0;
+
 	auto& GetTitle() const { return m_title; }
 
 	auto& GetAllInput() const { return m_all_input; }
 	auto& GetAllOutput() const { return m_all_output; }
+
+	void SetParent(const n0::SceneNodePtr& parent) {
+		m_parent = parent;
+	}
+	auto& GetParent() const { return m_parent; }
+
+	auto& GetLastPos() const { return m_last_pos; }
+	void  SetLastPos(const sm::vec2& pos) const { m_last_pos = pos; }
 
 public:
 	struct Style
@@ -37,7 +49,7 @@ public:
 	void SetStyle(const Style& style) { m_style = style; }
 
 protected:
-	void AddPins(const std::shared_ptr<Pins>& pins, bool input);
+	void AddPins(const std::shared_ptr<Pins>& pins);
 
 	void SetWidth(float width);
 
@@ -50,6 +62,10 @@ private:
 
 	std::vector<std::shared_ptr<Pins>> m_all_input;
 	std::vector<std::shared_ptr<Pins>> m_all_output;
+
+	// for draw
+	n0::SceneNodePtr m_parent = nullptr;
+	mutable sm::vec2 m_last_pos;
 
 }; // Node
 

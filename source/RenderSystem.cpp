@@ -2,6 +2,7 @@
 #include "blueprint/Node.h"
 #include "blueprint/Pins.h"
 #include "blueprint/NodeLayout.h"
+#include "blueprint/Connecting.h"
 
 #include <SM_Rect.h>
 #include <painting2/PrimitiveDraw.h>
@@ -12,7 +13,7 @@ namespace
 
 const float PINS_RADIUS = bp::NodeLayout::PINS_RADIUS;
 
-const pt2::Color COL_PANEL_BG = pt2::Color(25, 25, 25);
+const pt2::Color COL_PANEL_BG = pt2::Color(25, 25, 25, 196);
 
 const pt2::Color COL_TEXT     = pt2::Color(224, 224, 224);
 const pt2::Color COL_WHITE    = pt2::Color(0, 0, 0);
@@ -59,34 +60,44 @@ RenderSystem::RenderSystem()
 
 void RenderSystem::DrawNode(const node::Node& node, const sm::Matrix2D& mat)
 {
+	// pos
+	auto pos = mat * sm::vec2(0, 0);
+	if (pos != node.GetLastPos()) 
+	{
+		// update connecting
+		for (auto& in : node.GetAllInput()) {
+			for (auto& c : in->GetConnecting()) {
+				c->UpdateCurve();
+			}
+		}
+		for (auto& out : node.GetAllOutput()) {
+			for (auto& c : out->GetConnecting()) {
+				c->UpdateCurve();
+			}
+		}
+		node.SetLastPos(pos);
+	}
+
 	// layout
 	auto& style = node.GetStyle();
 	float hw = style.width  * 0.5f;
 	float hh = style.height * 0.5f;
 
 	// panel
-	DrawPanel(node, mat * sm::vec2(0, 0), hw, hh);
+	DrawPanel(node, pos, hw, hh);
 
 	// input
-	float y = hh - NodeLayout::DEFAULT_HEIGHT;
-	float curr_y = y;
-	for (auto& in : node.GetAllInput())
-	{
-		auto pos = mat * sm::vec2(-hw + PINS_RADIUS * 2, curr_y - NodeLayout::DEFAULT_HEIGHT * 0.5f);
-		DrawPins(*in, pos, true);
-		curr_y -= NodeLayout::DEFAULT_HEIGHT;
+	for (auto& in : node.GetAllInput()) {
+		DrawPins(*in, NodeLayout::GetPinsPos(*in));
 	}
 
 	// output
-	curr_y = y;
-	for (auto& out : node.GetAllOutput())
-	{
-		auto pos = mat * sm::vec2(hw - PINS_RADIUS * 2, curr_y - NodeLayout::DEFAULT_HEIGHT * 0.5f);
-		DrawPins(*out, pos, false);
-		curr_y -= NodeLayout::DEFAULT_HEIGHT;
+	for (auto& out : node.GetAllOutput()) {
+		DrawPins(*out, NodeLayout::GetPinsPos(*out));
 	}
 
-	y += NodeLayout::DEFAULT_HEIGHT * style.line_num;
+	// connecting
+	DrawConnecting(node, mat);
 }
 
 float RenderSystem::GetTextTitleScale() const
@@ -152,13 +163,13 @@ void RenderSystem::DrawPanel(const node::Node& node, const sm::vec2& pos, float 
 	pt2::RenderSystem::DrawText(node.GetTitle(), m_title_tb, mat, COL_TEXT, COL_WHITE);
 }
 
-void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos, bool left)
+void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)
 {
 	sm::Matrix2D mat;
 	mat.Scale(TEXT_PINS_SCALE, TEXT_PINS_SCALE);
 	mat.Translate(pos.x, pos.y);
 
-	bool connected = pins.GetConnected() != nullptr;
+	bool connected = !pins.GetConnecting().empty();
 
 	auto type = pins.GetType();
 	if (type == node::PINS_PORT)
@@ -190,12 +201,23 @@ void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos, bool le
 		}
 	}
 
-	if (left) {
+	if (pins.IsInput()) {
 		mat.Translate(PINS_TEXT_OFFSET, 0);
 		pt2::RenderSystem::DrawText(pins.GetName(), m_input_tb, mat, COL_TEXT, COL_WHITE);
 	} else {
 		mat.Translate(-PINS_TEXT_OFFSET, 0);
 		pt2::RenderSystem::DrawText(pins.GetName(), m_output_tb, mat, COL_TEXT, COL_WHITE);
+	}
+}
+
+void RenderSystem::DrawConnecting(const node::Node& node, const sm::Matrix2D& mat)
+{
+	for (auto& out : node.GetAllOutput()) {
+		for (auto& c : out->GetConnecting()) {
+			auto& curve = c->GetCurve();
+			pt2::PrimitiveDraw::SetColor(RenderSystem::GetPinsColor(out->GetType()));
+			pt2::PrimitiveDraw::Polyline(nullptr, curve.GetVertices(), false);
+		}
 	}
 }
 

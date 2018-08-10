@@ -2,15 +2,21 @@
 #include "blueprint/CompNode.h"
 #include "blueprint/NodeLayout.h"
 #include "blueprint/RenderSystem.h"
+#include "blueprint/Connecting.h"
+#include "blueprint/WxCreateNodeDlg.h"
+#include "blueprint/NodeFactory.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
 #include <ee0/SubjectMgr.h>
 #include <ee0/MessageID.h>
+#include <ee0/MsgHelper.h>
 
 #include <SM_Calc.h>
 #include <node0/SceneNode.h>
+#include <node0/CompIdentity.h>
 #include <node2/CompTransform.h>
+#include <node2/CompBoundingBox.h>
 #include <painting2/PrimitiveDraw.h>
 
 namespace bp
@@ -50,15 +56,19 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
 
 bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 {
+	bool ret = false;
 	if (m_selected) {
-
+		QueryOrCreateNode(x, y);
+		ret = true;
 	} else {
 		if (ee0::EditOP::OnMouseLeftUp(x, y)) {
 			return true;
 		}
 	}
 
-	return false;
+	m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
+
+	return ret;
 }
 
 bool ConnectPinsOP::OnMouseDrag(int x, int y)
@@ -66,9 +76,22 @@ bool ConnectPinsOP::OnMouseDrag(int x, int y)
 	if (m_selected)
 	{
 		m_last_pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
+
+		sm::vec2 v0, v3;
+		if (m_selected->IsInput()) {
+			v0 = m_last_pos;
+			v3 = m_first_pos;
+		} else {
+			v0 = m_first_pos;
+			v3 = m_last_pos;
+		}
+
+		float d = fabs((v3.x - v0.x) * NodeLayout::CONNECTING_BEZIER_DIST);
+		auto v1 = v0 + sm::vec2(d, 0);
+		auto v2 = v3 - sm::vec2(d, 0);
+		m_curve.SetCtrlPos(v0, v1, v2, v3);
+
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
-		float d = (m_last_pos.x - m_first_pos.x) * 0.3f;
-		m_curve.SetCtrlPos(m_first_pos, m_first_pos + sm::vec2(d, 0), m_last_pos - sm::vec2(d, 0), m_last_pos);
 	}
 	else
 	{
@@ -113,37 +136,121 @@ std::shared_ptr<node::Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr
 	auto& cnode = node->GetSharedComp<CompNode>();
 	auto& bp_node = cnode.GetNode();
 
-	auto& style = bp_node->GetStyle();
-	float hw = style.width  * 0.5f;
-	float hh = style.height * 0.5f;
-
-	float y = hh - NodeLayout::DEFAULT_HEIGHT;
-
 	auto& input = cnode.GetNode()->GetAllInput();
-	float curr_y = y;
 	for (auto& p : input)
 	{
-		auto center = mat * sm::vec2(-hw + NodeLayout::PINS_RADIUS * 2, curr_y - NodeLayout::DEFAULT_HEIGHT * 0.5f);
-		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PINS_RADIUS) {
+		auto center = NodeLayout::GetPinsPos(*p);
+		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PINS_RADIUS * 1.5f) 
+		{
 			p_center = center;
 			return p;
 		}
-		curr_y -= NodeLayout::DEFAULT_HEIGHT;
 	}
 
 	auto& output = cnode.GetNode()->GetAllOutput();
-	curr_y = y;
 	for (auto& p : output)
 	{
-		auto center = mat * sm::vec2(hw - NodeLayout::PINS_RADIUS * 2, curr_y - NodeLayout::DEFAULT_HEIGHT * 0.5f);
-		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PINS_RADIUS) {
+		auto center = NodeLayout::GetPinsPos(*p);
+		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PINS_RADIUS * 1.5f) {
 			p_center = center;
 			return p;
 		}
-		curr_y -= NodeLayout::DEFAULT_HEIGHT;
 	}
 
 	return nullptr;
+}
+
+void ConnectPinsOP::QueryOrCreateNode(int x, int y)
+{
+	std::shared_ptr<node::Pins> target = nullptr;
+	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
+	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
+	{
+		auto& cbb = obj->GetUniqueComp<n2::CompBoundingBox>();
+		if (!cbb.GetBounding(*obj).IsContain(pos)) {
+			return true;
+		}
+
+		sm::vec2 center;
+		target = QueryPinsByPos(obj, pos, center);
+		return !target;
+	});
+	if (target)
+	{
+		if (m_selected->GetType() == target->GetType() &&
+			m_selected->IsInput() != target->IsInput())
+		{
+			if (m_selected->IsInput()) {
+				node::make_connecting(target, m_selected);
+			} else {
+				node::make_connecting(m_selected, target);
+			}
+		}
+	}
+	else
+	{
+		CreateNode(x, y);
+	}
+
+	m_selected = nullptr;
+	m_curve.Clear();
+}
+
+void ConnectPinsOP::CreateNode(int x, int y)
+{
+	auto base = m_stage.GetScreenPosition();
+	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y));
+	if (dlg.ShowModal() != wxID_OK) {
+		return;
+	}
+
+	auto type = dlg.GetSelectedType();
+	auto bp_node = node::NodeFactory::Instance()->Create(type);
+	assert(bp_node);
+	auto& style = bp_node->GetStyle();
+
+	auto node = std::make_shared<n0::SceneNode>();
+	auto& cnode = node->AddSharedComp<bp::CompNode>(bp_node);
+	cnode.GetNode()->SetParent(node);
+	// trans
+	auto& ctrans = node->AddUniqueComp<n2::CompTransform>();
+	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
+	pos.x += bp_node->GetStyle().width * 0.5f;
+	pos.y -= bp_node->GetStyle().height * 0.5f;
+	ctrans.SetPosition(*node, pos);
+	// id
+	node->AddUniqueComp<n0::CompIdentity>();
+	// aabb
+	node->AddUniqueComp<n2::CompBoundingBox>(
+		sm::rect(style.width, style.height)
+	);
+
+	// connect
+	assert(m_selected);
+	auto pins_type = m_selected->GetType();
+	if (m_selected->IsInput()) 
+	{
+		auto& output = bp_node->GetAllOutput();
+		for (auto& pins : output) {
+			if (pins->GetType() == pins_type) {
+				node::make_connecting(pins, m_selected);
+				break;
+			}
+		}
+	} else {
+		auto& input = bp_node->GetAllInput();
+		for (auto& pins : input) {
+			if (pins->GetType() == pins_type) {
+				node::make_connecting(m_selected, pins);
+				break;
+			}
+		}
+	}
+
+	ee0::MsgHelper::InsertNode(*m_stage.GetSubjectMgr(), node);
+
+	auto& sub_mgr = m_stage.GetSubjectMgr();
+	sub_mgr->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
 }
 
 }

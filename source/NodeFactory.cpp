@@ -9,18 +9,27 @@ namespace bp
 namespace node
 {
 
+CU_SINGLETON_DEFINITION(NodeFactory);
+
+NodeFactory::NodeFactory()
+{
+	RegistAllNode();
+}
+
 std::shared_ptr<Node> NodeFactory::Create(const std::string& type)
 {
-	std::shared_ptr<Node> node = nullptr;
-	// flow control
-	if (type == "flow_ctrl_branch") {
-		node = std::make_shared<FlowCtrlBranch>();
+	for (auto& n : m_nodes) {
+		if (n->TypeName() == type) {
+			return n->Create();
+		}
 	}
-	// event
-	else if (type == "event_begin_play") {
-		node = std::make_shared<EventBeginPlay>();
-	}
-	return node;
+	return nullptr;
+}
+
+void NodeFactory::RegistAllNode()
+{
+	m_nodes.push_back(std::make_shared<node::EventBeginPlay>());
+	m_nodes.push_back(std::make_shared<node::FlowCtrlBranch>());
 }
 
 }
