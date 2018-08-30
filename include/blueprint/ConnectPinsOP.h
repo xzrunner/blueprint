@@ -28,8 +28,8 @@ private:
 	std::shared_ptr<node::Pins> QueryPinsByPos(const n0::SceneNodePtr& node,
 		const sm::vec2& pos, sm::vec2& p_center);
 
-	void QueryOrCreateNode(int x, int y);
-	void CreateNode(int x, int y);
+	bool QueryOrCreateNode(int x, int y);
+	bool CreateNode(int x, int y);
 
 private:
 	ee0::WxStagePage& m_stage;

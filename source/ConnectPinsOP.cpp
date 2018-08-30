@@ -5,6 +5,7 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/WxCreateNodeDlg.h"
 #include "blueprint/NodeFactory.h"
+#include "blueprint/MessageID.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
@@ -57,16 +58,21 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
 bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 {
 	bool ret = false;
-	if (m_selected) {
-		QueryOrCreateNode(x, y);
+
+	if (m_selected)
+	{
+		if (QueryOrCreateNode(x, y)) {
+			m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
+			m_stage.GetSubjectMgr()->NotifyObservers(MSG_CONNECTION_CHANGED);
+		}
 		ret = true;
-	} else {
+	}
+	else
+	{
 		if (ee0::EditOP::OnMouseLeftUp(x, y)) {
 			return true;
 		}
 	}
-
-	m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 
 	return ret;
 }
@@ -140,7 +146,7 @@ std::shared_ptr<node::Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr
 	for (auto& p : input)
 	{
 		auto center = NodeLayout::GetPinsPos(*p);
-		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PINS_RADIUS * 1.5f) 
+		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PINS_RADIUS * 1.5f)
 		{
 			p_center = center;
 			return p;
@@ -160,8 +166,10 @@ std::shared_ptr<node::Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr
 	return nullptr;
 }
 
-void ConnectPinsOP::QueryOrCreateNode(int x, int y)
+bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 {
+	bool dirty = false;
+
 	std::shared_ptr<node::Pins> target = nullptr;
 	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
 	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
@@ -185,23 +193,26 @@ void ConnectPinsOP::QueryOrCreateNode(int x, int y)
 			} else {
 				node::make_connecting(m_selected, target);
 			}
+			dirty = true;
 		}
 	}
 	else
 	{
-		CreateNode(x, y);
+		dirty = CreateNode(x, y);
 	}
 
 	m_selected = nullptr;
 	m_curve.Clear();
+
+	return dirty;
 }
 
-void ConnectPinsOP::CreateNode(int x, int y)
+bool ConnectPinsOP::CreateNode(int x, int y)
 {
 	auto base = m_stage.GetScreenPosition();
 	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y));
 	if (dlg.ShowModal() != wxID_OK) {
-		return;
+		return false;
 	}
 
 	auto type = dlg.GetSelectedType();
@@ -228,7 +239,7 @@ void ConnectPinsOP::CreateNode(int x, int y)
 	// connect
 	assert(m_selected);
 	auto pins_type = m_selected->GetType();
-	if (m_selected->IsInput()) 
+	if (m_selected->IsInput())
 	{
 		auto& output = bp_node->GetAllOutput();
 		for (auto& pins : output) {
@@ -251,6 +262,8 @@ void ConnectPinsOP::CreateNode(int x, int y)
 
 	auto& sub_mgr = m_stage.GetSubjectMgr();
 	sub_mgr->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
+
+	return true;
 }
 
 }
