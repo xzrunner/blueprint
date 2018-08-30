@@ -12,8 +12,11 @@ class FlowCtrlBranch : public Node
 public:
 	FlowCtrlBranch();
 
+	virtual NodeTypeID  TypeID() const override {
+		return GetNodeTypeID<FlowCtrlBranch>();
+	}
 	virtual std::string TypeName() const override {
-		return "flow_ctrl_branch";
+		return "bp_flow_ctrl_branch";
 	}
 	virtual std::shared_ptr<Node> Create() const override {
 		return std::make_shared<FlowCtrlBranch>();

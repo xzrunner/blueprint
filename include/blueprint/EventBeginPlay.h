@@ -12,8 +12,11 @@ class EventBeginPlay : public Node
 public:
 	EventBeginPlay();
 
+	virtual NodeTypeID  TypeID() const override {
+		return GetNodeTypeID<EventBeginPlay>();
+	}
 	virtual std::string TypeName() const override {
-		return "event_begin_play";
+		return "bp_event_begin_play";
 	}
 	virtual std::shared_ptr<Node> Create() const override {
 		return std::make_shared<EventBeginPlay>();

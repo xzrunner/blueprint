@@ -9,6 +9,28 @@
 
 namespace bp
 {
+
+using NodeTypeID = size_t;
+
+namespace Internal
+{
+inline size_t GetUniqueNodeTypeID() noexcept
+{
+    static NodeTypeID id{ 0u };
+    return id++;
+}
+}
+
+template <typename T>
+inline NodeTypeID GetNodeTypeID() noexcept
+{
+    static_assert(std::is_base_of<node::Node, T>::value,
+        "T must inherit from Node");
+
+    static NodeTypeID type_id{Internal::GetUniqueNodeTypeID()};
+    return type_id;
+}
+
 namespace node
 {
 
@@ -20,6 +42,7 @@ public:
 	Node(const std::string& title);
 	virtual ~Node() {}
 
+	virtual NodeTypeID  TypeID() const = 0;
 	virtual std::string TypeName() const = 0;
 	virtual std::shared_ptr<Node> Create() const = 0;
 
