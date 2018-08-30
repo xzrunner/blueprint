@@ -100,5 +100,6 @@
     <ClInclude Include="..\..\..\include\blueprint\WxCreateNodeDlg.h">
       <Filter>gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\MessageID.h" />
   </ItemGroup>
 </Project>

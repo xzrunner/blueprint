@@ -16,6 +16,7 @@
     <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h" />
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h" />
     <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h" />
+    <ClInclude Include="..\..\..\include\blueprint\MessageID.h" />
     <ClInclude Include="..\..\..\include\blueprint\Node.h" />
     <ClInclude Include="..\..\..\include\blueprint\NodeFactory.h" />
     <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h" />
