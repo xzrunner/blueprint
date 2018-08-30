@@ -33,7 +33,7 @@ const pt2::Color COL_PINS_OBJECT    = pt2::Color(56, 165, 241);
 const float TEXT_TITLE_SCALE = 0.7f;
 const float TEXT_PINS_SCALE  = 0.5f;
 
-const float PINS_TEXT_OFFSET = 35;
+const float PINS_TEXT_OFFSET = 58;
 
 }
 
@@ -51,10 +51,12 @@ RenderSystem::RenderSystem()
 
 	m_input_tb.font_size = 24;
 	m_input_tb.align_hori = pt2::Textbox::HA_LEFT;
+	m_input_tb.width = 200;
 	m_input_tb.height = NodeLayout::DEFAULT_HEIGHT;
 
 	m_output_tb.font_size = 24;
 	m_output_tb.align_hori = pt2::Textbox::HA_RIGHT;
+	m_output_tb.width = 200;
 	m_output_tb.height = NodeLayout::DEFAULT_HEIGHT;
 }
 
@@ -62,7 +64,7 @@ void RenderSystem::DrawNode(const node::Node& node, const sm::Matrix2D& mat)
 {
 	// pos
 	auto pos = mat * sm::vec2(0, 0);
-	if (pos != node.GetLastPos()) 
+	if (pos != node.GetLastPos())
 	{
 		// update connecting
 		for (auto& in : node.GetAllInput()) {
