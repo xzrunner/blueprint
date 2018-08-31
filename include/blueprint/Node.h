@@ -3,6 +3,7 @@
 #include <SM_Vector.h>
 #include <painting2/Color.h>
 #include <node0/typedef.h>
+#include <SM_Matrix2D.h>
 
 #include <vector>
 #include <memory>
@@ -45,6 +46,7 @@ public:
 	virtual NodeTypeID TypeID() const = 0;
 	virtual std::string TypeName() const = 0;
 	virtual std::shared_ptr<Node> Create() const = 0;
+	virtual void Draw(const sm::Matrix2D& mt) const {}
 
 	auto& GetTitle() const { return m_title; }
 
@@ -66,6 +68,8 @@ public:
 		float height;
 
 		int line_num;
+
+		bool small_title = false;
 	};
 
 	const Style& GetStyle() const { return m_style; }
@@ -78,11 +82,12 @@ protected:
 
 	void Layout();
 
-private:
+protected:
 	std::string m_title;
 
 	Style m_style;
 
+private:
 	std::vector<std::shared_ptr<Pins>> m_all_input;
 	std::vector<std::shared_ptr<Pins>> m_all_output;
 

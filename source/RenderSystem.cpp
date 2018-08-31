@@ -16,7 +16,7 @@ const float PINS_RADIUS = bp::NodeLayout::PINS_RADIUS;
 const pt2::Color COL_PANEL_BG = pt2::Color(25, 25, 25, 196);
 
 const pt2::Color COL_TEXT     = pt2::Color(224, 224, 224);
-const pt2::Color COL_WHITE    = pt2::Color(0, 0, 0);
+const pt2::Color COL_WHITE    = pt2::Color(255, 255, 255);
 
 // pins color
 const pt2::Color COL_PINS_PORT      = pt2::Color(255, 255, 255);
@@ -48,6 +48,8 @@ RenderSystem::RenderSystem()
 	m_title_tb.align_hori = pt2::Textbox::HA_CENTER;
 	m_title_tb.width  = 200;
 	m_title_tb.height = NodeLayout::DEFAULT_HEIGHT;
+	m_small_title_tb = m_title_tb;
+	m_small_title_tb.font_size = 18;
 
 	m_input_tb.font_size = 24;
 	m_input_tb.align_hori = pt2::Textbox::HA_LEFT;
@@ -97,6 +99,9 @@ void RenderSystem::DrawNode(const node::Node& node, const sm::Matrix2D& mat)
 	for (auto& out : node.GetAllOutput()) {
 		DrawPins(*out, NodeLayout::GetPinsPos(*out));
 	}
+
+	// ext
+	node.Draw(mat);
 
 	// connecting
 	DrawConnecting(node, mat);
@@ -162,7 +167,8 @@ void RenderSystem::DrawPanel(const node::Node& node, const sm::vec2& pos, float 
 	sm::Matrix2D mat;
 	mat.Scale(TEXT_TITLE_SCALE, TEXT_TITLE_SCALE);
 	mat.Translate(pos.x, pos.y + hh - NodeLayout::TITLE_HEIGHT * 0.5f);
-	pt2::RenderSystem::DrawText(node.GetTitle(), m_title_tb, mat, COL_TEXT, COL_WHITE);
+	auto& tb = node.GetStyle().small_title ? m_small_title_tb : m_title_tb;
+	pt2::RenderSystem::DrawText(node.GetTitle(), tb, mat, COL_TEXT, COL_WHITE);
 }
 
 void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)

@@ -30,7 +30,7 @@ private:
 	void DrawConnecting(const node::Node& node, const sm::Matrix2D& mat);
 
 private:
-	pt2::Textbox m_title_tb;
+	pt2::Textbox m_title_tb, m_small_title_tb;
 	pt2::Textbox m_input_tb, m_output_tb;
 
 	CU_SINGLETON_DECLARATION(RenderSystem)
