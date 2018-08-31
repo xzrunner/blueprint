@@ -32,7 +32,7 @@ enum PinsType
 class Pins
 {
 public:
-	Pins(bool is_input, int pos, PinsType type, 
+	Pins(bool is_input, int pos, PinsType type,
 		const std::string& name, const Node& parent);
 
 	bool IsInput() const { return m_is_input; }

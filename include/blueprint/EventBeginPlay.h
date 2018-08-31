@@ -12,7 +12,7 @@ class EventBeginPlay : public Node
 public:
 	EventBeginPlay();
 
-	virtual NodeTypeID  TypeID() const override {
+	virtual NodeTypeID TypeID() const override {
 		return GetNodeTypeID<EventBeginPlay>();
 	}
 	virtual std::string TypeName() const override {

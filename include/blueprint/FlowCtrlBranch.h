@@ -12,7 +12,7 @@ class FlowCtrlBranch : public Node
 public:
 	FlowCtrlBranch();
 
-	virtual NodeTypeID  TypeID() const override {
+	virtual NodeTypeID TypeID() const override {
 		return GetNodeTypeID<FlowCtrlBranch>();
 	}
 	virtual std::string TypeName() const override {

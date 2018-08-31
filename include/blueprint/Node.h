@@ -42,7 +42,7 @@ public:
 	Node(const std::string& title);
 	virtual ~Node() {}
 
-	virtual NodeTypeID  TypeID() const = 0;
+	virtual NodeTypeID TypeID() const = 0;
 	virtual std::string TypeName() const = 0;
 	virtual std::shared_ptr<Node> Create() const = 0;
 
