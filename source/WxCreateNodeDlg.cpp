@@ -1,6 +1,6 @@
 #include "blueprint/WxCreateNodeDlg.h"
-#include "blueprint/NodeFactory.h"
 #include "blueprint/Node.h"
+#include "blueprint/Pins.h"
 
 #include <wx/treectrl.h>
 #include <wx/sizer.h>
@@ -8,8 +8,11 @@
 namespace bp
 {
 
-WxCreateNodeDlg::WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos)
+WxCreateNodeDlg::WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos, const node::Pins& pair,
+	                             const std::vector<std::shared_ptr<node::Node>>& nodes)
 	: wxDialog(parent, wxID_ANY, "Create Node", pos, wxSize(200, 400))
+	, m_pair(pair)
+	, m_nodes(nodes)
 {
 	InitLayout();
 }
@@ -30,10 +33,11 @@ void WxCreateNodeDlg::InitLayout()
 
 		auto root = m_tree->AddRoot("ROOT");
 
-		auto& nodes = node::NodeFactory::Instance()->GetAllNodes();
 		int idx = 0;
-		for (auto& node : nodes) {
-			m_tree->InsertItem(root, idx++, node->TypeName());
+		for (auto& node : m_nodes) {
+			if (IsNodeMatched(*node)) {
+				m_tree->InsertItem(root, idx++, node->TypeName());
+			}
 		}
 
 		top_sizer->Add(m_tree, 1, wxEXPAND);
@@ -52,6 +56,28 @@ void WxCreateNodeDlg::OnDoubleClick(wxTreeEvent& event)
 {
 	assert(IsModal());
 	EndModal(wxID_OK);
+}
+
+bool WxCreateNodeDlg::IsNodeMatched(const node::Node& node) const
+{
+	auto pins_type = m_pair.GetType();
+	if (m_pair.IsInput())
+	{
+		auto& output = node.GetAllOutput();
+		for (auto& pins : output) {
+			if (pins->GetType() == pins_type) {
+				return true;
+			}
+		}
+	} else {
+		auto& input = node.GetAllInput();
+		for (auto& pins : input) {
+			if (pins->GetType() == pins_type) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 }

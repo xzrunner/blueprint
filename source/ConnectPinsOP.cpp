@@ -4,7 +4,6 @@
 #include "blueprint/RenderSystem.h"
 #include "blueprint/Connecting.h"
 #include "blueprint/WxCreateNodeDlg.h"
-#include "blueprint/NodeFactory.h"
 #include "blueprint/MessageID.h"
 
 #include <ee0/WxStagePage.h>
@@ -23,9 +22,11 @@
 namespace bp
 {
 
-ConnectPinsOP::ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage)
+ConnectPinsOP::ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
+	                         const std::vector<std::shared_ptr<node::Node>>& nodes)
 	: ee0::EditOP(cam)
 	, m_stage(stage)
+	, m_nodes(nodes)
 {
 	m_first_pos.MakeInvalid();
 	m_last_pos.MakeInvalid();
@@ -57,24 +58,20 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
 
 bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 {
-	bool ret = false;
+	if (ee0::EditOP::OnMouseLeftUp(x, y)) {
+		return true;
+	}
 
 	if (m_selected)
 	{
 		if (QueryOrCreateNode(x, y)) {
-			m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 			m_stage.GetSubjectMgr()->NotifyObservers(MSG_CONNECTION_CHANGED);
 		}
-		ret = true;
-	}
-	else
-	{
-		if (ee0::EditOP::OnMouseLeftUp(x, y)) {
-			return true;
-		}
+		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
+		return true;
 	}
 
-	return ret;
+	return false;
 }
 
 bool ConnectPinsOP::OnMouseDrag(int x, int y)
@@ -210,13 +207,21 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 bool ConnectPinsOP::CreateNode(int x, int y)
 {
 	auto base = m_stage.GetScreenPosition();
-	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y));
+	assert(m_selected);
+	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y), *m_selected, m_nodes);
 	if (dlg.ShowModal() != wxID_OK) {
+		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 		return false;
 	}
 
 	auto type = dlg.GetSelectedType();
-	auto bp_node = node::NodeFactory::Instance()->Create(type);
+	std::shared_ptr<node::Node> bp_node = nullptr;
+	for (auto& n : m_nodes) {
+		if (n->TypeName() == type) {
+			bp_node = n->Create();
+			break;
+		}
+	}
 	assert(bp_node);
 	auto& style = bp_node->GetStyle();
 
@@ -237,7 +242,6 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	);
 
 	// connect
-	assert(m_selected);
 	auto pins_type = m_selected->GetType();
 	if (m_selected->IsInput())
 	{
