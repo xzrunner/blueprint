@@ -5,7 +5,7 @@ namespace bp
 
 enum MessageID
 {
-	MSG_CONNECTION_CHANGED = 4000,
+	MSG_BLUE_PRINT_CHANGED = 4000,
 
 }; // MessageID
 

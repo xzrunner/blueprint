@@ -65,7 +65,7 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 	if (m_selected)
 	{
 		if (QueryOrCreateNode(x, y)) {
-			m_stage.GetSubjectMgr()->NotifyObservers(MSG_CONNECTION_CHANGED);
+			m_stage.GetSubjectMgr()->NotifyObservers(MSG_BLUE_PRINT_CHANGED);
 		}
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 		return true;
