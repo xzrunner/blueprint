@@ -15,12 +15,14 @@ public:
 	virtual NodeTypeID TypeID() const override {
 		return GetNodeTypeID<FlowCtrlBranch>();
 	}
-	virtual std::string TypeName() const override {
-		return "bp_flow_ctrl_branch";
+	virtual const std::string& TypeName() const override {
+		return TYPE_NAME;
 	}
 	virtual std::shared_ptr<Node> Create() const override {
 		return std::make_shared<FlowCtrlBranch>();
 	}
+
+	static const std::string TYPE_NAME;
 
 private:
 	// input

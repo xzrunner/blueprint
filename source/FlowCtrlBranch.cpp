@@ -6,6 +6,8 @@ namespace bp
 namespace node
 {
 
+const std::string FlowCtrlBranch::TYPE_NAME = "bp_flow_ctrl_branch";
+
 FlowCtrlBranch::FlowCtrlBranch()
 	: Node("Branch")
 {

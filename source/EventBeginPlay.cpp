@@ -6,6 +6,8 @@ namespace bp
 namespace node
 {
 
+const std::string EventBeginPlay::TYPE_NAME = "bp_event_begin_play";
+
 EventBeginPlay::EventBeginPlay()
 	: Node("EventBeginPlay")
 {

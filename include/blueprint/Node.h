@@ -44,7 +44,7 @@ public:
 	virtual ~Node() {}
 
 	virtual NodeTypeID TypeID() const = 0;
-	virtual std::string TypeName() const = 0;
+	virtual const std::string& TypeName() const = 0;
 	virtual std::shared_ptr<Node> Create() const = 0;
 	virtual void Draw(const sm::Matrix2D& mt) const {}
 

@@ -15,12 +15,14 @@ public:
 	virtual NodeTypeID TypeID() const override {
 		return GetNodeTypeID<EventBeginPlay>();
 	}
-	virtual std::string TypeName() const override {
-		return "bp_event_begin_play";
+	virtual const std::string& TypeName() const override {
+		return TYPE_NAME;
 	}
 	virtual std::shared_ptr<Node> Create() const override {
 		return std::make_shared<EventBeginPlay>();
 	}
+
+	static const std::string TYPE_NAME;
 
 private:
 	std::shared_ptr<Pins> m_output;
