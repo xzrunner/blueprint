@@ -264,8 +264,9 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 
 	ee0::MsgHelper::InsertNode(*m_stage.GetSubjectMgr(), node);
 
-	auto& sub_mgr = m_stage.GetSubjectMgr();
-	sub_mgr->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
+	std::vector<n0::NodeWithPos> nwps;
+	nwps.push_back(n0::NodeWithPos(node, node, 0));
+	ee0::MsgHelper::InsertSelection(*m_stage.GetSubjectMgr(), nwps);
 
 	return true;
 }
