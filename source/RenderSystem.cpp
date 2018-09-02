@@ -169,11 +169,22 @@ void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)
 
 void RenderSystem::DrawConnecting(const node::Node& node, const sm::Matrix2D& mat)
 {
-	for (auto& out : node.GetAllOutput()) {
-		for (auto& c : out->GetConnecting()) {
+	for (auto& src : node.GetAllOutput())
+	{
+		for (auto& c : src->GetConnecting())
+		{
 			auto& curve = c->GetCurve();
-			pt2::PrimitiveDraw::SetColor(out->GetColor());
-			pt2::PrimitiveDraw::Polyline(nullptr, curve.GetVertices(), false);
+			if (curve.shape.GetVertices().empty()) {
+				continue;
+			}
+			auto& dst = c->GetTo();
+			if (src->GetType() == dst->GetType()) {
+				pt2::PrimitiveDraw::SetColor(src->GetColor());
+				pt2::PrimitiveDraw::Polyline(nullptr, curve.shape.GetVertices(), false);
+			} else {
+				assert(!curve.color.empty());
+				pt2::PrimitiveDraw::Polyline(nullptr, curve.shape.GetVertices(), curve.color, false);
+			}
 		}
 	}
 }

@@ -25,10 +25,21 @@ public:
 	auto& GetCurve() const { return m_curve; }
 
 private:
+	struct Curve
+	{
+		pt2::BezierShape      shape;
+		std::vector<uint32_t> color;
+	};
+
+private:
+	void UpdateCurveShape();
+	void UpdateCurveColor();
+
+private:
 	std::shared_ptr<Pins> m_from = nullptr;
 	std::shared_ptr<Pins> m_to   = nullptr;
 
-	pt2::BezierShape m_curve;
+	Curve m_curve;
 
 }; // Connecting
 
