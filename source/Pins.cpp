@@ -5,13 +5,14 @@ namespace bp
 namespace node
 {
 
-Pins::Pins(bool is_input, int pos, PinsType type, 
-	       const std::string& name, const Node& parent)
+Pins::Pins(bool is_input, int pos, int type, const std::string& name,
+	       const Node& parent, bool type_cast)
 	: m_is_input(is_input)
 	, m_pos(pos)
 	, m_type(type)
 	, m_name(name)
-	, m_parent(parent) 
+	, m_parent(parent)
+	, m_type_cast(type_cast)
 {
 }
 
@@ -30,9 +31,9 @@ void Pins::RemoveConnecting(const std::shared_ptr<Connecting>& conn)
 	}
 }
 
-void Pins::ClearConnecting() 
-{ 
-	m_connecting.clear(); 
+void Pins::ClearConnecting()
+{
+	m_connecting.clear();
 }
 
 }

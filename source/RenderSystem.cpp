@@ -117,43 +117,29 @@ float RenderSystem::GetTextPinsScale() const
 	return TEXT_PINS_SCALE;
 }
 
-pt2::Color RenderSystem::GetPinsColor(const node::PinsType& type)
+void RenderSystem::RegisterPinsColor(const std::map<int, pt2::Color>& pins_type2color)
 {
-	pt2::Color col = COL_WHITE;
-	switch (type)
-	{
-	case node::PINS_PORT:
-		col = COL_PINS_PORT;
-		break;
-	case node::PINS_BOOLEAN:
-		col = COL_PINS_BOOLEAN;
-		break;
-	case node::PINS_INTEGER:
-		col = COL_PINS_INTEGER;
-		break;
-	case node::PINS_FLOAT:
-		col = COL_PINS_FLOAT;
-		break;
-	case node::PINS_STRING:
-		col = COL_PINS_STRING;
-		break;
-	case node::PINS_TEXT:
-		col = COL_PINS_TEXT;
-		break;
-	case node::PINS_VECTOR:
-		col = COL_PINS_VECTOR;
-		break;
-	case node::PINS_ROTATOR:
-		col = COL_PINS_ROTATOR;
-		break;
-	case node::PINS_TRANSFORM:
-		col = COL_PINS_TRANSFORM;
-		break;
-	case node::PINS_OBJECT:
-		col = COL_PINS_OBJECT;
-		break;
-	}
-	return col;
+	m_pins_type2color.insert(pins_type2color.begin(), pins_type2color.end());
+}
+
+pt2::Color RenderSystem::GetPinsColor(int type)
+{
+	auto itr = m_pins_type2color.find(type);
+	return itr == m_pins_type2color.end() ? COL_WHITE : itr->second;
+}
+
+void RenderSystem::InitPinsType2Color()
+{
+	m_pins_type2color.insert({ node::PINS_PORT,      COL_PINS_PORT });
+	m_pins_type2color.insert({ node::PINS_BOOLEAN,   COL_PINS_BOOLEAN });
+	m_pins_type2color.insert({ node::PINS_INTEGER,   COL_PINS_INTEGER });
+	m_pins_type2color.insert({ node::PINS_FLOAT,     COL_PINS_FLOAT });
+	m_pins_type2color.insert({ node::PINS_STRING,    COL_PINS_STRING });
+	m_pins_type2color.insert({ node::PINS_TEXT,      COL_PINS_TEXT });
+	m_pins_type2color.insert({ node::PINS_VECTOR,    COL_PINS_VECTOR });
+	m_pins_type2color.insert({ node::PINS_ROTATOR,   COL_PINS_ROTATOR });
+	m_pins_type2color.insert({ node::PINS_TRANSFORM, COL_PINS_TRANSFORM });
+	m_pins_type2color.insert({ node::PINS_OBJECT,    COL_PINS_OBJECT });
 }
 
 void RenderSystem::DrawPanel(const node::Node& node, const sm::vec2& pos, float hw, float hh)
@@ -198,7 +184,7 @@ void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)
 			pt2::PrimitiveDraw::Polyline(nullptr, vertices, true);
 		}
 	}
-	else if (type >= node::PINS_BOOLEAN && type <= node::PINS_OBJECT)
+	else
 	{
 		pt2::PrimitiveDraw::SetColor(GetPinsColor(type));
 		if (connected) {

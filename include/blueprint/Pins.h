@@ -32,13 +32,13 @@ enum PinsType
 class Pins
 {
 public:
-	Pins(bool is_input, int pos, PinsType type,
-		const std::string& name, const Node& parent);
+	Pins(bool is_input, int pos, int type, const std::string& name,
+		const Node& parent, bool type_cast = false);
 
 	bool IsInput() const { return m_is_input; }
 	int  GetPosIdx() const { return m_pos; }
 
-	PinsType GetType() const { return m_type; }
+	int GetType() const { return m_type; }
 
 	auto& GetName() const { return m_name; }
 
@@ -55,11 +55,13 @@ private:
 	bool m_is_input;
 	int  m_pos;
 
-	PinsType m_type;
+	int m_type;
 
 	std::string m_name;
 
 	const Node& m_parent;
+
+	bool m_type_cast;
 
 	std::vector<std::shared_ptr<Connecting>> m_connecting;
 

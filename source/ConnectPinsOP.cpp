@@ -112,7 +112,7 @@ bool ConnectPinsOP::OnDraw() const
 	{
 		if (m_first_pos.IsValid() && m_last_pos.IsValid())
 		{
-			pt2::PrimitiveDraw::SetColor(RenderSystem::GetPinsColor(m_selected->GetType()));
+			pt2::PrimitiveDraw::SetColor(RenderSystem::Instance()->GetPinsColor(m_selected->GetType()));
 			pt2::PrimitiveDraw::Polyline(nullptr, m_curve.GetVertices(), false);
 		}
 	}
