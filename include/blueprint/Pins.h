@@ -1,6 +1,7 @@
 #pragma once
 
 #include <painting2/BezierShape.h>
+#include <painting2/Color.h>
 
 #include <string>
 #include <memory>
@@ -35,12 +36,14 @@ public:
 	Pins(bool is_input, int pos, int type, const std::string& name,
 		const Node& parent, bool type_cast = false);
 
+	// for draw
+	virtual std::string GetDesc() const { return m_name; }
+	virtual const pt2::Color& GetColor() const;
+
 	bool IsInput() const { return m_is_input; }
 	int  GetPosIdx() const { return m_pos; }
 
 	int GetType() const { return m_type; }
-
-	auto& GetName() const { return m_name; }
 
 	auto& GetParent() const { return m_parent; }
 
@@ -49,6 +52,9 @@ public:
 	void ClearConnecting();
 
 	auto& GetConnecting() const { return m_connecting; }
+
+protected:
+	auto& GetName() const { return m_name; }
 
 private:
 	// for parent

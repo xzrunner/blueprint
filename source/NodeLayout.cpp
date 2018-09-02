@@ -34,11 +34,11 @@ void NodeLayout::UpdateNodeStyle(node::Node& node)
 	{
 		float w = 0;
 		if (input.size() > static_cast<size_t>(i)) {
-			auto sz = pt2::Callback::CalcLabelSize(input[i]->GetName(), tb);
+			auto sz = pt2::Callback::CalcLabelSize(input[i]->GetDesc(), tb);
 			w += sz.x;
 		}
 		if (output.size() > static_cast<size_t>(i)) {
-			auto sz = pt2::Callback::CalcLabelSize(output[i]->GetName(), tb);
+			auto sz = pt2::Callback::CalcLabelSize(output[i]->GetDesc(), tb);
 			w += sz.x;
 		}
 		if (w > max_w) {

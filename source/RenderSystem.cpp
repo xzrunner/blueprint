@@ -18,18 +18,6 @@ const pt2::Color COL_PANEL_BG = pt2::Color(25, 25, 25, 196);
 const pt2::Color COL_TEXT     = pt2::Color(224, 224, 224);
 const pt2::Color COL_WHITE    = pt2::Color(255, 255, 255);
 
-// pins color
-const pt2::Color COL_PINS_PORT      = pt2::Color(255, 255, 255);
-const pt2::Color COL_PINS_BOOLEAN   = pt2::Color(140, 0, 0);
-const pt2::Color COL_PINS_INTEGER   = pt2::Color(79, 225, 174);
-const pt2::Color COL_PINS_FLOAT     = pt2::Color(168, 255, 81);
-const pt2::Color COL_PINS_STRING    = pt2::Color(241, 0, 205);
-const pt2::Color COL_PINS_TEXT      = pt2::Color(221, 119, 164);
-const pt2::Color COL_PINS_VECTOR    = pt2::Color(247, 199, 45);
-const pt2::Color COL_PINS_ROTATOR   = pt2::Color(160, 175, 250);
-const pt2::Color COL_PINS_TRANSFORM = pt2::Color(243, 111, 0);
-const pt2::Color COL_PINS_OBJECT    = pt2::Color(56, 165, 241);
-
 const float TEXT_TITLE_SCALE = 0.7f;
 const float TEXT_PINS_SCALE  = 0.5f;
 
@@ -117,31 +105,6 @@ float RenderSystem::GetTextPinsScale() const
 	return TEXT_PINS_SCALE;
 }
 
-void RenderSystem::RegisterPinsColor(const std::map<int, pt2::Color>& pins_type2color)
-{
-	m_pins_type2color.insert(pins_type2color.begin(), pins_type2color.end());
-}
-
-pt2::Color RenderSystem::GetPinsColor(int type)
-{
-	auto itr = m_pins_type2color.find(type);
-	return itr == m_pins_type2color.end() ? COL_WHITE : itr->second;
-}
-
-void RenderSystem::InitPinsType2Color()
-{
-	m_pins_type2color.insert({ node::PINS_PORT,      COL_PINS_PORT });
-	m_pins_type2color.insert({ node::PINS_BOOLEAN,   COL_PINS_BOOLEAN });
-	m_pins_type2color.insert({ node::PINS_INTEGER,   COL_PINS_INTEGER });
-	m_pins_type2color.insert({ node::PINS_FLOAT,     COL_PINS_FLOAT });
-	m_pins_type2color.insert({ node::PINS_STRING,    COL_PINS_STRING });
-	m_pins_type2color.insert({ node::PINS_TEXT,      COL_PINS_TEXT });
-	m_pins_type2color.insert({ node::PINS_VECTOR,    COL_PINS_VECTOR });
-	m_pins_type2color.insert({ node::PINS_ROTATOR,   COL_PINS_ROTATOR });
-	m_pins_type2color.insert({ node::PINS_TRANSFORM, COL_PINS_TRANSFORM });
-	m_pins_type2color.insert({ node::PINS_OBJECT,    COL_PINS_OBJECT });
-}
-
 void RenderSystem::DrawPanel(const node::Node& node, const sm::vec2& pos, float hw, float hh)
 {
 	// background
@@ -176,7 +139,7 @@ void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)
 		for (auto& v : vertices) {
 			v += pos;
 		}
-		pt2::PrimitiveDraw::SetColor(COL_PINS_PORT);
+		pt2::PrimitiveDraw::SetColor(pins.GetColor());
 		if (connected) {
 			pt2::PrimitiveDraw::Triangles(nullptr, vertices);
 		} else {
@@ -186,7 +149,7 @@ void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)
 	}
 	else
 	{
-		pt2::PrimitiveDraw::SetColor(GetPinsColor(type));
+		pt2::PrimitiveDraw::SetColor(pins.GetColor());
 		if (connected) {
 			pt2::PrimitiveDraw::Circle(nullptr, pos, PINS_RADIUS, true);
 		} else {
@@ -197,10 +160,10 @@ void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)
 
 	if (pins.IsInput()) {
 		mat.Translate(PINS_TEXT_OFFSET, 0);
-		pt2::RenderSystem::DrawText(pins.GetName(), m_input_tb, mat, COL_TEXT, COL_WHITE);
+		pt2::RenderSystem::DrawText(pins.GetDesc(), m_input_tb, mat, COL_TEXT, COL_WHITE);
 	} else {
 		mat.Translate(-PINS_TEXT_OFFSET, 0);
-		pt2::RenderSystem::DrawText(pins.GetName(), m_output_tb, mat, COL_TEXT, COL_WHITE);
+		pt2::RenderSystem::DrawText(pins.GetDesc(), m_output_tb, mat, COL_TEXT, COL_WHITE);
 	}
 }
 
@@ -209,7 +172,7 @@ void RenderSystem::DrawConnecting(const node::Node& node, const sm::Matrix2D& ma
 	for (auto& out : node.GetAllOutput()) {
 		for (auto& c : out->GetConnecting()) {
 			auto& curve = c->GetCurve();
-			pt2::PrimitiveDraw::SetColor(RenderSystem::GetPinsColor(out->GetType()));
+			pt2::PrimitiveDraw::SetColor(out->GetColor());
 			pt2::PrimitiveDraw::Polyline(nullptr, curve.GetVertices(), false);
 		}
 	}
