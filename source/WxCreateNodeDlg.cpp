@@ -65,14 +65,14 @@ bool WxCreateNodeDlg::IsNodeMatched(const node::Node& node) const
 	{
 		auto& output = node.GetAllOutput();
 		for (auto& pins : output) {
-			if (pins->GetType() == pins_type) {
+			if (pins->CanTypeCast(pins_type)) {
 				return true;
 			}
 		}
 	} else {
 		auto& input = node.GetAllInput();
 		for (auto& pins : input) {
-			if (pins->GetType() == pins_type) {
+			if (pins->CanTypeCast(pins_type)) {
 				return true;
 			}
 		}

@@ -23,14 +23,12 @@ namespace bp
 namespace node
 {
 
-Pins::Pins(bool is_input, int pos, int type, const std::string& name,
-	       const Node& parent, bool type_cast)
+Pins::Pins(bool is_input, int pos, int type, const std::string& name, const Node& parent)
 	: m_is_input(is_input)
 	, m_pos(pos)
 	, m_type(type)
 	, m_name(name)
 	, m_parent(parent)
-	, m_type_cast(type_cast)
 {
 }
 
@@ -61,6 +59,39 @@ const pt2::Color& Pins::GetColor() const
 	default:
 		return COL_DEFAULT;
 	}
+}
+
+bool Pins::CanTypeCast(int type) const
+{
+	if (m_type == type) {
+		return true;
+	}
+
+	switch (m_type)
+	{
+	case PINS_PORT:
+		return false;
+	case PINS_BOOLEAN:
+		return false;
+	case PINS_INTEGER:
+		return type == PINS_BOOLEAN || type == PINS_FLOAT;
+	case PINS_FLOAT:
+		return type == PINS_BOOLEAN || type == PINS_INTEGER || type == PINS_VECTOR;
+	case PINS_STRING:
+		return false;
+	case PINS_TEXT:
+		return false;
+	case PINS_VECTOR:
+		return type == PINS_INTEGER || type == PINS_FLOAT;
+	case PINS_ROTATOR:
+		return false;
+	case PINS_TRANSFORM:
+		return false;
+	case PINS_OBJECT:
+		return false;
+	}
+
+	return false;
 }
 
 void Pins::AddConnecting(const std::shared_ptr<Connecting>& conn)

@@ -34,11 +34,13 @@ class Pins
 {
 public:
 	Pins(bool is_input, int pos, int type, const std::string& name,
-		const Node& parent, bool type_cast = false);
+		const Node& parent);
 
 	// for draw
 	virtual std::string GetDesc() const { return m_name; }
 	virtual const pt2::Color& GetColor() const;
+
+	virtual bool CanTypeCast(int type) const;
 
 	bool IsInput() const { return m_is_input; }
 	int  GetPosIdx() const { return m_pos; }
@@ -66,8 +68,6 @@ private:
 	std::string m_name;
 
 	const Node& m_parent;
-
-	bool m_type_cast;
 
 	std::vector<std::shared_ptr<Connecting>> m_connecting;
 
