@@ -64,6 +64,9 @@
     <ClCompile Include="..\..\..\source\WxCreateNodeDlg.cpp">
       <Filter>gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\NSCompNode.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\Node.h">
@@ -101,5 +104,8 @@
       <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\MessageID.h" />
+    <ClInclude Include="..\..\..\include\blueprint\NSCompNode.h">
+      <Filter>component</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

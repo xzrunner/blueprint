@@ -24,6 +24,11 @@ std::shared_ptr<Node> NodeFactory::Create(const std::string& type)
 	return nullptr;
 }
 
+void NodeFactory::RegistNodes(const std::vector<std::shared_ptr<Node>>& nodes)
+{
+	std::copy(nodes.begin(), nodes.end(), std::back_inserter(m_nodes));
+}
+
 void NodeFactory::RegistAllNode()
 {
 	m_nodes.push_back(std::make_shared<node::EventBeginPlay>());

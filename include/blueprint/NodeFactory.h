@@ -18,6 +18,8 @@ public:
 
 	auto& GetAllNodes() const { return m_nodes; }
 
+	void RegistNodes(const std::vector<std::shared_ptr<Node>>& nodes);
+
 private:
 	void RegistAllNode();
 
