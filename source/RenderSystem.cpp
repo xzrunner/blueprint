@@ -52,30 +52,13 @@ RenderSystem::RenderSystem()
 
 void RenderSystem::DrawNode(const Node& node, const sm::Matrix2D& mat)
 {
-	// pos
-	auto pos = mat * sm::vec2(0, 0);
-	if (pos != node.GetLastPos())
-	{
-		// update connecting
-		for (auto& in : node.GetAllInput()) {
-			for (auto& c : in->GetConnecting()) {
-				c->UpdateCurve();
-			}
-		}
-		for (auto& out : node.GetAllOutput()) {
-			for (auto& c : out->GetConnecting()) {
-				c->UpdateCurve();
-			}
-		}
-		node.SetLastPos(pos);
-	}
-
 	// layout
 	auto& style = node.GetStyle();
 	float hw = style.width  * 0.5f;
 	float hh = style.height * 0.5f;
 
 	// panel
+	auto pos = mat * sm::vec2(0, 0);
 	DrawPanel(node, pos, hw, hh);
 
 	// input

@@ -79,10 +79,7 @@ sm::vec2 NodeLayout::GetPinsPos(const Pins& pins)
 	int pos_idx = pins.GetPosIdx();
 	pos.y = hh - NodeLayout::DEFAULT_HEIGHT - (pos_idx + 0.5f) * NodeLayout::DEFAULT_HEIGHT;
 
-	auto& snode = node.GetParent();
-	auto& mat = snode->GetUniqueComp<n2::CompTransform>().GetTrans().GetMatrix();
-
-	return mat * pos;
+	return node.GetPos() + pos;
 }
 
 }

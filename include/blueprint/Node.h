@@ -49,13 +49,8 @@ public:
 	auto& GetAllInput() const { return m_all_input; }
 	auto& GetAllOutput() const { return m_all_output; }
 
-	void SetParent(const n0::SceneNodePtr& parent) {
-		m_parent = parent;
-	}
-	auto& GetParent() const { return m_parent; }
-
-	auto& GetLastPos() const { return m_last_pos; }
-	void  SetLastPos(const sm::vec2& pos) const { m_last_pos = pos; }
+	auto& GetPos() const { return m_pos; }
+	bool  SetPos(const sm::vec2& pos);
 
 public:
 	struct Style
@@ -88,8 +83,7 @@ private:
 	std::vector<std::shared_ptr<Pins>> m_all_output;
 
 	// for draw
-	n0::SceneNodePtr m_parent = nullptr;
-	mutable sm::vec2 m_last_pos;
+	sm::vec2 m_pos;
 
 }; // Node
 
