@@ -2,7 +2,6 @@
 
 #include <SM_Vector.h>
 #include <painting2/Color.h>
-#include <node0/typedef.h>
 #include <SM_Matrix2D.h>
 
 #include <vector>
@@ -25,15 +24,12 @@ inline size_t GetUniqueNodeTypeID() noexcept
 template <typename T>
 inline NodeTypeID GetNodeTypeID() noexcept
 {
-    static_assert(std::is_base_of<node::Node, T>::value,
+    static_assert(std::is_base_of<Node, T>::value,
         "T must inherit from Node");
 
     static NodeTypeID type_id{Internal::GetUniqueNodeTypeID()};
     return type_id;
 }
-
-namespace node
-{
 
 class Pins;
 
@@ -97,5 +93,4 @@ private:
 
 }; // Node
 
-}
 }

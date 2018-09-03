@@ -4,8 +4,6 @@
 
 namespace bp
 {
-namespace node
-{
 
 Node::Node(const std::string& title)
 	: m_title(title)
@@ -32,5 +30,4 @@ void Node::Layout()
 	NodeLayout::UpdateNodeStyle(*this);
 }
 
-}
 }

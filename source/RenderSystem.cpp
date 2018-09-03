@@ -50,7 +50,7 @@ RenderSystem::RenderSystem()
 	m_output_tb.height = NodeLayout::DEFAULT_HEIGHT;
 }
 
-void RenderSystem::DrawNode(const node::Node& node, const sm::Matrix2D& mat)
+void RenderSystem::DrawNode(const Node& node, const sm::Matrix2D& mat)
 {
 	// pos
 	auto pos = mat * sm::vec2(0, 0);
@@ -105,7 +105,7 @@ float RenderSystem::GetTextPinsScale() const
 	return TEXT_PINS_SCALE;
 }
 
-void RenderSystem::DrawPanel(const node::Node& node, const sm::vec2& pos, float hw, float hh)
+void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh)
 {
 	// background
 	sm::rect r(sm::vec2(-hw, -hh) + pos, sm::vec2(hw, hh) + pos);
@@ -120,7 +120,7 @@ void RenderSystem::DrawPanel(const node::Node& node, const sm::vec2& pos, float 
 	pt2::RenderSystem::DrawText(node.GetTitle(), tb, mat, COL_TEXT, COL_WHITE);
 }
 
-void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)
+void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 {
 	sm::Matrix2D mat;
 	mat.Scale(TEXT_PINS_SCALE, TEXT_PINS_SCALE);
@@ -129,7 +129,7 @@ void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)
 	bool connected = !pins.GetConnecting().empty();
 
 	auto type = pins.GetType();
-	if (type == node::PINS_PORT)
+	if (type == PINS_PORT)
 	{
 		std::vector<sm::vec2> vertices = {
 			sm::vec2(-PINS_RADIUS, PINS_RADIUS),
@@ -167,7 +167,7 @@ void RenderSystem::DrawPins(const node::Pins& pins, const sm::vec2& pos)
 	}
 }
 
-void RenderSystem::DrawConnecting(const node::Node& node, const sm::Matrix2D& mat)
+void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat)
 {
 	for (auto& src : node.GetAllOutput())
 	{

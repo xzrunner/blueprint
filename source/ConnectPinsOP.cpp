@@ -23,7 +23,7 @@ namespace bp
 {
 
 ConnectPinsOP::ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
-	                         const std::vector<std::shared_ptr<node::Node>>& nodes)
+	                         const std::vector<std::shared_ptr<Node>>& nodes)
 	: ee0::EditOP(cam)
 	, m_stage(stage)
 	, m_nodes(nodes)
@@ -126,20 +126,20 @@ bool ConnectPinsOP::OnDraw() const
 	return false;
 }
 
-std::shared_ptr<node::Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr& node,
-	                                                      const sm::vec2& pos, sm::vec2& p_center)
+std::shared_ptr<Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr& node,
+	                                                const sm::vec2& pos, sm::vec2& p_center)
 {
-	if (!node->HasSharedComp<CompNode>()) {
+	if (!node->HasUniqueComp<CompNode>()) {
 		return nullptr;
 	}
 
 	auto& ctrans = node->GetUniqueComp<n2::CompTransform>();
 	auto& mat = ctrans.GetTrans().GetMatrix();
 
-	auto& cnode = node->GetSharedComp<CompNode>();
+	auto& cnode = node->GetUniqueComp<CompNode>();
 	auto& bp_node = cnode.GetNode();
 
-	auto& input = cnode.GetNode()->GetAllInput();
+	auto& input = bp_node->GetAllInput();
 	for (auto& p : input)
 	{
 		auto center = NodeLayout::GetPinsPos(*p);
@@ -150,7 +150,7 @@ std::shared_ptr<node::Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr
 		}
 	}
 
-	auto& output = cnode.GetNode()->GetAllOutput();
+	auto& output = bp_node->GetAllOutput();
 	for (auto& p : output)
 	{
 		auto center = NodeLayout::GetPinsPos(*p);
@@ -167,7 +167,7 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 {
 	bool dirty = false;
 
-	std::shared_ptr<node::Pins> target = nullptr;
+	std::shared_ptr<Pins> target = nullptr;
 	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
 	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
 	{
@@ -186,9 +186,9 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 			m_selected->IsInput() != target->IsInput())
 		{
 			if (m_selected->IsInput()) {
-				node::make_connecting(target, m_selected);
+				make_connecting(target, m_selected);
 			} else {
-				node::make_connecting(m_selected, target);
+				make_connecting(m_selected, target);
 			}
 			dirty = true;
 		}
@@ -215,7 +215,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	}
 
 	auto type = dlg.GetSelectedType();
-	std::shared_ptr<node::Node> bp_node = nullptr;
+	std::shared_ptr<Node> bp_node = nullptr;
 	for (auto& n : m_nodes) {
 		if (n->TypeName() == type) {
 			bp_node = n->Create();
@@ -226,8 +226,8 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	auto& style = bp_node->GetStyle();
 
 	auto node = std::make_shared<n0::SceneNode>();
-	auto& cnode = node->AddSharedComp<bp::CompNode>(bp_node);
-	cnode.GetNode()->SetParent(node);
+	auto& cnode = node->AddUniqueComp<bp::CompNode>();
+	cnode.SetNode(bp_node);
 	// trans
 	auto& ctrans = node->AddUniqueComp<n2::CompTransform>();
 	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
@@ -248,7 +248,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 		auto& output = bp_node->GetAllOutput();
 		for (auto& pins : output) {
 			if (pins->CanTypeCast(pins_type)) {
-				node::make_connecting(pins, m_selected);
+				make_connecting(pins, m_selected);
 				break;
 			}
 		}
@@ -256,7 +256,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 		auto& input = bp_node->GetAllInput();
 		for (auto& pins : input) {
 			if (pins->CanTypeCast(pins_type)) {
-				node::make_connecting(m_selected, pins);
+				make_connecting(m_selected, pins);
 				break;
 			}
 		}

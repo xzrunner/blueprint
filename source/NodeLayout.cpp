@@ -18,9 +18,9 @@ const uint32_t NodeLayout::TITLE_HEIGHT   = 20;
 const float    NodeLayout::PINS_RADIUS    = 5;
 const float    NodeLayout::CONNECTING_BEZIER_DIST = 0.3f;
 
-void NodeLayout::UpdateNodeStyle(node::Node& node)
+void NodeLayout::UpdateNodeStyle(Node& node)
 {
-	node::Node::Style s;
+	Node::Style s;
 
 	auto& input  = node.GetAllInput();
 	auto& output = node.GetAllOutput();
@@ -59,7 +59,7 @@ void NodeLayout::UpdateNodeStyle(node::Node& node)
 	node.SetStyle(s);
 }
 
-sm::vec2 NodeLayout::GetPinsPos(const node::Pins& pins)
+sm::vec2 NodeLayout::GetPinsPos(const Pins& pins)
 {
 	auto& node = pins.GetParent();
 

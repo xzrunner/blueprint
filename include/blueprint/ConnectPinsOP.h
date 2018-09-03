@@ -10,13 +10,15 @@ namespace ee0 { class WxStagePage; }
 
 namespace bp
 {
-namespace node { class Pins; class Node; }
+
+class Pins;
+class Node;
 
 class ConnectPinsOP : public ee0::EditOP
 {
 public:
 	ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
-		const std::vector<std::shared_ptr<node::Node>>& nodes);
+		const std::vector<std::shared_ptr<Node>>& nodes);
 
 	virtual bool OnMouseLeftDown(int x, int y) override;
 	virtual bool OnMouseLeftUp(int x, int y) override;
@@ -25,7 +27,7 @@ public:
 	virtual bool OnDraw() const;
 
 private:
-	std::shared_ptr<node::Pins> QueryPinsByPos(const n0::SceneNodePtr& node,
+	std::shared_ptr<Pins> QueryPinsByPos(const n0::SceneNodePtr& node,
 		const sm::vec2& pos, sm::vec2& p_center);
 
 	bool QueryOrCreateNode(int x, int y);
@@ -34,9 +36,9 @@ private:
 private:
 	ee0::WxStagePage& m_stage;
 
-	const std::vector<std::shared_ptr<node::Node>>& m_nodes;
+	const std::vector<std::shared_ptr<Node>>& m_nodes;
 
-	std::shared_ptr<node::Pins> m_selected = nullptr;
+	std::shared_ptr<Pins> m_selected = nullptr;
 
 	sm::vec2 m_first_pos;
 	sm::vec2 m_last_pos;

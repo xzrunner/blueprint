@@ -9,12 +9,13 @@
 namespace bp
 {
 
-namespace node { class Node; class Pins; }
+class Node;
+class Pins;
 
 class RenderSystem
 {
 public:
-	void DrawNode(const node::Node& node, const sm::Matrix2D& mat);
+	void DrawNode(const Node& node, const sm::Matrix2D& mat);
 
 	auto& GetTitleTB() const { return m_title_tb; }
 	auto& GetInputTB() const { return m_input_tb; }
@@ -23,9 +24,9 @@ public:
 	float GetTextPinsScale() const;
 
 private:
-	void DrawPanel(const node::Node& node, const sm::vec2& pos, float hw, float hh);
-	void DrawPins(const node::Pins& pins, const sm::vec2& pos);
-	void DrawConnecting(const node::Node& node, const sm::Matrix2D& mat);
+	void DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh);
+	void DrawPins(const Pins& pins, const sm::vec2& pos);
+	void DrawConnecting(const Node& node, const sm::Matrix2D& mat);
 
 private:
 	pt2::Textbox m_title_tb, m_small_title_tb;

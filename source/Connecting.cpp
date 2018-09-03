@@ -7,15 +7,13 @@
 namespace
 {
 
-void deconnect(bp::node::Connecting& conn)
+void deconnect(bp::Connecting& conn)
 {
 }
 
 }
 
 namespace bp
-{
-namespace node
 {
 
 Connecting::Connecting(const std::shared_ptr<Pins>& from,
@@ -112,8 +110,6 @@ std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
 	from->AddConnecting(conn);
 	to->AddConnecting(conn);
 	return conn;
-}
-
 }
 
 }

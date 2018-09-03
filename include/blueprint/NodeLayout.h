@@ -7,7 +7,7 @@
 namespace bp
 {
 
-namespace node { class Node; }
+class Node;
 
 class NodeLayout
 {
@@ -22,9 +22,9 @@ public:
 	static const float CONNECTING_BEZIER_DIST;
 
 public:
-	static void UpdateNodeStyle(node::Node& node);
+	static void UpdateNodeStyle(Node& node);
 
-	static sm::vec2 GetPinsPos(const node::Pins& pins);
+	static sm::vec2 GetPinsPos(const Pins& pins);
 
 }; // NodeLayout
 

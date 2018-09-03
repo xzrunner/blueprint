@@ -8,8 +8,6 @@
 
 namespace bp
 {
-namespace node
-{
 
 class Node;
 
@@ -30,5 +28,4 @@ private:
 
 }; // NodeFactory
 
-}
 }

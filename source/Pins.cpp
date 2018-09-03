@@ -20,8 +20,6 @@ const pt2::Color COL_OBJECT    = pt2::Color(56, 165, 241);
 
 namespace bp
 {
-namespace node
-{
 
 Pins::Pins(bool is_input, int pos, int type, const std::string& name, const Node& parent)
 	: m_is_input(is_input)
@@ -114,5 +112,4 @@ void Pins::ClearConnecting()
 	m_connecting.clear();
 }
 
-}
 }

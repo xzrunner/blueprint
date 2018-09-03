@@ -6,8 +6,6 @@
 
 namespace bp
 {
-namespace node
-{
 
 class Pins;
 
@@ -47,5 +45,4 @@ std::shared_ptr<Connecting> make_connecting(
 	const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to
 );
 
-}
 }

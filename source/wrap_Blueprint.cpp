@@ -41,17 +41,17 @@ int w_new_node(lua_State* L)
 	auto bb = moon::Blackboard::Instance();
 
 	const char* type = luaL_checkstring(L, 1);
-	auto bp_node = bp::node::NodeFactory::Instance()->Create(type);
+	auto bp_node = bp::NodeFactory::Instance()->Create(type);
 	if (!bp_node) {
 		luaL_error(L, "fail to create node %s\n", type);
 	}
 
 	auto node = std::make_shared<n0::SceneNode>();
-	auto& cnode = node->AddSharedComp<bp::CompNode>(bp_node);
-	cnode.GetNode()->SetParent(node);
+	auto& cnode = node->AddUniqueComp<bp::CompNode>();
+	cnode.SetNode(bp_node);
 	node->AddUniqueComp<n2::CompTransform>();
 	node->AddUniqueComp<n0::CompIdentity>();
-	auto& style = cnode.GetNode()->GetStyle();
+	auto& style = bp_node->GetStyle();
 	node->AddUniqueComp<n2::CompBoundingBox>(
 		sm::rect(style.width, style.height)
 	);

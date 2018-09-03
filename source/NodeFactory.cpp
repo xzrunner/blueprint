@@ -6,8 +6,6 @@
 
 namespace bp
 {
-namespace node
-{
 
 CU_SINGLETON_DEFINITION(NodeFactory);
 
@@ -32,5 +30,4 @@ void NodeFactory::RegistAllNode()
 	m_nodes.push_back(std::make_shared<node::FlowCtrlBranch>());
 }
 
-}
 }
