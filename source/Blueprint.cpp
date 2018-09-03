@@ -9,6 +9,7 @@
 #include <node2/RenderSystem.h>
 #include <node2/UpdateSystem.h>
 #include <node2/CompTransform.h>
+#include <node2/AABBSystem.h>
 
 namespace bp
 {
@@ -38,6 +39,17 @@ void Blueprint::Init()
 		auto& ctrans = node.GetUniqueComp<n2::CompTransform>();
 		auto& pos = ctrans.GetTrans().GetPosition();
 		return cnode.GetNode()->SetPos(pos);
+	});
+	n2::AABBSystem::Instance()->AddGetBoundFunc([](const n0::SceneNode& node, sm::rect& bound)->bool
+	{
+		if (!node.HasUniqueComp<CompNode>()) {
+			return false;
+		}
+
+		auto& cnode = node.GetUniqueComp<CompNode>();
+		auto& st = cnode.GetNode()->GetStyle();
+		bound.Build(st.width, st.height);
+		return true;
 	});
 }
 
