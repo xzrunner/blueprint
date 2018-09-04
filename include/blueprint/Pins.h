@@ -52,7 +52,6 @@ public:
 
 	auto& GetConnecting() const { return m_connecting; }
 
-protected:
 	auto& GetName() const { return m_name; }
 
 private:

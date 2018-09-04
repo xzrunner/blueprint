@@ -4,8 +4,12 @@
 #include <painting2/Color.h>
 #include <SM_Matrix2D.h>
 
+#include <rapidjson/document.h>
+
 #include <vector>
 #include <memory>
+
+namespace mm { class LinearAllocator; }
 
 namespace bp
 {
@@ -41,8 +45,15 @@ public:
 
 	virtual NodeTypeID TypeID() const = 0;
 	virtual const std::string& TypeName() const = 0;
+
 	virtual std::shared_ptr<Node> Create() const = 0;
+
 	virtual void Draw(const sm::Matrix2D& mt) const {}
+
+	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val,
+		rapidjson::MemoryPoolAllocator<>& alloc) const {}
+	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir,
+		const rapidjson::Value& val) {}
 
 	auto& GetTitle() const { return m_title; }
 
@@ -72,6 +83,10 @@ protected:
 	void SetWidth(float width);
 
 	void Layout();
+
+private:
+	static bool CheckPinsName(const Pins& src,
+		const std::vector<std::shared_ptr<Pins>>& dst);
 
 protected:
 	std::string m_title;

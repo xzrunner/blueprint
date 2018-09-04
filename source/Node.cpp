@@ -30,15 +30,18 @@ bool Node::SetPos(const sm::vec2& pos)
 			c->UpdateCurve();
 		}
 	}
+
+	return true;
 }
 
 void Node::AddPins(const std::shared_ptr<Pins>& pins)
 {
-	if (pins->IsInput()) {
-		m_all_input.push_back(pins);
-	} else {
-		m_all_output.push_back(pins);
+	auto& array = pins->IsInput() ? m_all_input : m_all_output;
+	if (!CheckPinsName(*pins, array)) {
+		assert(0);
+		return;
 	}
+	array.push_back(pins);
 }
 
 void Node::SetWidth(float width)
@@ -49,6 +52,26 @@ void Node::SetWidth(float width)
 void Node::Layout()
 {
 	NodeLayout::UpdateNodeStyle(*this);
+}
+
+bool Node::CheckPinsName(const Pins& src, const std::vector<std::shared_ptr<Pins>>& dst)
+{
+	if (src.GetType() == PINS_PORT) {
+		return true;
+	}
+
+	auto& name = src.GetName();
+	if (name.empty()) {
+		return false;
+	}
+
+	for (auto& p : dst) {
+		if (p->GetName() == name) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 }

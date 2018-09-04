@@ -1,12 +1,15 @@
 #pragma once
 
 #include <ns/NodeComponent.h>
+#include <node0/typedef.h>
+
+#include <vector>
 
 namespace bp
 {
 
 class Node;
-
+class Pins;
 class CompNode;
 
 class NSCompNode : public ns::NodeComponent
@@ -32,6 +35,14 @@ public:
 	//
 	void StoreToMem(CompNode& comp) const;
 	void LoadFromMem(const CompNode& comp);
+
+	static void StoreConnection(const std::vector<n0::SceneNodePtr>& nodes,
+		rapidjson::Value& nodes_val, rapidjson::MemoryPoolAllocator<>& alloc);
+	static void LoadConnection(std::vector<n0::SceneNodePtr>& nodes,
+		const rapidjson::Value& nodes_val);
+
+private:
+	static std::shared_ptr<Pins> QueryPinsByName(const Node& node, bool is_input, const std::string& name);
 
 private:
 	std::shared_ptr<Node> m_node = nullptr;
