@@ -1,5 +1,7 @@
 #pragma once
 
+#include "blueprint/typedef.h"
+
 #include <ee0/EditOP.h>
 
 #include <SM_Vector.h>
@@ -12,13 +14,12 @@ namespace bp
 {
 
 class Pins;
-class Node;
 
 class ConnectPinsOP : public ee0::EditOP
 {
 public:
 	ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
-		const std::vector<std::shared_ptr<Node>>& nodes);
+		const std::vector<NodePtr>& nodes);
 
 	virtual bool OnMouseLeftDown(int x, int y) override;
 	virtual bool OnMouseLeftUp(int x, int y) override;
@@ -36,7 +37,7 @@ private:
 private:
 	ee0::WxStagePage& m_stage;
 
-	const std::vector<std::shared_ptr<Node>>& m_nodes;
+	const std::vector<NodePtr>& m_nodes;
 
 	std::shared_ptr<Pins> m_selected = nullptr;
 

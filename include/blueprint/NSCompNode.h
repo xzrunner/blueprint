@@ -1,5 +1,7 @@
 #pragma once
 
+#include "blueprint/typedef.h"
+
 #include <ns/NodeComponent.h>
 #include <node0/typedef.h>
 
@@ -8,7 +10,6 @@
 namespace bp
 {
 
-class Node;
 class Pins;
 class CompNode;
 
@@ -45,7 +46,7 @@ private:
 	static std::shared_ptr<Pins> QueryPinsByName(const Node& node, bool is_input, const std::string& name);
 
 private:
-	std::shared_ptr<Node> m_node = nullptr;
+	NodePtr m_node = nullptr;
 
 }; // NSCompNode
 

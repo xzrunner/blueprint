@@ -23,7 +23,7 @@ namespace bp
 {
 
 ConnectPinsOP::ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
-	                         const std::vector<std::shared_ptr<Node>>& nodes)
+	                         const std::vector<NodePtr>& nodes)
 	: ee0::EditOP(cam)
 	, m_stage(stage)
 	, m_nodes(nodes)
@@ -215,7 +215,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	}
 
 	auto type = dlg.GetSelectedType();
-	std::shared_ptr<Node> bp_node = nullptr;
+	NodePtr bp_node = nullptr;
 	for (auto& n : m_nodes) {
 		if (n->TypeName() == type) {
 			bp_node = n->Create();

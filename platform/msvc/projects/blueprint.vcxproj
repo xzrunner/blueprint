@@ -24,6 +24,7 @@
     <ClInclude Include="..\..\..\include\blueprint\Pins.h" />
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h" />
     <ClInclude Include="..\..\..\include\blueprint\RenderSystem.h" />
+    <ClInclude Include="..\..\..\include\blueprint\typedef.h" />
     <ClInclude Include="..\..\..\include\blueprint\WxCreateNodeDlg.h" />
   </ItemGroup>
   <ItemGroup>

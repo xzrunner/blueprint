@@ -1,5 +1,7 @@
 #pragma once
 
+#include "blueprint/typedef.h"
+
 #include <SM_Vector.h>
 
 #include <wx/dialog.h>
@@ -15,7 +17,7 @@ class WxCreateNodeDlg : public wxDialog
 {
 public:
 	WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos, const Pins& pair,
-		const std::vector<std::shared_ptr<Node>>& nodes);
+		const std::vector<NodePtr>& nodes);
 
 	std::string GetSelectedType() const;
 
@@ -29,7 +31,7 @@ private:
 
 private:
 	const Pins& m_pair;
-	const std::vector<std::shared_ptr<Node>>& m_nodes;
+	const std::vector<NodePtr>& m_nodes;
 
 	wxTreeCtrl* m_tree;
 

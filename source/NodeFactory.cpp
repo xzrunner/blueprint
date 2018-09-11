@@ -14,7 +14,7 @@ NodeFactory::NodeFactory()
 	RegistAllNode();
 }
 
-std::shared_ptr<Node> NodeFactory::Create(const std::string& type)
+NodePtr NodeFactory::Create(const std::string& type)
 {
 	for (auto& n : m_nodes) {
 		if (n->TypeName() == type) {
@@ -24,7 +24,7 @@ std::shared_ptr<Node> NodeFactory::Create(const std::string& type)
 	return nullptr;
 }
 
-void NodeFactory::RegistNodes(const std::vector<std::shared_ptr<Node>>& nodes)
+void NodeFactory::RegistNodes(const std::vector<NodePtr>& nodes)
 {
 	std::copy(nodes.begin(), nodes.end(), std::back_inserter(m_nodes));
 }

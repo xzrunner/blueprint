@@ -1,6 +1,6 @@
 #pragma once
 
-#include "blueprint/Node.h"
+#include "blueprint/typedef.h"
 
 #include <node0/NodeComp.h>
 
@@ -20,14 +20,14 @@ public:
 	auto& GetNode() { return m_node; }
 	auto& GetNode() const { return m_node; }
 
-	void SetNode(const std::shared_ptr<Node>& node) {
+	void SetNode(const NodePtr& node) {
 		m_node = node;
 	}
 
 	static const char* const TYPE_NAME;
 
 private:
-	std::shared_ptr<Node> m_node = nullptr;
+	NodePtr m_node = nullptr;
 
 }; // CompNode
 

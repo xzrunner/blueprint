@@ -18,7 +18,7 @@ public:
 	virtual const std::string& TypeName() const override {
 		return TYPE_NAME;
 	}
-	virtual std::shared_ptr<Node> Create() const override {
+	virtual NodePtr Create() const override {
 		return std::make_shared<FlowCtrlBranch>();
 	}
 

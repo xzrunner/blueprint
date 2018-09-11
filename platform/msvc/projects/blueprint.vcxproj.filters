@@ -107,5 +107,6 @@
     <ClInclude Include="..\..\..\include\blueprint\NSCompNode.h">
       <Filter>component</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\typedef.h" />
   </ItemGroup>
 </Project>

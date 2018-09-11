@@ -1,5 +1,7 @@
 #pragma once
 
+#include "blueprint/typedef.h"
+
 #include <cu/cu_macro.h>
 
 #include <memory>
@@ -9,22 +11,20 @@
 namespace bp
 {
 
-class Node;
-
 class NodeFactory
 {
 public:
-	std::shared_ptr<Node> Create(const std::string& type);
+	NodePtr Create(const std::string& type);
 
 	auto& GetAllNodes() const { return m_nodes; }
 
-	void RegistNodes(const std::vector<std::shared_ptr<Node>>& nodes);
+	void RegistNodes(const std::vector<NodePtr>& nodes);
 
 private:
 	void RegistAllNode();
 
 private:
-	std::vector<std::shared_ptr<Node>> m_nodes;
+	std::vector<NodePtr> m_nodes;
 
 	CU_SINGLETON_DECLARATION(NodeFactory)
 

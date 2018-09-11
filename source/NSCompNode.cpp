@@ -3,6 +3,7 @@
 #include "blueprint/NodeFactory.h"
 #include "blueprint/Pins.h"
 #include "blueprint/Connecting.h"
+#include "blueprint/Node.h"
 
 #include <node0/SceneNode.h>
 

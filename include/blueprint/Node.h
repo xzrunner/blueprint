@@ -1,5 +1,7 @@
 #pragma once
 
+#include "blueprint/typedef.h"
+
 #include <SM_Vector.h>
 #include <painting2/Color.h>
 #include <SM_Matrix2D.h>
@@ -46,7 +48,7 @@ public:
 	virtual NodeTypeID TypeID() const = 0;
 	virtual const std::string& TypeName() const = 0;
 
-	virtual std::shared_ptr<Node> Create() const = 0;
+	virtual NodePtr Create() const = 0;
 
 	virtual void Draw(const sm::Matrix2D& mt) const {}
 

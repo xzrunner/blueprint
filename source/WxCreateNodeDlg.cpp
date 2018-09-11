@@ -9,7 +9,7 @@ namespace bp
 {
 
 WxCreateNodeDlg::WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos, const Pins& pair,
-	                             const std::vector<std::shared_ptr<Node>>& nodes)
+	                             const std::vector<NodePtr>& nodes)
 	: wxDialog(parent, wxID_ANY, "Create Node", pos, wxSize(200, 400))
 	, m_pair(pair)
 	, m_nodes(nodes)

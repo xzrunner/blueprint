@@ -1,5 +1,6 @@
 #include "blueprint/CompNode.h"
 #include "blueprint/NodeFactory.h"
+#include "blueprint/Node.h"
 
 #include <ee0/MsgHelper.h>
 
