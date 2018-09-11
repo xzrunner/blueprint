@@ -14,7 +14,7 @@ namespace bp
 class NodeFactory
 {
 public:
-	NodePtr Create(const std::string& type);
+	NodePtr Create(const std::string& type, const std::string& name = "");
 
 	auto& GetAllNodes() const { return m_nodes; }
 

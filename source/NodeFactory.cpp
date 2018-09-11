@@ -14,12 +14,18 @@ NodeFactory::NodeFactory()
 	RegistAllNode();
 }
 
-NodePtr NodeFactory::Create(const std::string& type)
+NodePtr NodeFactory::Create(const std::string& type, const std::string& name)
 {
-	for (auto& n : m_nodes) {
-		if (n->TypeName() == type) {
-			return n->Create();
+	for (auto& n : m_nodes)
+	{
+		if (n->TypeName() != type) {
+			continue;
 		}
+		auto node = n->Create();
+		if (!name.empty()) {
+			node->SetName(name);
+		}
+		return node;
 	}
 	return nullptr;
 }

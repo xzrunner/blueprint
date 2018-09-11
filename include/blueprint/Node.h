@@ -66,6 +66,9 @@ public:
 	auto& GetPos() const { return m_pos; }
 	bool  SetPos(const sm::vec2& pos);
 
+	void  SetName(const std::string& name) { m_name = name; }
+	auto& GetName() const { return m_name; }
+
 public:
 	struct Style
 	{
@@ -105,6 +108,8 @@ public:
 	CU_FLAG_METHOD(LifeDeleteLater,     LIFE_DELETE_LATER);
 
 private:
+	std::string m_name;
+
 	std::vector<std::shared_ptr<Pins>> m_all_input;
 	std::vector<std::shared_ptr<Pins>> m_all_output;
 
