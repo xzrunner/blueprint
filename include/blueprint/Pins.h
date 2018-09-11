@@ -42,7 +42,8 @@ public:
 	bool IsInput() const { return m_is_input; }
 	int  GetPosIdx() const { return m_pos; }
 
-	int GetType() const { return m_type; }
+	int  GetType() const { return m_type; }
+	void SetType(int type) { m_type = type; }
 
 	auto& GetParent() const { return m_parent; }
 

@@ -2,9 +2,10 @@
 
 #include "blueprint/typedef.h"
 
+#include <cu/cu_macro.h>
 #include <SM_Vector.h>
-#include <painting2/Color.h>
 #include <SM_Matrix2D.h>
+#include <painting2/Color.h>
 
 #include <rapidjson/document.h>
 
@@ -50,7 +51,7 @@ public:
 
 	virtual NodePtr Create() const = 0;
 
-	virtual void Draw(const sm::Matrix2D& mt) const {}
+	virtual void Draw(const sm::Matrix2D& mt) const;
 
 	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val,
 		rapidjson::MemoryPoolAllocator<>& alloc) const {}
@@ -72,8 +73,6 @@ public:
 		float height;
 
 		int line_num;
-
-		bool small_title = false;
 	};
 
 	const Style& GetStyle() const { return m_style; }
@@ -95,12 +94,24 @@ protected:
 
 	Style m_style;
 
+public:
+	static const uint32_t STYLE_SMALL_TITLE_FONT = 0x00000001;
+	static const uint32_t STYLE_ONLY_TITLE       = 0x00000002;
+
+	static const uint32_t LIFE_DELETE_LATER      = 0x00000010;
+
+	CU_FLAG_METHOD(StyleSmallTitleFont, STYLE_SMALL_TITLE_FONT);
+	CU_FLAG_METHOD(StyleOnlyTitle,      STYLE_ONLY_TITLE);
+	CU_FLAG_METHOD(LifeDeleteLater,     LIFE_DELETE_LATER);
+
 private:
 	std::vector<std::shared_ptr<Pins>> m_all_input;
 	std::vector<std::shared_ptr<Pins>> m_all_output;
 
 	// for draw
 	sm::vec2 m_pos;
+
+	mutable uint32_t m_flags = 0;
 
 }; // Node
 

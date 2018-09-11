@@ -25,7 +25,12 @@ void NodeLayout::UpdateNodeStyle(Node& node)
 	auto& input  = node.GetAllInput();
 	auto& output = node.GetAllOutput();
 	s.line_num = std::max(input.size(), output.size());
-	s.height = static_cast<float>(NodeLayout::TITLE_HEIGHT + NodeLayout::DEFAULT_HEIGHT * s.line_num);
+	s.height = 0;
+	if (node.IsStyleOnlyTitle()) {
+		s.height = static_cast<float>(NodeLayout::TITLE_HEIGHT) - 4;
+	} else {
+		s.height = static_cast<float>(NodeLayout::TITLE_HEIGHT + NodeLayout::DEFAULT_HEIGHT * s.line_num);
+	}
 
 	auto rs = RenderSystem::Instance();
 	auto& tb = rs->GetInputTB();
@@ -76,8 +81,35 @@ sm::vec2 NodeLayout::GetPinsPos(const Pins& pins)
 		pos.x = hw - PINS_RADIUS * 2;
 	}
 
-	int pos_idx = pins.GetPosIdx();
-	pos.y = hh - NodeLayout::DEFAULT_HEIGHT - (pos_idx + 0.5f) * NodeLayout::DEFAULT_HEIGHT;
+	if (!node.IsStyleOnlyTitle()) {
+		int pos_idx = pins.GetPosIdx();
+		pos.y = hh - NodeLayout::DEFAULT_HEIGHT - (pos_idx + 0.5f) * NodeLayout::DEFAULT_HEIGHT;
+	} else {
+		pos.y = hh - NodeLayout::DEFAULT_HEIGHT * 0.5f;
+	}
+
+	return node.GetPos() + pos;
+}
+
+sm::vec2 NodeLayout::GetPinsPos(const Node& node, bool left, size_t idx)
+{
+	sm::vec2 pos;
+
+	auto& style = node.GetStyle();
+	float hw = style.width  * 0.5f;
+	float hh = style.height * 0.5f;
+
+	if (left) {
+		pos.x = -hw + PINS_RADIUS * 2;
+	} else {
+		pos.x = hw - PINS_RADIUS * 2;
+	}
+
+	if (!node.IsStyleOnlyTitle()) {
+		pos.y = hh - NodeLayout::DEFAULT_HEIGHT - (idx + 0.5f) * NodeLayout::DEFAULT_HEIGHT;
+	} else {
+		pos.y = hh - NodeLayout::DEFAULT_HEIGHT * 0.5f;
+	}
 
 	return node.GetPos() + pos;
 }

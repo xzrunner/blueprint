@@ -50,34 +50,6 @@ RenderSystem::RenderSystem()
 	m_output_tb.height = NodeLayout::DEFAULT_HEIGHT;
 }
 
-void RenderSystem::DrawNode(const Node& node, const sm::Matrix2D& mat)
-{
-	// layout
-	auto& style = node.GetStyle();
-	float hw = style.width  * 0.5f;
-	float hh = style.height * 0.5f;
-
-	// panel
-	auto pos = mat * sm::vec2(0, 0);
-	DrawPanel(node, pos, hw, hh);
-
-	// input
-	for (auto& in : node.GetAllInput()) {
-		DrawPins(*in, NodeLayout::GetPinsPos(*in));
-	}
-
-	// output
-	for (auto& out : node.GetAllOutput()) {
-		DrawPins(*out, NodeLayout::GetPinsPos(*out));
-	}
-
-	// ext
-	node.Draw(mat);
-
-	// connecting
-	DrawConnecting(node, mat);
-}
-
 float RenderSystem::GetTextTitleScale() const
 {
 	return TEXT_TITLE_SCALE;
@@ -99,7 +71,7 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 	sm::Matrix2D mat;
 	mat.Scale(TEXT_TITLE_SCALE, TEXT_TITLE_SCALE);
 	mat.Translate(pos.x, pos.y + hh - NodeLayout::TITLE_HEIGHT * 0.5f);
-	auto& tb = node.GetStyle().small_title ? m_small_title_tb : m_title_tb;
+	auto& tb = node.IsStyleSmallTitleFont() ? m_small_title_tb : m_title_tb;
 	pt2::RenderSystem::DrawText(node.GetTitle(), tb, mat, COL_TEXT, COL_WHITE);
 }
 

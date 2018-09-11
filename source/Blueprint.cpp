@@ -1,8 +1,8 @@
 #include "blueprint/Blueprint.h"
 #include "blueprint/CompNode.h"
 #include "blueprint/NSCompNode.h"
-#include "blueprint/RenderSystem.h"
 #include "blueprint/NodeFactory.h"
+#include "blueprint/Node.h"
 
 #include <ns/CompIdxMgr.h>
 #include <ns/RegistCallback.h>
@@ -26,7 +26,7 @@ void Blueprint::Init()
 	{
 		if (node.HasUniqueComp<CompNode>()) {
 			auto& cnode = node.GetUniqueComp<CompNode>();
-			RenderSystem::Instance()->DrawNode(*cnode.GetNode(), rp.GetMatrix());
+			cnode.GetNode()->Draw(rp.GetMatrix());
 		}
 	});
 	n2::UpdateSystem::Instance()->AddUpdateCompFunc([](const n0::SceneNode& node)->bool
