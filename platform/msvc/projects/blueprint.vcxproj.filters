@@ -10,14 +10,8 @@
     <Filter Include="script">
       <UniqueIdentifier>{38cdd3aa-1a75-48a7-bc45-e53ab1be8ac1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dataset\flowcontrol">
-      <UniqueIdentifier>{e528935e-fa81-4096-8489-457aa6e29601}</UniqueIdentifier>
-    </Filter>
     <Filter Include="view">
       <UniqueIdentifier>{810705db-a6f2-4b64-b4ae-58b258fb5312}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dataset\event">
-      <UniqueIdentifier>{b768ccab-acf3-4af0-ac5e-ce0e90da21ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor">
       <UniqueIdentifier>{d1e6efea-ec30-4e2a-b5e0-3684be2213c2}</UniqueIdentifier>
@@ -25,11 +19,20 @@
     <Filter Include="gui">
       <UniqueIdentifier>{8ad78659-c4bd-4b6d-9714-987edae39897}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dataset\node">
+      <UniqueIdentifier>{a4cfa348-df36-4760-8020-f31f42c7c87d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="node">
+      <UniqueIdentifier>{7a72a331-dfae-4a5a-9325-b582ab404ded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="node\event">
+      <UniqueIdentifier>{b768ccab-acf3-4af0-ac5e-ce0e90da21ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="node\flowcontrol">
+      <UniqueIdentifier>{e528935e-fa81-4096-8489-457aa6e29601}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\source\Node.cpp">
-      <Filter>dataset</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
       <Filter>component</Filter>
     </ClCompile>
@@ -43,17 +46,11 @@
     <ClCompile Include="..\..\..\source\Pins.cpp">
       <Filter>dataset</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\NodeFactory.cpp">
-      <Filter>dataset</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\NodeLayout.cpp">
       <Filter>view</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\EventBeginPlay.cpp">
-      <Filter>dataset\event</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\FlowCtrlBranch.cpp">
-      <Filter>dataset\flowcontrol</Filter>
+      <Filter>node\flowcontrol</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\ConnectPinsOP.cpp">
       <Filter>editor</Filter>
@@ -67,11 +64,20 @@
     <ClCompile Include="..\..\..\source\NSCompNode.cpp">
       <Filter>component</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\EventBeginPlay.cpp">
+      <Filter>node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Node.cpp">
+      <Filter>dataset\node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\NodeBuilder.cpp">
+      <Filter>dataset\node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\NodeFactory.cpp">
+      <Filter>dataset\node</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\blueprint\Node.h">
-      <Filter>dataset</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
       <Filter>component</Filter>
     </ClInclude>
@@ -82,17 +88,11 @@
     <ClInclude Include="..\..\..\include\blueprint\Pins.h">
       <Filter>dataset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\NodeFactory.h">
-      <Filter>dataset</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h">
       <Filter>view</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h">
-      <Filter>dataset\event</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h">
-      <Filter>dataset\flowcontrol</Filter>
+      <Filter>node\flowcontrol</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h">
       <Filter>editor</Filter>
@@ -108,5 +108,17 @@
       <Filter>component</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\typedef.h" />
+    <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h">
+      <Filter>node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\Node.h">
+      <Filter>dataset\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\NodeBuilder.h">
+      <Filter>dataset\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\NodeFactory.h">
+      <Filter>dataset\node</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

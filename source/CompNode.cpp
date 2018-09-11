@@ -1,5 +1,7 @@
 #include "blueprint/CompNode.h"
 
+#include <assert.h>
+
 namespace bp
 {
 

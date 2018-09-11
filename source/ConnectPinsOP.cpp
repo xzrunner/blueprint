@@ -5,6 +5,7 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/WxCreateNodeDlg.h"
 #include "blueprint/MessageID.h"
+#include "blueprint/NodeBuilder.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
@@ -223,6 +224,9 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 		}
 	}
 	assert(bp_node);
+	auto builder = bp::NodeBuilder::Instance();
+	builder->AfterCreated(*bp_node, m_stage.GetSubjectMgr());
+
 	auto& style = bp_node->GetStyle();
 
 	auto node = std::make_shared<n0::SceneNode>();
@@ -231,7 +235,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	// trans
 	auto& ctrans = node->AddUniqueComp<n2::CompTransform>();
 	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
-	pos.x += bp_node->GetStyle().width * 0.5f;
+	pos.x += bp_node->GetStyle().width  * 0.5f;
 	pos.y -= bp_node->GetStyle().height * 0.5f;
 	ctrans.SetPosition(*node, pos);
 	// id
@@ -246,17 +250,27 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	if (m_selected->IsInput())
 	{
 		auto& output = bp_node->GetAllOutput();
-		for (auto& pins : output) {
-			if (pins->CanTypeCast(pins_type)) {
+		for (auto& pins : output)
+		{
+			if (pins->CanTypeCast(pins_type))
+			{
+				builder->BeforeConnected(*pins, *m_selected);
 				make_connecting(pins, m_selected);
+				builder->AfterConnected(*pins, *m_selected);
 				break;
 			}
 		}
-	} else {
+	}
+	else
+	{
 		auto& input = bp_node->GetAllInput();
-		for (auto& pins : input) {
-			if (pins->CanTypeCast(pins_type)) {
+		for (auto& pins : input)
+		{
+			if (pins->CanTypeCast(pins_type))
+			{
+				builder->BeforeConnected(*m_selected, *pins);
 				make_connecting(m_selected, pins);
+				builder->AfterConnected(*m_selected, *pins);
 				break;
 			}
 		}
