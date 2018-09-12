@@ -5,6 +5,7 @@
 #include <ee0/EditOP.h>
 
 #include <SM_Vector.h>
+#include <SM_Rect.h>
 #include <node0/typedef.h>
 #include <painting2/BezierShape.h>
 
@@ -14,12 +15,15 @@ namespace bp
 {
 
 class Pins;
+class Connecting;
 
 class ConnectPinsOP : public ee0::EditOP
 {
 public:
 	ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
 		const std::vector<NodePtr>& nodes);
+
+	virtual bool OnKeyDown(int key_code);
 
 	virtual bool OnMouseLeftDown(int x, int y) override;
 	virtual bool OnMouseLeftUp(int x, int y) override;
@@ -30,6 +34,7 @@ public:
 private:
 	std::shared_ptr<Pins> QueryPinsByPos(const n0::SceneNodePtr& node,
 		const sm::vec2& pos, sm::vec2& p_center);
+	void QueryConnsByRect(const sm::rect& rect, std::vector<std::shared_ptr<Connecting>>& conns);
 
 	bool QueryOrCreateNode(int x, int y);
 	bool CreateNode(int x, int y);
@@ -39,7 +44,8 @@ private:
 
 	const std::vector<NodePtr>& m_nodes;
 
-	std::shared_ptr<Pins> m_selected = nullptr;
+	std::shared_ptr<Pins> m_selected_pin = nullptr;
+	std::vector<std::shared_ptr<Connecting>> m_selected_conns;
 
 	sm::vec2 m_first_pos;
 	sm::vec2 m_last_pos;

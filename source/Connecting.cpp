@@ -4,15 +4,6 @@
 
 #include <SM_Calc.h>
 
-namespace
-{
-
-void deconnect(bp::Connecting& conn)
-{
-}
-
-}
-
 namespace bp
 {
 
@@ -110,6 +101,28 @@ std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
 	from->AddConnecting(conn);
 	to->AddConnecting(conn);
 	return conn;
+}
+
+void disconnect(const std::shared_ptr<Connecting>& conn)
+{
+	auto& f = conn->GetFrom();
+	auto& t = conn->GetTo();
+
+	f->RemoveConnecting(conn);
+	t->RemoveConnecting(conn);
+
+	auto& fn = f->GetParent();
+	if (fn.IsStyleOnlyTitle()) {
+		fn.SetStyleOnlyTitle(false);
+		bp::NodeLayout::UpdateNodeStyle(const_cast<Node&>(fn));
+		fn.SetSizeChanging(true);
+	}
+	auto& tn = t->GetParent();
+	if (tn.IsStyleOnlyTitle()) {
+		tn.SetStyleOnlyTitle(false);
+		bp::NodeLayout::UpdateNodeStyle(const_cast<Node&>(tn));
+		tn.SetSizeChanging(true);
+	}
 }
 
 }

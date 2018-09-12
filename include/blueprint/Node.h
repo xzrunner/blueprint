@@ -102,10 +102,12 @@ public:
 	static const uint32_t STYLE_ONLY_TITLE       = 0x00000002;
 
 	static const uint32_t LIFE_DELETE_LATER      = 0x00000010;
+	static const uint32_t SIZE_CHANGING          = 0x00000020;
 
 	CU_FLAG_METHOD(StyleSmallTitleFont, STYLE_SMALL_TITLE_FONT);
 	CU_FLAG_METHOD(StyleOnlyTitle,      STYLE_ONLY_TITLE);
 	CU_FLAG_METHOD(LifeDeleteLater,     LIFE_DELETE_LATER);
+	CU_FLAG_METHOD(SizeChanging,        SIZE_CHANGING);
 
 private:
 	std::string m_name;

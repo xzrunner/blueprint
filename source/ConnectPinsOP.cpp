@@ -20,6 +20,15 @@
 #include <node2/CompBoundingBox.h>
 #include <painting2/PrimitiveDraw.h>
 
+namespace
+{
+
+const pt2::Color COL_SELECTED = pt2::Color(255, 0, 0);
+
+const float QUERY_REGION = 5;
+
+}
+
 namespace bp
 {
 
@@ -33,12 +42,38 @@ ConnectPinsOP::ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxSta
 	m_last_pos.MakeInvalid();
 }
 
+bool ConnectPinsOP::OnKeyDown(int key_code)
+{
+	if (ee0::EditOP::OnKeyDown(key_code)) {
+		return true;
+	}
+
+	if (key_code == WXK_DELETE)
+	{
+		for (auto& conn : m_selected_conns) {
+			disconnect(conn);
+		}
+		m_selected_conns.clear();
+	}
+
+	return false;
+}
+
 bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
 {
 	if (ee0::EditOP::OnMouseLeftDown(x, y)) {
 		return true;
 	}
 
+	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
+	m_first_pos = pos;
+	m_last_pos = m_first_pos;
+
+	// query conn
+	m_selected_conns.clear();
+	QueryConnsByRect(sm::rect(pos, QUERY_REGION, QUERY_REGION), m_selected_conns);
+
+	// query pin
 	if (m_stage.GetSelection().Size() == 1)
 	{
 		n0::SceneNodePtr node = nullptr;
@@ -47,10 +82,7 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
 			return false;
 		});
 
-		auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
-
-		m_first_pos.MakeInvalid();
-		m_selected = QueryPinsByPos(node, pos, m_first_pos);
+		m_selected_pin = QueryPinsByPos(node, pos, m_first_pos);
 		m_last_pos = m_first_pos;
 	}
 
@@ -63,7 +95,7 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 		return true;
 	}
 
-	if (m_selected)
+	if (m_selected_pin)
 	{
 		if (QueryOrCreateNode(x, y)) {
 			m_stage.GetSubjectMgr()->NotifyObservers(MSG_BLUE_PRINT_CHANGED);
@@ -71,18 +103,33 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 		return true;
 	}
+	else
+	{
+		if (m_first_pos.IsValid())
+		{
+			auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
+			sm::rect rect(m_first_pos, pos);
+			rect.xmin -= QUERY_REGION;
+			rect.ymin -= QUERY_REGION;
+			rect.xmax += QUERY_REGION;
+			rect.ymax += QUERY_REGION;
+
+			m_selected_conns.clear();
+			QueryConnsByRect(rect, m_selected_conns);
+		}
+	}
 
 	return false;
 }
 
 bool ConnectPinsOP::OnMouseDrag(int x, int y)
 {
-	if (m_selected)
+	if (m_selected_pin)
 	{
 		m_last_pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
 
 		sm::vec2 v0, v3;
-		if (m_selected->IsInput()) {
+		if (m_selected_pin->IsInput()) {
 			v0 = m_last_pos;
 			v3 = m_first_pos;
 		} else {
@@ -109,11 +156,11 @@ bool ConnectPinsOP::OnMouseDrag(int x, int y)
 
 bool ConnectPinsOP::OnDraw() const
 {
-	if (m_selected)
+	if (m_selected_pin)
 	{
 		if (m_first_pos.IsValid() && m_last_pos.IsValid())
 		{
-			pt2::PrimitiveDraw::SetColor(m_selected->GetColor());
+			pt2::PrimitiveDraw::SetColor(m_selected_pin->GetColor());
 			pt2::PrimitiveDraw::Polyline(nullptr, m_curve.GetVertices(), false);
 		}
 	}
@@ -121,6 +168,16 @@ bool ConnectPinsOP::OnDraw() const
 	{
 		if (ee0::EditOP::OnDraw()) {
 			return true;
+		}
+
+		if (!m_selected_conns.empty())
+		{
+			pt2::PrimitiveDraw::SetColor(COL_SELECTED);
+			for (auto& conn : m_selected_conns) {
+				pt2::PrimitiveDraw::Polyline(
+					nullptr, conn->GetCurve().shape.GetVertices(), false
+				);
+			}
 		}
 	}
 
@@ -164,6 +221,32 @@ std::shared_ptr<Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr& node
 	return nullptr;
 }
 
+void ConnectPinsOP::QueryConnsByRect(const sm::rect& rect, std::vector<std::shared_ptr<Connecting>>& conns)
+{
+	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
+	{
+		if (!obj->HasUniqueComp<CompNode>()) {
+			return true;
+		}
+		auto& cnode = obj->GetUniqueComp<CompNode>();
+		auto bp_node = cnode.GetNode();
+		if (!bp_node) {
+			return true;
+		}
+
+		for (auto& pins : bp_node->GetAllOutput()) {
+			for (auto& conn : pins->GetConnecting()) {
+				auto& curve = conn->GetCurve();
+				if (sm::is_rect_intersect_polyline(rect, curve.shape.GetVertices(), false)) {
+					conns.push_back(conn);
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
 bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 {
 	bool dirty = false;
@@ -183,13 +266,13 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 	});
 	if (target)
 	{
-		if (m_selected->CanTypeCast(target->GetType()) &&
-			m_selected->IsInput() != target->IsInput())
+		if (m_selected_pin->CanTypeCast(target->GetType()) &&
+			m_selected_pin->IsInput() != target->IsInput())
 		{
-			if (m_selected->IsInput()) {
-				make_connecting(target, m_selected);
+			if (m_selected_pin->IsInput()) {
+				make_connecting(target, m_selected_pin);
 			} else {
-				make_connecting(m_selected, target);
+				make_connecting(m_selected_pin, target);
 			}
 			dirty = true;
 		}
@@ -199,7 +282,7 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 		dirty = CreateNode(x, y);
 	}
 
-	m_selected = nullptr;
+	m_selected_pin = nullptr;
 	m_curve.Clear();
 
 	return dirty;
@@ -208,8 +291,8 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 bool ConnectPinsOP::CreateNode(int x, int y)
 {
 	auto base = m_stage.GetScreenPosition();
-	assert(m_selected);
-	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y), *m_selected, m_nodes);
+	assert(m_selected_pin);
+	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y), *m_selected_pin, m_nodes);
 	if (dlg.ShowModal() != wxID_OK) {
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 		return false;
@@ -249,17 +332,17 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	);
 
 	// connect
-	auto pins_type = m_selected->GetType();
-	if (m_selected->IsInput())
+	auto pins_type = m_selected_pin->GetType();
+	if (m_selected_pin->IsInput())
 	{
 		auto& output = bp_node->GetAllOutput();
 		for (auto& pins : output)
 		{
 			if (pins->CanTypeCast(pins_type))
 			{
-				builder->BeforeConnected(*pins, *m_selected);
-				make_connecting(pins, m_selected);
-				builder->AfterConnected(*pins, *m_selected);
+				builder->BeforeConnected(*pins, *m_selected_pin);
+				make_connecting(pins, m_selected_pin);
+				builder->AfterConnected(*pins, *m_selected_pin);
 				break;
 			}
 		}
@@ -271,9 +354,9 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 		{
 			if (pins->CanTypeCast(pins_type))
 			{
-				builder->BeforeConnected(*m_selected, *pins);
-				make_connecting(m_selected, pins);
-				builder->AfterConnected(*m_selected, *pins);
+				builder->BeforeConnected(*m_selected_pin, *pins);
+				make_connecting(m_selected_pin, pins);
+				builder->AfterConnected(*m_selected_pin, *pins);
 				break;
 			}
 		}
