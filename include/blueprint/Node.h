@@ -54,9 +54,9 @@ public:
 	virtual void Draw(const sm::Matrix2D& mt) const;
 
 	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val,
-		rapidjson::MemoryPoolAllocator<>& alloc) const {}
+		rapidjson::MemoryPoolAllocator<>& alloc) const;
 	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir,
-		const rapidjson::Value& val) {}
+		const rapidjson::Value& val);
 
 	auto& GetTitle() const { return m_title; }
 
