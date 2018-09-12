@@ -224,19 +224,22 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 		}
 	}
 	assert(bp_node);
-	auto builder = bp::NodeBuilder::Instance();
-	builder->AfterCreated(*bp_node, m_stage.GetSubjectMgr());
 
 	auto& style = bp_node->GetStyle();
+
+	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
+	pos.x += style.width  * 0.5f;
+	pos.y -= style.height * 0.5f;
+	bp_node->SetPos(pos);
+
+	auto builder = bp::NodeBuilder::Instance();
+	builder->AfterCreated(*bp_node, m_stage.GetSubjectMgr());
 
 	auto node = std::make_shared<n0::SceneNode>();
 	auto& cnode = node->AddUniqueComp<bp::CompNode>();
 	cnode.SetNode(bp_node);
 	// trans
 	auto& ctrans = node->AddUniqueComp<n2::CompTransform>();
-	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
-	pos.x += bp_node->GetStyle().width  * 0.5f;
-	pos.y -= bp_node->GetStyle().height * 0.5f;
 	ctrans.SetPosition(*node, pos);
 	// id
 	node->AddUniqueComp<n0::CompIdentity>();
