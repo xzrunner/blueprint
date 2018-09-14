@@ -13,6 +13,8 @@
 #include <memory>
 
 namespace mm { class LinearAllocator; }
+namespace pt2 { class WindowContext; }
+namespace pt3 { class WindowContext; }
 
 namespace bp
 {
@@ -40,6 +42,16 @@ inline NodeTypeID GetNodeTypeID() noexcept
 
 class Pins;
 
+struct UpdateParams
+{
+	UpdateParams(const std::shared_ptr<pt2::WindowContext>& wc2,
+		const std::shared_ptr<pt3::WindowContext>& wc3)
+		: wc2(wc2), wc3(wc3) {}
+
+	std::shared_ptr<pt2::WindowContext> wc2 = nullptr;
+	std::shared_ptr<pt3::WindowContext> wc3 = nullptr;
+};
+
 class Node
 {
 public:
@@ -52,7 +64,7 @@ public:
 	virtual NodePtr Create() const = 0;
 
 	virtual void Draw(const sm::Matrix2D& mt) const;
-	virtual void Update() {}
+	virtual void Update(const UpdateParams& params) {}
 
 	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val,
 		rapidjson::MemoryPoolAllocator<>& alloc) const;
