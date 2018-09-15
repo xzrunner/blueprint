@@ -64,7 +64,7 @@ public:
 	virtual NodePtr Create() const = 0;
 
 	virtual void Draw(const sm::Matrix2D& mt) const;
-	virtual void Update(const UpdateParams& params) {}
+	virtual bool Update(const UpdateParams& params) { return false; }
 
 	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val,
 		rapidjson::MemoryPoolAllocator<>& alloc) const;
