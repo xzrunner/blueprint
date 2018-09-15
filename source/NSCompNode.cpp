@@ -97,6 +97,7 @@ void NSCompNode::StoreConnection(const std::vector<n0::SceneNodePtr>& nodes,
 			for (auto& conn : conns)
 			{
 				auto& to_pin = conn->GetTo();
+				assert(to_pin);
 
 				rapidjson::Value conn_val;
 				conn_val.SetObject();

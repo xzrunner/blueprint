@@ -17,8 +17,8 @@ public:
 
 	void UpdateCurve();
 
-	auto& GetFrom() const { return m_from; }
-	auto& GetTo() const { return m_to; }
+	std::shared_ptr<Pins> GetFrom() const;
+	std::shared_ptr<Pins> GetTo() const;
 
 	auto& GetCurve() const { return m_curve; }
 
@@ -34,8 +34,8 @@ private:
 	void UpdateCurveColor();
 
 private:
-	std::shared_ptr<Pins> m_from = nullptr;
-	std::shared_ptr<Pins> m_to   = nullptr;
+	std::weak_ptr<Pins> m_from;
+	std::weak_ptr<Pins> m_to;
 
 	Curve m_curve;
 

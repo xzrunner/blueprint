@@ -21,10 +21,24 @@ void Connecting::UpdateCurve()
 	UpdateCurveColor();
 }
 
+std::shared_ptr<Pins> Connecting::GetFrom() const
+{
+	return m_from.lock();
+}
+
+std::shared_ptr<Pins> Connecting::GetTo() const
+{
+	return m_to.lock();
+}
+
 void Connecting::UpdateCurveShape()
 {
-	sm::vec2 v0 = NodeLayout::GetPinsPos(*m_from);
-	sm::vec2 v3 = NodeLayout::GetPinsPos(*m_to);
+	auto from = m_from.lock();
+	auto to = m_to.lock();
+	assert(from && to);
+
+	sm::vec2 v0 = NodeLayout::GetPinsPos(*from);
+	sm::vec2 v3 = NodeLayout::GetPinsPos(*to);
 	float d = fabs((v3.x - v0.x) * NodeLayout::CONNECTING_BEZIER_DIST);
 	auto v1 = v0 + sm::vec2(d, 0);
 	auto v2 = v3 - sm::vec2(d, 0);
@@ -35,7 +49,10 @@ void Connecting::UpdateCurveColor()
 {
 	m_curve.color.clear();
 
-	if (m_from->GetType() == m_to->GetType()) {
+	auto from = m_from.lock();
+	auto to = m_to.lock();
+	assert(from && to);
+	if (from->GetType() == to->GetType()) {
 		return;
 	}
 
@@ -54,8 +71,8 @@ void Connecting::UpdateCurveColor()
 	}
 	float curr_len = 0;
 
-	auto& s = m_from->GetColor();
-	auto& d = m_to->GetColor();
+	auto& s = from->GetColor();
+	auto& d = to->GetColor();
 	sm::vec4 d_col;
 	d_col.x = (d.r - s.r) / tot_len;
 	d_col.y = (d.g - s.g) / tot_len;
@@ -65,7 +82,7 @@ void Connecting::UpdateCurveColor()
 	{
 		float p = curr_len / tot_len;
 		auto c4 = d_col * curr_len;
-		pt2::Color col = m_from->GetColor();
+		pt2::Color col = from->GetColor();
 		col.r += static_cast<int>(c4.x);
 		col.g += static_cast<int>(c4.y);
 		col.b += static_cast<int>(c4.z);
@@ -92,6 +109,7 @@ std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
 		}
 		else
 		{
+			assert(conn->GetFrom() && conn->GetTo());
 			conn->GetFrom()->RemoveConnecting(conn);
 			conn->GetTo()->RemoveConnecting(conn);
 		}
@@ -107,6 +125,7 @@ void disconnect(const std::shared_ptr<Connecting>& conn)
 {
 	auto& f = conn->GetFrom();
 	auto& t = conn->GetTo();
+	assert(f && t);
 
 	f->RemoveConnecting(conn);
 	t->RemoveConnecting(conn);

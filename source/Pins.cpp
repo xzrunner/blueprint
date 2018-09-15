@@ -1,4 +1,5 @@
 #include "blueprint/Pins.h"
+#include "blueprint/Connecting.h"
 
 namespace
 {
@@ -28,6 +29,19 @@ Pins::Pins(bool is_input, int pos, int type, const std::string& name, const Node
 	, m_name(name)
 	, m_parent(parent)
 {
+}
+
+Pins::~Pins()
+{
+	for (auto& conn : m_connecting)
+	{
+		if (auto from = conn->GetFrom()) {
+			from->RemoveConnecting(conn);
+		}
+		if (auto to = conn->GetTo()) {
+			to->RemoveConnecting(conn);
+		}
+	}
 }
 
 const pt2::Color& Pins::GetColor() const

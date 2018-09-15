@@ -32,6 +32,7 @@ class Pins
 {
 public:
 	Pins(bool is_input, int pos, int type, const std::string& name, const Node& parent);
+	~Pins();
 
 	// for draw
 	virtual std::string GetDesc() const { return m_name; }

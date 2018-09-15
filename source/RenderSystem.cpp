@@ -133,6 +133,7 @@ void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat)
 				continue;
 			}
 			auto& dst = c->GetTo();
+			assert(dst);
 			if (src->GetType() == dst->GetType()) {
 				pt2::PrimitiveDraw::SetColor(src->GetColor());
 				pt2::PrimitiveDraw::Polyline(nullptr, curve.shape.GetVertices(), false);
