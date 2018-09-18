@@ -124,23 +124,29 @@ std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
 void disconnect(const std::shared_ptr<Connecting>& conn)
 {
 	auto& f = conn->GetFrom();
-	auto& t = conn->GetTo();
-	assert(f && t);
-
-	f->RemoveConnecting(conn);
-	t->RemoveConnecting(conn);
-
-	auto& fn = f->GetParent();
-	if (fn.IsStyleOnlyTitle()) {
-		fn.SetStyleOnlyTitle(false);
-		bp::NodeLayout::UpdateNodeStyle(const_cast<Node&>(fn));
-		fn.SetSizeChanging(true);
+	if (f)
+	{
+		f->RemoveConnecting(conn);
+		auto& fn = f->GetParent();
+		if (fn.IsStyleOnlyTitle())
+		{
+			fn.SetStyleOnlyTitle(false);
+			bp::NodeLayout::UpdateNodeStyle(const_cast<Node&>(fn));
+			fn.SetSizeChanging(true);
+		}
 	}
-	auto& tn = t->GetParent();
-	if (tn.IsStyleOnlyTitle()) {
-		tn.SetStyleOnlyTitle(false);
-		bp::NodeLayout::UpdateNodeStyle(const_cast<Node&>(tn));
-		tn.SetSizeChanging(true);
+
+	auto& t = conn->GetTo();
+	if (t)
+	{
+		t->RemoveConnecting(conn);
+		auto& tn = t->GetParent();
+		if (tn.IsStyleOnlyTitle())
+		{
+			tn.SetStyleOnlyTitle(false);
+			bp::NodeLayout::UpdateNodeStyle(const_cast<Node&>(tn));
+			tn.SetSizeChanging(true);
+		}
 	}
 }
 
