@@ -120,5 +120,13 @@
     <ClInclude Include="..\..\..\include\blueprint\NodeFactory.h">
       <Filter>dataset\node</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\NodeHelper.h">
+      <Filter>dataset\node</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\include\blueprint\NodeHelper.inl">
+      <Filter>dataset\node</Filter>
+    </None>
   </ItemGroup>
 </Project>
