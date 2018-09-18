@@ -103,7 +103,7 @@ protected:
 
 	void Layout();
 
-private:
+protected:
 	static bool CheckPinsName(const Pins& src,
 		const std::vector<std::shared_ptr<Pins>>& dst);
 
@@ -111,6 +111,9 @@ protected:
 	std::string m_title;
 
 	Style m_style;
+
+	std::vector<std::shared_ptr<Pins>> m_all_input;
+	std::vector<std::shared_ptr<Pins>> m_all_output;
 
 public:
 	static const uint32_t STYLE_SMALL_TITLE_FONT = 0x00000001;
@@ -126,9 +129,6 @@ public:
 
 private:
 	std::string m_name;
-
-	std::vector<std::shared_ptr<Pins>> m_all_input;
-	std::vector<std::shared_ptr<Pins>> m_all_output;
 
 	// for draw
 	sm::vec2 m_pos;
