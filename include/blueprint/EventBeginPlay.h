@@ -1,6 +1,7 @@
 #pragma once
 
 #include "blueprint/Node.h"
+#include "blueprint/Pins.h"
 
 namespace bp
 {
@@ -10,22 +11,15 @@ namespace node
 class EventBeginPlay : public Node
 {
 public:
-	EventBeginPlay();
+	EventBeginPlay()
+		: Node("EventBeginPlay")
+	{
+		AddPins(std::make_shared<Pins>(false, 0, PINS_PORT, "", *this));
 
-	virtual NodeTypeID TypeID() const override {
-		return GetNodeTypeID<EventBeginPlay>();
-	}
-	virtual const std::string& TypeName() const override {
-		return TYPE_NAME;
-	}
-	virtual NodePtr Create() const override {
-		return std::make_shared<EventBeginPlay>();
+		Layout();
 	}
 
-	static const std::string TYPE_NAME;
-
-private:
-	std::shared_ptr<Pins> m_output;
+	DECLARE_NODE_CLASS(EventBeginPlay)
 
 }; // EventBeginPlay
 

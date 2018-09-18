@@ -1,8 +1,5 @@
 #include "blueprint/NodeFactory.h"
-// flow control
-#include "blueprint/FlowCtrlBranch.h"
-// event
-#include "blueprint/EventBeginPlay.h"
+#include "blueprint/Node.h"
 
 namespace bp
 {
@@ -11,34 +8,42 @@ CU_SINGLETON_DEFINITION(NodeFactory);
 
 NodeFactory::NodeFactory()
 {
-	RegistAllNode();
 }
 
-NodePtr NodeFactory::Create(const std::string& type, const std::string& name)
+void NodeFactory::Register(cpputil::ClassInfo<Node>* ci)
 {
-	for (auto& n : m_nodes)
-	{
-		if (n->TypeName() != type) {
-			continue;
-		}
-		auto node = n->Create();
-		if (!name.empty()) {
-			node->SetName(name);
-		}
-		return node;
+	auto& name = ci->GetClassName();
+	if (m_class_info_map.find(name) == m_class_info_map.end()) {
+		m_class_info_map.insert({ name, ci });
 	}
-	return nullptr;
 }
 
-void NodeFactory::RegistNodes(const std::vector<NodePtr>& nodes)
+NodePtr NodeFactory::Create(const std::string& class_name, const std::string& node_name)
 {
-	std::copy(nodes.begin(), nodes.end(), std::back_inserter(m_nodes));
+	auto itr = m_class_info_map.find(class_name);
+	if (itr == m_class_info_map.end()) {
+		return nullptr;
+	}
+
+	auto node = itr->second->GetCtor()();
+	if (!node_name.empty()) {
+		node->SetName(node_name);
+	}
+	return node;
 }
 
-void NodeFactory::RegistAllNode()
+const std::vector<NodePtr>& NodeFactory::GetAllNodes() const
 {
-	m_nodes.push_back(std::make_shared<node::EventBeginPlay>());
-	m_nodes.push_back(std::make_shared<node::FlowCtrlBranch>());
+	if (m_nodes.size() != m_class_info_map.size())
+	{
+		m_nodes.clear();
+		m_nodes.reserve(m_class_info_map.size());
+		for (auto& itr : m_class_info_map) {
+			m_nodes.push_back(itr.second->GetCtor()());
+		}
+	}
+
+	return m_nodes;
 }
 
 }

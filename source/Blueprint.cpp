@@ -1,7 +1,6 @@
 #include "blueprint/Blueprint.h"
 #include "blueprint/CompNode.h"
 #include "blueprint/NSCompNode.h"
-#include "blueprint/NodeFactory.h"
 #include "blueprint/Node.h"
 
 #include <ns/CompIdxMgr.h>

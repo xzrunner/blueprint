@@ -36,7 +36,7 @@ void WxCreateNodeDlg::InitLayout()
 		int idx = 0;
 		for (auto& node : m_nodes) {
 			if (IsNodeMatched(*node)) {
-				m_tree->InsertItem(root, idx++, node->TypeName());
+				m_tree->InsertItem(root, idx++, node->GetClassInfo().GetClassName());
 			}
 		}
 

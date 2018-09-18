@@ -64,14 +64,14 @@
     <ClCompile Include="..\..\..\source\NSCompNode.cpp">
       <Filter>component</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\EventBeginPlay.cpp">
-      <Filter>node</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\Node.cpp">
       <Filter>dataset\node</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\NodeBuilder.cpp">
       <Filter>dataset\node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\EventBeginPlay.cpp">
+      <Filter>node\event</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\NodeFactory.cpp">
       <Filter>dataset\node</Filter>
@@ -108,14 +108,14 @@
       <Filter>component</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\typedef.h" />
-    <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h">
-      <Filter>node</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\Node.h">
       <Filter>dataset\node</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeBuilder.h">
       <Filter>dataset\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h">
+      <Filter>node\event</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeFactory.h">
       <Filter>dataset\node</Filter>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "blueprint/Node.h"
+#include "blueprint/Pins.h"
 
 namespace bp
 {
@@ -10,28 +11,19 @@ namespace node
 class FlowCtrlBranch : public Node
 {
 public:
-	FlowCtrlBranch();
+	FlowCtrlBranch()
+		: Node("Branch")
+	{
+		AddPins(std::make_shared<Pins>(true, 0, PINS_PORT, "", *this));
+		AddPins(std::make_shared<Pins>(true, 1, PINS_BOOLEAN, "Condition", *this));
 
-	virtual NodeTypeID TypeID() const override {
-		return GetNodeTypeID<FlowCtrlBranch>();
+		AddPins(std::make_shared<Pins>(false, 0, PINS_PORT, "True", *this));
+		AddPins(std::make_shared<Pins>(false, 1, PINS_PORT, "False", *this));
+
+		Layout();
 	}
-	virtual const std::string& TypeName() const override {
-		return TYPE_NAME;
-	}
-	virtual NodePtr Create() const override {
-		return std::make_shared<FlowCtrlBranch>();
-	}
 
-	static const std::string TYPE_NAME;
-
-private:
-	// input
-	std::shared_ptr<Pins> m_input;
-	std::shared_ptr<Pins> m_condition;
-
-	// output
-	std::shared_ptr<Pins> m_true;
-	std::shared_ptr<Pins> m_false;
+	DECLARE_NODE_CLASS(FlowCtrlBranch)
 
 }; // FlowCtrlBranch
 

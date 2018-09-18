@@ -29,7 +29,7 @@ void NSCompNode::StoreToJson(const std::string& dir, rapidjson::Value& val, rapi
 {
 	val.SetObject();
 
-	val.AddMember("node_type", rapidjson::Value(m_node->TypeName().c_str(), alloc), alloc);
+	val.AddMember("node_type", rapidjson::Value(m_node->GetClassInfo().GetClassName().c_str(), alloc), alloc);
 
 	rapidjson::Value node_val;
 	m_node->StoreToJson(dir, node_val, alloc);
@@ -40,7 +40,6 @@ void NSCompNode::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir
 {
 	std::string type = val["node_type"].GetString();
 	m_node = NodeFactory::Instance()->Create(type);
-
 	m_node->LoadFromJson(alloc, dir, val["node_val"]);
 }
 

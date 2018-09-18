@@ -6,6 +6,7 @@
 #include "blueprint/WxCreateNodeDlg.h"
 #include "blueprint/MessageID.h"
 #include "blueprint/NodeBuilder.h"
+#include "blueprint/NodeFactory.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
@@ -299,13 +300,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	}
 
 	auto type = dlg.GetSelectedType();
-	NodePtr bp_node = nullptr;
-	for (auto& n : m_nodes) {
-		if (n->TypeName() == type) {
-			bp_node = n->Create();
-			break;
-		}
-	}
+	NodePtr bp_node = NodeFactory::Instance()->Create(type);
 	assert(bp_node);
 
 	auto& style = bp_node->GetStyle();

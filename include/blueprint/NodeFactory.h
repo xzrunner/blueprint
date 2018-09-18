@@ -3,28 +3,31 @@
 #include "blueprint/typedef.h"
 
 #include <cu/cu_macro.h>
+#include <cpputil/ClassInfo.h>
 
-#include <memory>
 #include <string>
 #include <vector>
+#include <map>
 
 namespace bp
 {
 
+class Node;
+
 class NodeFactory
 {
 public:
-	NodePtr Create(const std::string& type, const std::string& name = "");
+	void Register(cpputil::ClassInfo<Node>* ci);
 
-	auto& GetAllNodes() const { return m_nodes; }
+	NodePtr Create(const std::string& class_name,
+		const std::string& node_name = "");
 
-	void RegistNodes(const std::vector<NodePtr>& nodes);
-
-private:
-	void RegistAllNode();
+	const std::vector<NodePtr>& GetAllNodes() const;
 
 private:
-	std::vector<NodePtr> m_nodes;
+	std::map<std::string, cpputil::ClassInfo<bp::Node>*> m_class_info_map;
+
+	mutable std::vector<NodePtr> m_nodes;
 
 	CU_SINGLETON_DECLARATION(NodeFactory)
 
