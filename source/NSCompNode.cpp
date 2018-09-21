@@ -4,6 +4,7 @@
 #include "blueprint/Pins.h"
 #include "blueprint/Connecting.h"
 #include "blueprint/Node.h"
+#include "blueprint/NodeBuilder.h"
 
 #include <node0/SceneNode.h>
 
@@ -130,6 +131,8 @@ void NSCompNode::LoadConnection(std::vector<n0::SceneNodePtr>& nodes,
 		bp_nodes.push_back(bp_node.GetNode().get());
 	}
 
+	auto builder = bp::NodeBuilder::Instance();
+
 	int src_node_idx = 0;
 	for (auto& node_val : nodes_val.GetArray())
 	{
@@ -153,7 +156,10 @@ void NSCompNode::LoadConnection(std::vector<n0::SceneNodePtr>& nodes,
 				int node_idx = conn_val["node_idx"].GetInt();
 				auto dst_name = conn_val["pin"].GetString();
 				auto dst = QueryPinsByName(*nodes[node_idx]->GetUniqueComp<CompNode>().GetNode(), true, dst_name);
+
+				builder->BeforeConnected(*src, *dst);
 				make_connecting(src, dst);
+				builder->AfterConnected(*src, *dst);
 			}
 		}
 
