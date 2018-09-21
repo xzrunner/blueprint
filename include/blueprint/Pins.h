@@ -46,9 +46,6 @@ public:
 	int  GetType() const { return m_type; }
 	void SetType(int type) { m_type = type; }
 
-	bool IsTypeStatic() const { return m_type_static; }
-	void SetTypeStatic(bool is_static) { m_type_static = is_static; }
-
 	auto& GetParent() const { return m_parent; }
 
 	void AddConnecting(const std::shared_ptr<Connecting>& conn);
@@ -65,7 +62,6 @@ private:
 	int  m_pos;
 
 	int m_type;
-	bool m_type_static = false;	// disable type promote
 
 	std::string m_name;
 
