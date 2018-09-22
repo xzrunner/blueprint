@@ -1,6 +1,7 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/Pins.h"
 #include "blueprint/NodeLayout.h"
+#include "blueprint/NodeBuilder.h"
 
 #include <SM_Calc.h>
 
@@ -97,6 +98,9 @@ void Connecting::UpdateCurveColor()
 std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
 	                                        const std::shared_ptr<Pins>& to)
 {
+	auto builder = NodeBuilder::Instance();
+	builder->BeforeConnected(*from, *to);
+
 	auto& to_conn = to->GetConnecting();
 	if (!to_conn.empty())
 	{
@@ -118,6 +122,9 @@ std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
 	auto conn = std::make_shared<Connecting>(from, to);
 	from->AddConnecting(conn);
 	to->AddConnecting(conn);
+
+	builder->AfterConnected(*from, *to);
+
 	return conn;
 }
 
