@@ -25,7 +25,8 @@ namespace bp
 Pins::Pins(bool is_input, int pos, int type, const std::string& name, const Node& parent)
 	: m_is_input(is_input)
 	, m_pos(pos)
-	, m_type(type)
+	, m_old_type(type)
+	, m_new_type(type)
 	, m_name(name)
 	, m_parent(parent)
 {
@@ -46,7 +47,7 @@ Pins::~Pins()
 
 const pt2::Color& Pins::GetColor() const
 {
-	switch (m_type)
+	switch (m_new_type)
 	{
 	case PINS_PORT:
 		return COL_PORT;
@@ -75,11 +76,11 @@ const pt2::Color& Pins::GetColor() const
 
 bool Pins::CanTypeCast(int type) const
 {
-	if (m_type == type) {
+	if (m_new_type == type) {
 		return true;
 	}
 
-	switch (m_type)
+	switch (m_new_type)
 	{
 	case PINS_PORT:
 		return false;

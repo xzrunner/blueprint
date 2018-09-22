@@ -43,8 +43,9 @@ public:
 	bool IsInput() const { return m_is_input; }
 	int  GetPosIdx() const { return m_pos; }
 
-	int  GetType() const { return m_type; }
-	void SetType(int type) { m_type = type; }
+	int  GetOldType() const { return m_old_type; }
+	int  GetType() const { return m_new_type; }
+	void SetType(int type) { m_new_type = type; }
 
 	auto& GetParent() const { return m_parent; }
 
@@ -61,7 +62,8 @@ private:
 	bool m_is_input;
 	int  m_pos;
 
-	int m_type;
+	const int m_old_type;
+	int m_new_type;
 
 	std::string m_name;
 
