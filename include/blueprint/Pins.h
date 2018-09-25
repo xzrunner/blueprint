@@ -45,7 +45,7 @@ public:
 
 	int  GetOldType() const { return m_old_type; }
 	int  GetType() const { return m_new_type; }
-	void SetType(int type) { m_new_type = type; }
+	void SetType(int type);
 
 	auto& GetParent() const { return m_parent; }
 

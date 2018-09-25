@@ -107,6 +107,20 @@ bool Pins::CanTypeCast(int type) const
 	return false;
 }
 
+void Pins::SetType(int type)
+{
+	if (m_new_type == type) {
+		return;
+	}
+
+	m_new_type = type;
+
+	// update curve color
+	for (auto& conn : m_connecting) {
+		conn->UpdateCurve();
+	}
+}
+
 void Pins::AddConnecting(const std::shared_ptr<Connecting>& conn)
 {
 	m_connecting.push_back(conn);
