@@ -298,6 +298,9 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 		return false;
 	}
+	if (!m_selected_pin) {
+		return false;
+	}
 	assert(m_selected_pin);
 
 	auto type = dlg.GetSelectedType();
