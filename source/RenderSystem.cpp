@@ -16,7 +16,7 @@ const float PINS_RADIUS = bp::NodeLayout::PINS_RADIUS;
 const pt2::Color COL_PANEL_BG = pt2::Color(25, 25, 25, 196);
 
 const pt2::Color COL_TEXT     = pt2::Color(224, 224, 224);
-const pt2::Color COL_WHITE    = pt2::Color(255, 255, 255);
+const pt2::Color COL_ZERO     = pt2::Color(0, 0, 0, 0);
 
 const float TEXT_TITLE_SCALE = 0.7f;
 const float TEXT_PINS_SCALE  = 0.5f;
@@ -72,7 +72,7 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 	mat.Scale(TEXT_TITLE_SCALE, TEXT_TITLE_SCALE);
 	mat.Translate(pos.x, pos.y + hh - NodeLayout::TITLE_HEIGHT * 0.5f);
 	auto& tb = node.IsStyleSmallTitleFont() ? m_small_title_tb : m_title_tb;
-	pt2::RenderSystem::DrawText(node.GetTitle(), tb, mat, COL_TEXT, COL_WHITE);
+	pt2::RenderSystem::DrawText(node.GetTitle(), tb, mat, COL_TEXT, COL_ZERO);
 }
 
 void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
@@ -115,10 +115,10 @@ void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 
 	if (pins.IsInput()) {
 		mat.Translate(PINS_TEXT_OFFSET, 0);
-		pt2::RenderSystem::DrawText(pins.GetDesc(), m_input_tb, mat, COL_TEXT, COL_WHITE);
+		pt2::RenderSystem::DrawText(pins.GetDesc(), m_input_tb, mat, COL_TEXT, COL_ZERO);
 	} else {
 		mat.Translate(-PINS_TEXT_OFFSET, 0);
-		pt2::RenderSystem::DrawText(pins.GetDesc(), m_output_tb, mat, COL_TEXT, COL_WHITE);
+		pt2::RenderSystem::DrawText(pins.GetDesc(), m_output_tb, mat, COL_TEXT, COL_ZERO);
 	}
 }
 
