@@ -158,6 +158,6 @@ private:                                                                       \
 #define IMPLEMENT_NODE_CLASS(type, name)                                       \
 cpputil::ClassInfo<bp::Node> type::m_s_classinfo(                              \
 	(#name),                                                                   \
-	[]()->bp::NodePtr { return std::make_shared<type>(); },                    \
+	[]()->std::unique_ptr<bp::Node> { return std::make_unique<type>(); },                    \
 	[](cpputil::ClassInfo<bp::Node>* ci) { bp::Node::Register(ci); }           \
 );
