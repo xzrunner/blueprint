@@ -284,7 +284,7 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 	}
 
 	m_selected_pin = nullptr;
-	m_curve.Clear();
+	m_curve.SetCtrlPos(sm::vec2(), sm::vec2(), sm::vec2(), sm::vec2()); // clear
 
 	return dirty;
 }

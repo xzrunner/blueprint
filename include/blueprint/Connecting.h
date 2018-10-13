@@ -1,6 +1,6 @@
 #pragma once
 
-#include <painting2/BezierShape.h>
+#include <geoshape/Bezier.h>
 
 #include <memory>
 
@@ -25,7 +25,7 @@ public:
 private:
 	struct Curve
 	{
-		pt2::BezierShape      shape;
+		gs::Bezier            shape;
 		std::vector<uint32_t> color;
 	};
 

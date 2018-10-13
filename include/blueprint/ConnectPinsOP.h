@@ -7,7 +7,7 @@
 #include <SM_Vector.h>
 #include <SM_Rect.h>
 #include <node0/typedef.h>
-#include <painting2/BezierShape.h>
+#include <geoshape/Bezier.h>
 
 namespace ee0 { class WxStagePage; }
 
@@ -50,7 +50,7 @@ private:
 	sm::vec2 m_first_pos;
 	sm::vec2 m_last_pos;
 
-	pt2::BezierShape m_curve;
+	gs::Bezier m_curve;
 
 }; // ConnectPinsOP
 
