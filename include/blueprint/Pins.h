@@ -1,10 +1,10 @@
 #pragma once
 
-#include <painting2/BezierShape.h>
 #include <painting2/Color.h>
 
 #include <string>
 #include <memory>
+#include <vector>
 
 namespace bp
 {
