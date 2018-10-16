@@ -43,7 +43,7 @@ void Connecting::UpdateCurveShape()
 	float d = fabs((v3.x - v0.x) * NodeLayout::CONNECTING_BEZIER_DIST);
 	auto v1 = v0 + sm::vec2(d, 0);
 	auto v2 = v3 - sm::vec2(d, 0);
-	m_curve.shape.SetCtrlPos(v0, v1, v2, v3);
+	m_curve.shape.SetCtrlPos({ v0, v1, v2, v3 });
 }
 
 void Connecting::UpdateCurveColor()

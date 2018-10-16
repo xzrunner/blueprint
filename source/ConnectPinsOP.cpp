@@ -140,7 +140,7 @@ bool ConnectPinsOP::OnMouseDrag(int x, int y)
 		float d = fabs((v3.x - v0.x) * NodeLayout::CONNECTING_BEZIER_DIST);
 		auto v1 = v0 + sm::vec2(d, 0);
 		auto v2 = v3 - sm::vec2(d, 0);
-		m_curve.SetCtrlPos(v0, v1, v2, v3);
+		m_curve.SetCtrlPos({ v0, v1, v2, v3 });
 
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 	}
@@ -283,7 +283,8 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 	}
 
 	m_selected_pin = nullptr;
-	m_curve.SetCtrlPos(sm::vec2(), sm::vec2(), sm::vec2(), sm::vec2()); // clear
+	std::array<sm::vec2, prim::Bezier::CTRL_NODE_COUNT> ctrl_nodes;
+	m_curve.SetCtrlPos(ctrl_nodes); // clear
 
 	return dirty;
 }
