@@ -1,5 +1,4 @@
 #include "blueprint/CompNode.h"
-#include "blueprint/NodeFactory.h"
 #include "blueprint/Node.h"
 
 #include <ee0/MsgHelper.h>
@@ -42,7 +41,11 @@ int w_new_node(lua_State* L)
 	auto bb = moon::Blackboard::Instance();
 
 	const char* type = luaL_checkstring(L, 1);
-	auto bp_node = bp::NodeFactory::Instance()->Create(type);
+	auto rt_type = rttr::type::get_by_name(type);
+	assert(rt_type.is_valid());
+	auto rt_obj = rt_type.create();
+	assert(rt_obj.is_valid());
+	auto bp_node = rt_obj.get_value<bp::NodePtr>();
 	if (!bp_node) {
 		luaL_error(L, "fail to create node %s\n", type);
 	}

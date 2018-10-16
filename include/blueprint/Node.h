@@ -6,9 +6,9 @@
 #include <SM_Vector.h>
 #include <SM_Matrix2D.h>
 #include <painting2/Color.h>
-#include <cpputil/ClassInfo.h>
 
 #include <rapidjson/document.h>
+#include <rttr/registration>
 
 #include <vector>
 #include <memory>
@@ -19,27 +19,6 @@ namespace pt3 { class WindowContext; }
 
 namespace bp
 {
-
-using NodeTypeID = size_t;
-
-namespace Internal
-{
-inline size_t GetUniqueNodeTypeID() noexcept
-{
-    static NodeTypeID id{ 0u };
-    return id++;
-}
-}
-
-template <typename T>
-inline NodeTypeID GetNodeTypeID() noexcept
-{
-    static_assert(std::is_base_of<Node, T>::value,
-        "T must inherit from Node");
-
-    static NodeTypeID type_id{Internal::GetUniqueNodeTypeID()};
-    return type_id;
-}
 
 class Pins;
 
@@ -59,8 +38,6 @@ public:
 	Node(const std::string& title);
 	virtual ~Node() {}
 
-	virtual NodeTypeID TypeID() const = 0;
-
 	virtual void Draw(const sm::Matrix2D& mt) const;
 	virtual bool Update(const UpdateParams& params) { return false; }
 
@@ -68,8 +45,6 @@ public:
 		rapidjson::MemoryPoolAllocator<>& alloc) const;
 	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir,
 		const rapidjson::Value& val);
-
-	virtual const cpputil::ClassInfo<bp::Node>& GetClassInfo() const = 0;
 
 	auto& GetTitle() const { return m_title; }
 
@@ -81,8 +56,6 @@ public:
 
 	void  SetName(const std::string& name) { m_name = name; }
 	auto& GetName() const { return m_name; }
-
-	static void Register(cpputil::ClassInfo<Node>* ci);
 
 public:
 	struct Style
@@ -135,29 +108,8 @@ private:
 
 	mutable uint32_t m_flags = 0;
 
+	RTTR_ENABLE()
+
 }; // Node
 
 }
-
-#define DECLARE_NODE_CLASS(type)                                               \
-public:                                                                        \
-	virtual bp::NodeTypeID TypeID() const override {                           \
-		return bp::GetNodeTypeID<type>();                                      \
-	}                                                                          \
-	virtual const cpputil::ClassInfo<bp::Node>& GetClassInfo() const {         \
-		return m_s_classinfo;                                                  \
-	}                                                                          \
-                                                                               \
-	static auto& GetClassName() { return m_s_classinfo.GetClassName(); }       \
-                                                                               \
-private:                                                                       \
-	static cpputil::ClassInfo<bp::Node> m_s_classinfo;
-
-
-
-#define IMPLEMENT_NODE_CLASS(type, name)                                       \
-cpputil::ClassInfo<bp::Node> type::m_s_classinfo(                              \
-	(#name),                                                                   \
-	[]()->std::unique_ptr<bp::Node> { return std::make_unique<type>(); },                    \
-	[](cpputil::ClassInfo<bp::Node>* ci) { bp::Node::Register(ci); }           \
-);

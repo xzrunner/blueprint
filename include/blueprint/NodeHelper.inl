@@ -26,7 +26,7 @@ bool NodeHelper::HasInputNode(const Node& node)
 		assert(conns.size() == 1);
 
 		auto& node = conns[0]->GetFrom()->GetParent();
-		if (node.TypeID() == GetNodeTypeID<T>()) {
+		if (node.get_type() == rttr::type::get<T>()) {
 			return true;
 		}
 

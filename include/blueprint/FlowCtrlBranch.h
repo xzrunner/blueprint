@@ -23,7 +23,7 @@ public:
 		Layout();
 	}
 
-	DECLARE_NODE_CLASS(FlowCtrlBranch)
+	RTTR_ENABLE(Node)
 
 }; // FlowCtrlBranch
 

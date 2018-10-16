@@ -3,7 +3,6 @@
 #include "blueprint/Pins.h"
 #include "blueprint/Connecting.h"
 #include "blueprint/RenderSystem.h"
-#include "blueprint/NodeFactory.h"
 
 namespace bp
 {
@@ -106,11 +105,6 @@ bool Node::SetPos(const sm::vec2& pos)
 	}
 
 	return true;
-}
-
-void Node::Register(cpputil::ClassInfo<Node>* ci)
-{
-	NodeFactory::Instance()->Register(ci);
 }
 
 void Node::AddPins(const std::shared_ptr<Pins>& pins)

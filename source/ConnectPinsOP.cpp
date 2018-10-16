@@ -6,7 +6,6 @@
 #include "blueprint/WxCreateNodeDlg.h"
 #include "blueprint/MessageID.h"
 #include "blueprint/NodeBuilder.h"
-#include "blueprint/NodeFactory.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
@@ -304,7 +303,11 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	assert(m_selected_pin);
 
 	auto type = dlg.GetSelectedType();
-	NodePtr bp_node = NodeFactory::Instance()->Create(type);
+	auto rt_type = rttr::type::get_by_name(type);
+	assert(rt_type.is_valid());
+	auto rt_obj = rt_type.create();
+	assert(rt_obj.is_valid());
+	NodePtr bp_node = rt_obj.get_value<NodePtr>();
 	assert(bp_node);
 
 	auto& style = bp_node->GetStyle();

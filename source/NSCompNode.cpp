@@ -1,6 +1,5 @@
 #include "blueprint/NSCompNode.h"
 #include "blueprint/CompNode.h"
-#include "blueprint/NodeFactory.h"
 #include "blueprint/Pins.h"
 #include "blueprint/Connecting.h"
 #include "blueprint/Node.h"
@@ -30,7 +29,8 @@ void NSCompNode::StoreToJson(const std::string& dir, rapidjson::Value& val, rapi
 {
 	val.SetObject();
 
-	val.AddMember("node_type", rapidjson::Value(m_node->GetClassInfo().GetClassName().c_str(), alloc), alloc);
+	auto type_name = m_node->get_type().get_name().to_string();
+	val.AddMember("node_type", rapidjson::Value(type_name.c_str(), alloc), alloc);
 
 	rapidjson::Value node_val;
 	m_node->StoreToJson(dir, node_val, alloc);
@@ -40,7 +40,12 @@ void NSCompNode::StoreToJson(const std::string& dir, rapidjson::Value& val, rapi
 void NSCompNode::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
 {
 	std::string type = val["node_type"].GetString();
-	m_node = NodeFactory::Instance()->Create(type);
+	auto rt_type = rttr::type::get_by_name(type);
+	assert(rt_type.is_valid());
+	auto rt_obj = rt_type.create();
+	assert(rt_obj.is_valid());
+	m_node = rt_obj.get_value<NodePtr>();
+	assert(m_node);
 	m_node->LoadFromJson(alloc, dir, val["node_val"]);
 }
 

@@ -73,9 +73,6 @@
     <ClCompile Include="..\..\..\source\EventBeginPlay.cpp">
       <Filter>node\event</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\NodeFactory.cpp">
-      <Filter>dataset\node</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
@@ -116,9 +113,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h">
       <Filter>node\event</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\NodeFactory.h">
-      <Filter>dataset\node</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeHelper.h">
       <Filter>dataset\node</Filter>

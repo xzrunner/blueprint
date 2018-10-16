@@ -19,7 +19,7 @@ public:
 		Layout();
 	}
 
-	DECLARE_NODE_CLASS(EventBeginPlay)
+	RTTR_ENABLE(Node)
 
 }; // EventBeginPlay
 
