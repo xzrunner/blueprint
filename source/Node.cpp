@@ -4,6 +4,17 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/RenderSystem.h"
 
+RTTR_REGISTRATION
+{
+	rttr::registration::class_<bp::Node::Flags>("bp_node_flags")
+		.property("only_title", &bp::Node::Flags::only_title)
+		.property("small_title_font", &bp::Node::Flags::small_title_font)
+	;
+	rttr::registration::class_<bp::Node>("bp_node")
+		.property("style", &bp::Node::GetFlags, &bp::Node::SetFlags)
+	;
+}
+
 namespace bp
 {
 
@@ -41,48 +52,17 @@ void Node::Draw(const sm::Matrix2D& mt) const
 	render->DrawConnecting(*this, mt);
 }
 
-void Node::StoreToJson(const std::string& dir, rapidjson::Value& val,
-	                   rapidjson::MemoryPoolAllocator<>& alloc) const
+Node::Flags Node::GetFlags() const
 {
-	val.SetObject();
-
-	bool dirty = false;
-
-	rapidjson::Value style_val;
-	style_val.SetObject();
-	if (IsStyleOnlyTitle()) {
-		style_val.AddMember("only_title", true, alloc);
-		dirty = true;
-	}
-	if (IsStyleSmallTitleFont()) {
-		style_val.AddMember("small_title_font", true, alloc);
-		dirty = true;
-	}
-
-	if (dirty) {
-		val.AddMember("style", style_val, alloc);
-	}
+	return Flags({ IsStyleOnlyTitle(), IsStyleSmallTitleFont() });
 }
 
-void Node::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir,
-	                    const rapidjson::Value& val)
+void Node::SetFlags(Flags flags)
 {
-	if (val.HasMember("style"))
-	{
-		bool style_changed = false;
-		auto& style_val = val["style"];
-		if (style_val.HasMember("only_title")) {
-			style_changed = true;
-			SetStyleOnlyTitle(style_val["only_title"].GetBool());
-		}
-		if (style_val.HasMember("small_title_font")) {
-			style_changed = true;
-			SetStyleSmallTitleFont(style_val["small_title_font"].GetBool());
-		}
-		if (style_changed) {
-			Layout();
-		}
-	}
+	SetStyleOnlyTitle(flags.only_title);
+	SetStyleSmallTitleFont(flags.small_title_font);
+
+	Layout();
 }
 
 bool Node::SetPos(const sm::vec2& pos)
@@ -122,11 +102,6 @@ void Node::SetWidth(float width)
 	m_style.width = width;
 }
 
-void Node::Layout()
-{
-	NodeLayout::UpdateNodeStyle(*this);
-}
-
 bool Node::CheckPinsName(const Pins& src, const std::vector<std::shared_ptr<Pins>>& dst)
 {
 	if (src.GetType() == PINS_PORT) {
@@ -145,6 +120,11 @@ bool Node::CheckPinsName(const Pins& src, const std::vector<std::shared_ptr<Pins
 	}
 
 	return true;
+}
+
+void Node::Layout()
+{
+	NodeLayout::UpdateNodeStyle(*this);
 }
 
 }

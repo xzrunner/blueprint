@@ -6,6 +6,8 @@
 #include "blueprint/NodeBuilder.h"
 
 #include <node0/SceneNode.h>
+#include <js/RTTR.h>
+#include <js/RapidJsonHelper.h>
 
 #include <map>
 
@@ -32,9 +34,11 @@ void NSCompNode::StoreToJson(const std::string& dir, rapidjson::Value& val, rapi
 	auto type_name = m_node->get_type().get_name().to_string();
 	val.AddMember("node_type", rapidjson::Value(type_name.c_str(), alloc), alloc);
 
-	rapidjson::Value node_val;
-	m_node->StoreToJson(dir, node_val, alloc);
-	val.AddMember("node_val", node_val, alloc);
+	std::string json_str = js::RTTR::ToRapidJson(*m_node);
+	rapidjson::Document doc;
+	doc.Parse(json_str.c_str());
+
+	val.AddMember("node_val", rapidjson::Value(doc, alloc), alloc);
 }
 
 void NSCompNode::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
@@ -46,7 +50,9 @@ void NSCompNode::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir
 	assert(rt_obj.is_valid());
 	m_node = rt_obj.get_value<NodePtr>();
 	assert(m_node);
-	m_node->LoadFromJson(alloc, dir, val["node_val"]);
+
+	std::string json_str = js::RapidJsonHelper::ValueToString(val["node_val"]);
+	js::RTTR::FromRapidJson(json_str, dir, *m_node);
 }
 
 void NSCompNode::StoreToMem(CompNode& comp) const

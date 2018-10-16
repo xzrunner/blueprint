@@ -41,11 +41,6 @@ public:
 	virtual void Draw(const sm::Matrix2D& mt) const;
 	virtual bool Update(const UpdateParams& params) { return false; }
 
-	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val,
-		rapidjson::MemoryPoolAllocator<>& alloc) const;
-	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir,
-		const rapidjson::Value& val);
-
 	auto& GetTitle() const { return m_title; }
 
 	auto& GetAllInput() const { return m_all_input; }
@@ -56,6 +51,15 @@ public:
 
 	void  SetName(const std::string& name) { m_name = name; }
 	auto& GetName() const { return m_name; }
+
+	// wrapper for serialize
+	struct Flags
+	{
+		bool only_title;
+		bool small_title_font;
+	};
+	Flags GetFlags() const;
+	void SetFlags(Flags flags);
 
 public:
 	struct Style
@@ -74,11 +78,11 @@ protected:
 
 	void SetWidth(float width);
 
-	void Layout();
-
 protected:
 	static bool CheckPinsName(const Pins& src,
 		const std::vector<std::shared_ptr<Pins>>& dst);
+
+	void Layout();
 
 protected:
 	std::string m_title;
