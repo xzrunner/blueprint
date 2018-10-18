@@ -34,7 +34,7 @@ void NSCompNode::StoreToJson(const std::string& dir, rapidjson::Value& val, rapi
 	auto type_name = m_node->get_type().get_name().to_string();
 	val.AddMember("node_type", rapidjson::Value(type_name.c_str(), alloc), alloc);
 
-	std::string json_str = js::RTTR::ToRapidJson(*m_node);
+	std::string json_str = js::RTTR::ToRapidJson(*m_node, dir);
 	rapidjson::Document doc;
 	doc.Parse(json_str.c_str());
 
