@@ -41,6 +41,8 @@ public:
 	virtual void Draw(const sm::Matrix2D& mt) const;
 	virtual bool Update(const UpdateParams& params) { return false; }
 
+	virtual void Refresh() {}
+
 	auto& GetTitle() const { return m_title; }
 
 	auto& GetAllInput() const { return m_all_input; }
