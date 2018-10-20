@@ -25,12 +25,6 @@
     <Filter Include="node">
       <UniqueIdentifier>{7a72a331-dfae-4a5a-9325-b582ab404ded}</UniqueIdentifier>
     </Filter>
-    <Filter Include="node\event">
-      <UniqueIdentifier>{b768ccab-acf3-4af0-ac5e-ce0e90da21ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="node\flowcontrol">
-      <UniqueIdentifier>{e528935e-fa81-4096-8489-457aa6e29601}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -48,9 +42,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\NodeLayout.cpp">
       <Filter>view</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\FlowCtrlBranch.cpp">
-      <Filter>node\flowcontrol</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\ConnectPinsOP.cpp">
       <Filter>editor</Filter>
@@ -70,9 +61,7 @@
     <ClCompile Include="..\..\..\source\NodeBuilder.cpp">
       <Filter>dataset\node</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\EventBeginPlay.cpp">
-      <Filter>node\event</Filter>
-    </ClCompile>
+    <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
@@ -87,9 +76,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h">
       <Filter>view</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h">
-      <Filter>node\flowcontrol</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h">
       <Filter>editor</Filter>
@@ -111,11 +97,14 @@
     <ClInclude Include="..\..\..\include\blueprint\NodeBuilder.h">
       <Filter>dataset\node</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h">
-      <Filter>node\event</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeHelper.h">
       <Filter>dataset\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h">
+      <Filter>node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h">
+      <Filter>node</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

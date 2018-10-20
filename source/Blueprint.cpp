@@ -13,8 +13,12 @@
 namespace bp
 {
 
+extern void regist_rttr();
+
 void Blueprint::Init()
 {
+	regist_rttr();
+
 	// node serializer
 	ns::CompIdxMgr::Instance()->AddExtTypeToIdx(CompNode::TYPE_NAME, ns::COMP_INVALID);
 	ns::RegistCallback::AddUniqueCB<CompNode, NSCompNode>();
