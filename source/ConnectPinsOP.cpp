@@ -18,7 +18,8 @@
 #include <node0/CompIdentity.h>
 #include <node2/CompTransform.h>
 #include <node2/CompBoundingBox.h>
-#include <painting2/PrimitiveDraw.h>
+#include <painting2/RenderSystem.h>
+#include <tessellation/Painter.h>
 
 namespace
 {
@@ -160,8 +161,9 @@ bool ConnectPinsOP::OnDraw() const
 	{
 		if (m_first_pos.IsValid() && m_last_pos.IsValid())
 		{
-			pt2::PrimitiveDraw::SetColor(m_selected_pin->GetColor());
-			pt2::PrimitiveDraw::Polyline(nullptr, m_curve.GetVertices(), false);
+			auto& pt = pt2::RenderSystem::Instance()->GetPainter();
+			auto& vertices = m_curve.GetVertices();
+			pt.AddPolyline(vertices.data(), vertices.size(), m_selected_pin->GetColor().ToABGR());
 		}
 	}
 	else
@@ -172,11 +174,11 @@ bool ConnectPinsOP::OnDraw() const
 
 		if (!m_selected_conns.empty())
 		{
-			pt2::PrimitiveDraw::SetColor(COL_SELECTED);
+			auto& pt = pt2::RenderSystem::Instance()->GetPainter();
+			auto col = COL_SELECTED.ToABGR();
 			for (auto& conn : m_selected_conns) {
-				pt2::PrimitiveDraw::Polyline(
-					nullptr, conn->GetCurve().shape.GetVertices(), false
-				);
+				auto& vertices = conn->GetCurve().shape.GetVertices();
+				pt.AddPolyline(vertices.data(), vertices.size(), col);
 			}
 		}
 	}

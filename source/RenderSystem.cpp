@@ -5,8 +5,8 @@
 #include "blueprint/Connecting.h"
 
 #include <SM_Rect.h>
-#include <painting2/PrimitiveDraw.h>
 #include <painting2/RenderSystem.h>
+#include <tessellation/Painter.h>
 
 namespace
 {
@@ -63,9 +63,8 @@ float RenderSystem::GetTextPinsScale() const
 void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh)
 {
 	// background
-	sm::rect r(sm::vec2(-hw, -hh) + pos, sm::vec2(hw, hh) + pos);
-	pt2::PrimitiveDraw::SetColor(COL_PANEL_BG);
-	pt2::PrimitiveDraw::Rect(nullptr, r, true);
+	auto& pt = pt2::RenderSystem::Instance()->GetPainter();
+	pt.AddRectFilled(sm::vec2(-hw, -hh) + pos, sm::vec2(hw, hh) + pos, COL_PANEL_BG.ToABGR(), 0);
 
 	// title
 	sm::Matrix2D mat;
@@ -77,6 +76,8 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 
 void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 {
+	auto& pt = pt2::RenderSystem::Instance()->GetPainter();
+
 	sm::Matrix2D mat;
 	mat.Scale(TEXT_PINS_SCALE, TEXT_PINS_SCALE);
 	mat.Translate(pos.x, pos.y);
@@ -94,22 +95,24 @@ void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 		for (auto& v : vertices) {
 			v += pos;
 		}
-		pt2::PrimitiveDraw::SetColor(pins.GetColor());
+		uint32_t col = pins.GetColor().ToABGR();
+		assert(vertices.size() % 3 == 0);
 		if (connected) {
-			pt2::PrimitiveDraw::Triangles(nullptr, vertices);
+			for (int i = 0, n = vertices.size(); i < n; ) {
+				pt.AddTriangleFilled(vertices[i++], vertices[i++], vertices[i++], col);
+			}
 		} else {
-			pt2::PrimitiveDraw::LineWidth(2);
-			pt2::PrimitiveDraw::Polyline(nullptr, vertices, true);
+			for (int i = 0, n = vertices.size(); i < n; ) {
+				pt.AddTriangle(vertices[i++], vertices[i++], vertices[i++], col);
+			}
 		}
 	}
 	else
 	{
-		pt2::PrimitiveDraw::SetColor(pins.GetColor());
 		if (connected) {
-			pt2::PrimitiveDraw::Circle(nullptr, pos, PINS_RADIUS, true);
+			pt.AddCircleFilled(pos, PINS_RADIUS, pins.GetColor().ToABGR());
 		} else {
-			pt2::PrimitiveDraw::LineWidth(2);
-			pt2::PrimitiveDraw::Circle(nullptr, pos, PINS_RADIUS, false);
+			pt.AddCircle(pos, PINS_RADIUS, pins.GetColor().ToABGR());
 		}
 	}
 
@@ -124,6 +127,8 @@ void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 
 void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat)
 {
+	auto& pt = pt2::RenderSystem::Instance()->GetPainter();
+
 	for (auto& src : node.GetAllOutput())
 	{
 		for (auto& c : src->GetConnecting())
@@ -135,11 +140,12 @@ void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat)
 			auto& dst = c->GetTo();
 			assert(dst);
 			if (src->GetType() == dst->GetType()) {
-				pt2::PrimitiveDraw::SetColor(src->GetColor());
-				pt2::PrimitiveDraw::Polyline(nullptr, curve.shape.GetVertices(), false);
+				auto& vertices = curve.shape.GetVertices();
+				pt.AddPolyline(vertices.data(), vertices.size(), src->GetColor().ToABGR());
 			} else {
 				assert(!curve.color.empty());
-				pt2::PrimitiveDraw::Polyline(nullptr, curve.shape.GetVertices(), curve.color, false);
+				auto& vertices = curve.shape.GetVertices();
+				pt.AddPolylineMultiColor(vertices.data(), curve.color.data(), vertices.size());
 			}
 		}
 	}
