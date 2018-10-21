@@ -161,9 +161,9 @@ bool ConnectPinsOP::OnDraw() const
 	{
 		if (m_first_pos.IsValid() && m_last_pos.IsValid())
 		{
-			auto& pt = pt2::RenderSystem::Instance()->GetPainter();
-			auto& vertices = m_curve.GetVertices();
-			pt.AddPolyline(vertices.data(), vertices.size(), m_selected_pin->GetColor().ToABGR());
+			tess::Painter pt;
+			pt2::RenderSystem::DrawShape(pt, m_curve, m_selected_pin->GetColor().ToABGR());
+			pt2::RenderSystem::DrawPainter(pt, sm::mat4());
 		}
 	}
 	else
@@ -174,12 +174,12 @@ bool ConnectPinsOP::OnDraw() const
 
 		if (!m_selected_conns.empty())
 		{
-			auto& pt = pt2::RenderSystem::Instance()->GetPainter();
+			tess::Painter pt;
 			auto col = COL_SELECTED.ToABGR();
 			for (auto& conn : m_selected_conns) {
-				auto& vertices = conn->GetCurve().shape.GetVertices();
-				pt.AddPolyline(vertices.data(), vertices.size(), col);
+				pt2::RenderSystem::DrawShape(pt, conn->GetCurve().shape, col);
 			}
+			pt2::RenderSystem::DrawPainter(pt, sm::mat4());
 		}
 	}
 

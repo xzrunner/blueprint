@@ -63,8 +63,9 @@ float RenderSystem::GetTextPinsScale() const
 void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh)
 {
 	// background
-	auto& pt = pt2::RenderSystem::Instance()->GetPainter();
+	tess::Painter pt;
 	pt.AddRectFilled(sm::vec2(-hw, -hh) + pos, sm::vec2(hw, hh) + pos, COL_PANEL_BG.ToABGR(), 0);
+	pt2::RenderSystem::DrawPainter(pt, sm::mat4());
 
 	// title
 	sm::Matrix2D mat;
@@ -76,14 +77,13 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 
 void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 {
-	auto& pt = pt2::RenderSystem::Instance()->GetPainter();
-
 	sm::Matrix2D mat;
 	mat.Scale(TEXT_PINS_SCALE, TEXT_PINS_SCALE);
 	mat.Translate(pos.x, pos.y);
 
 	bool connected = !pins.GetConnecting().empty();
 
+	tess::Painter pt;
 	auto type = pins.GetType();
 	if (type == PINS_PORT)
 	{
@@ -115,6 +115,7 @@ void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 			pt.AddCircle(pos, PINS_RADIUS, pins.GetColor().ToABGR());
 		}
 	}
+	pt2::RenderSystem::DrawPainter(pt, sm::mat4());
 
 	if (pins.IsInput()) {
 		mat.Translate(PINS_TEXT_OFFSET, 0);
@@ -127,8 +128,7 @@ void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 
 void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat)
 {
-	auto& pt = pt2::RenderSystem::Instance()->GetPainter();
-
+	tess::Painter pt;
 	for (auto& src : node.GetAllOutput())
 	{
 		for (auto& c : src->GetConnecting())
@@ -149,6 +149,7 @@ void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat)
 			}
 		}
 	}
+	pt2::RenderSystem::DrawPainter(pt, sm::mat4());
 }
 
 }
