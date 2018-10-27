@@ -64,8 +64,8 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 {
 	// background
 	tess::Painter pt;
-	pt.AddRectFilled(sm::vec2(-hw, -hh) + pos, sm::vec2(hw, hh) + pos, COL_PANEL_BG.ToABGR(), 0);
-	pt2::RenderSystem::DrawPainter(pt, sm::mat4());
+	pt.AddRectFilled(sm::vec2(-hw, -hh) + pos, sm::vec2(hw, hh) + pos, COL_PANEL_BG.ToABGR());
+	pt2::RenderSystem::DrawPainter(pt);
 
 	// title
 	sm::Matrix2D mat;
@@ -115,7 +115,7 @@ void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 			pt.AddCircle(pos, PINS_RADIUS, pins.GetColor().ToABGR());
 		}
 	}
-	pt2::RenderSystem::DrawPainter(pt, sm::mat4());
+	pt2::RenderSystem::DrawPainter(pt);
 
 	if (pins.IsInput()) {
 		mat.Translate(PINS_TEXT_OFFSET, 0);
@@ -149,7 +149,7 @@ void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat)
 			}
 		}
 	}
-	pt2::RenderSystem::DrawPainter(pt, sm::mat4());
+	pt2::RenderSystem::DrawPainter(pt);
 }
 
 }

@@ -163,7 +163,7 @@ bool ConnectPinsOP::OnDraw() const
 		{
 			tess::Painter pt;
 			pt2::RenderSystem::DrawShape(pt, m_curve, m_selected_pin->GetColor().ToABGR());
-			pt2::RenderSystem::DrawPainter(pt, sm::mat4());
+			pt2::RenderSystem::DrawPainter(pt);
 		}
 	}
 	else
@@ -179,7 +179,7 @@ bool ConnectPinsOP::OnDraw() const
 			for (auto& conn : m_selected_conns) {
 				pt2::RenderSystem::DrawShape(pt, conn->GetCurve().shape, col);
 			}
-			pt2::RenderSystem::DrawPainter(pt, sm::mat4());
+			pt2::RenderSystem::DrawPainter(pt);
 		}
 	}
 
