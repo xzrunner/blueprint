@@ -2,6 +2,7 @@
 
 #include "blueprint/NodeHelper.h"
 #include "blueprint/Connecting.h"
+#include "blueprint/Pins.h"
 
 #include <queue>
 
