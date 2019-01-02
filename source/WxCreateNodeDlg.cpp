@@ -8,7 +8,8 @@
 namespace bp
 {
 
-WxCreateNodeDlg::WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos, const Pins& pair,
+WxCreateNodeDlg::WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos,
+                                 const std::shared_ptr<Pins>& pair,
 	                             const std::vector<NodePtr>& nodes)
 	: wxDialog(parent, wxID_ANY, "Create Node", pos, wxSize(200, 400))
 	, m_pair(pair)
@@ -61,8 +62,12 @@ void WxCreateNodeDlg::OnDoubleClick(wxTreeEvent& event)
 
 bool WxCreateNodeDlg::IsNodeMatched(const Node& node) const
 {
-	auto pins_type = m_pair.GetType();
-	if (m_pair.IsInput())
+    if (!m_pair) {
+        return true;
+    }
+
+	auto pins_type = m_pair->GetType();
+	if (m_pair->IsInput())
 	{
 		auto& output = node.GetAllOutput();
 		for (auto& pins : output) {

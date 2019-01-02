@@ -45,6 +45,16 @@ ConnectPinsOP::ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxSta
 
 bool ConnectPinsOP::OnKeyDown(int key_code)
 {
+    if (key_code == WXK_SPACE)
+    {
+        wxPoint pos = wxGetMousePosition();
+        const wxPoint pt = wxGetMousePosition();
+        int mouse_x = pt.x - m_stage.GetScreenPosition().x;
+        int mouse_y = pt.y - m_stage.GetScreenPosition().y;
+        CreateNode(mouse_x, mouse_y);
+        return true;
+    }
+
 	if (ee0::EditOP::OnKeyDown(key_code)) {
 		return true;
 	}
@@ -294,16 +304,11 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 bool ConnectPinsOP::CreateNode(int x, int y)
 {
 	auto base = m_stage.GetScreenPosition();
-	assert(m_selected_pin);
-	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y), *m_selected_pin, m_nodes);
+	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y), m_selected_pin, m_nodes);
 	if (dlg.ShowModal() != wxID_OK) {
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 		return false;
 	}
-	if (!m_selected_pin) {
-		return false;
-	}
-	assert(m_selected_pin);
 
 	auto type = dlg.GetSelectedType();
 	auto rt_type = rttr::type::get_by_name(type);
@@ -337,27 +342,30 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	);
 
 	// connect
-	auto pins_type = m_selected_pin->GetType();
-	if (m_selected_pin->IsInput())
-	{
-		auto& output = bp_node->GetAllOutput();
-		for (auto& pins : output) {
-			if (pins->CanTypeCast(pins_type)) {
-				make_connecting(pins, m_selected_pin);
-				break;
-			}
-		}
-	}
-	else
-	{
-		auto& input = bp_node->GetAllInput();
-		for (auto& pins : input) {
-			if (pins->CanTypeCast(pins_type)) {
-				make_connecting(m_selected_pin, pins);
-				break;
-			}
-		}
-	}
+    if (m_selected_pin)
+    {
+	    auto pins_type = m_selected_pin->GetType();
+	    if (m_selected_pin->IsInput())
+	    {
+		    auto& output = bp_node->GetAllOutput();
+		    for (auto& pins : output) {
+			    if (pins->CanTypeCast(pins_type)) {
+				    make_connecting(pins, m_selected_pin);
+				    break;
+			    }
+		    }
+	    }
+	    else
+	    {
+		    auto& input = bp_node->GetAllInput();
+		    for (auto& pins : input) {
+			    if (pins->CanTypeCast(pins_type)) {
+				    make_connecting(m_selected_pin, pins);
+				    break;
+			    }
+		    }
+	    }
+    }
 
 	ee0::MsgHelper::InsertNode(*m_stage.GetSubjectMgr(), node);
 

@@ -16,8 +16,8 @@ class Node;
 class WxCreateNodeDlg : public wxDialog
 {
 public:
-	WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos, const Pins& pair,
-		const std::vector<NodePtr>& nodes);
+	WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos,
+        const std::shared_ptr<Pins>& pair, const std::vector<NodePtr>& nodes);
 
 	std::string GetSelectedType() const;
 
@@ -30,7 +30,7 @@ private:
 	bool IsNodeMatched(const Node& node) const;
 
 private:
-	const Pins& m_pair;
+	std::shared_ptr<Pins> m_pair = nullptr;
 	const std::vector<NodePtr>& m_nodes;
 
 	wxTreeCtrl* m_tree;
