@@ -66,10 +66,10 @@ public:
 public:
 	struct Style
 	{
-		float width;
-		float height;
+		float width = 0.0f;
+		float height = 0.0f;
 
-		int line_num;
+		int line_num = 0;
 	};
 
 	const Style& GetStyle() const { return m_style; }
