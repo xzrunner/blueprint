@@ -56,6 +56,7 @@ public:
 	auto& GetConnecting() const { return m_connecting; }
 
 	auto& GetName() const { return m_name; }
+    void  SetName(const std::string& name) { m_name = name; }
 
 private:
 	// for parent
