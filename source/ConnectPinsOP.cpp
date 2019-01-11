@@ -108,10 +108,12 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 
 	if (m_selected_pin)
 	{
-		if (QueryOrCreateNode(x, y)) {
-			m_stage.GetSubjectMgr()->NotifyObservers(MSG_BLUE_PRINT_CHANGED);
-		}
+        bool change_to = m_selected_pin->IsInput() && !m_selected_pin->GetConnecting().empty();
+        if (QueryOrCreateNode(x, y, change_to)) {
+            m_stage.GetSubjectMgr()->NotifyObservers(MSG_BLUE_PRINT_CHANGED);
+        }
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
+        m_selected_conns.clear();
 		return true;
 	}
 	else
@@ -140,10 +142,23 @@ bool ConnectPinsOP::OnMouseDrag(int x, int y)
 		m_last_pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
 
 		sm::vec2 v0, v3;
-		if (m_selected_pin->IsInput()) {
-			v0 = m_last_pos;
-			v3 = m_first_pos;
-		} else {
+		if (m_selected_pin->IsInput())
+        {
+            if (!m_selected_pin->GetConnecting().empty())
+            {
+                v0 = m_last_pos;
+                auto& conns = m_selected_pin->GetConnecting();
+                assert(conns.size() == 1);
+                v3 = NodeLayout::GetPinsPos(*conns[0]->GetFrom());
+            }
+            else
+            {
+                v0 = m_last_pos;
+                v3 = m_first_pos;
+            }
+		}
+        else
+        {
 			v0 = m_first_pos;
 			v3 = m_last_pos;
 		}
@@ -259,7 +274,7 @@ void ConnectPinsOP::QueryConnsByRect(const sm::rect& rect, std::vector<std::shar
 	});
 }
 
-bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
+bool ConnectPinsOP::QueryOrCreateNode(int x, int y, bool change_to)
 {
 	bool dirty = false;
 
@@ -276,27 +291,44 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y)
 		target = QueryPinsByPos(obj, pos, center);
 		return !target;
 	});
-	if (target)
-	{
-		if (m_selected_pin->CanTypeCast(target->GetType()) &&
-			m_selected_pin->IsInput() != target->IsInput())
-		{
-			if (m_selected_pin->IsInput()) {
-				make_connecting(target, m_selected_pin);
-			} else {
-				make_connecting(m_selected_pin, target);
-			}
-			dirty = true;
-		}
-	}
-	else
-	{
-		dirty = CreateNode(x, y);
-	}
+    if (change_to)
+    {
+        if (target != m_selected_pin)
+        {
+            auto& conns = m_selected_pin->GetConnecting();
+            assert(conns.size() == 1);
+            auto from = conns[0]->GetFrom();
+            disconnect(conns[0]);
+            if (target && target->IsInput()) {
+                make_connecting(from, target);
+            }
+            dirty = true;
+        }
+    }
+    else
+    {
+	    if (target)
+	    {
+		    if (m_selected_pin->CanTypeCast(target->GetType()) &&
+			    m_selected_pin->IsInput() != target->IsInput())
+		    {
+			    if (m_selected_pin->IsInput()) {
+				    make_connecting(target, m_selected_pin);
+			    } else {
+				    make_connecting(m_selected_pin, target);
+			    }
+			    dirty = true;
+		    }
+	    }
+	    else
+	    {
+            dirty = CreateNode(x, y);
+	    }
+    }
 
-	m_selected_pin = nullptr;
-	std::array<sm::vec2, prim::Bezier::CTRL_NODE_COUNT> ctrl_nodes;
-	m_curve.SetCtrlPos(ctrl_nodes); // clear
+    // clear
+    m_selected_pin = nullptr;
+    m_curve.SetCtrlPos({});
 
 	return dirty;
 }

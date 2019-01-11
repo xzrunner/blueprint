@@ -36,7 +36,7 @@ private:
 		const sm::vec2& pos, sm::vec2& p_center);
 	void QueryConnsByRect(const sm::rect& rect, std::vector<std::shared_ptr<Connecting>>& conns);
 
-	bool QueryOrCreateNode(int x, int y);
+	bool QueryOrCreateNode(int x, int y, bool change_to);
 	bool CreateNode(int x, int y);
 
 private:
