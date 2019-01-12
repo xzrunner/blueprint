@@ -77,7 +77,7 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
 	}
 
 	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
-	m_first_pos = pos;
+    m_first_pos = pos;
 	m_last_pos = m_first_pos;
 
 	// query conn
@@ -106,15 +106,22 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 		return true;
 	}
 
+    bool ret = false;
 	if (m_selected_pin)
 	{
         bool change_to = m_selected_pin->IsInput() && !m_selected_pin->GetConnecting().empty();
         if (QueryOrCreateNode(x, y, change_to)) {
             m_stage.GetSubjectMgr()->NotifyObservers(MSG_BLUE_PRINT_CHANGED);
         }
+        m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
         m_selected_conns.clear();
-		return true;
+
+        // clear
+        m_selected_pin = nullptr;
+        m_curve.SetCtrlPos({});
+
+        ret = true;
 	}
 	else
 	{
@@ -132,7 +139,10 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 		}
 	}
 
-	return false;
+    m_first_pos.MakeInvalid();
+    m_last_pos.MakeInvalid();
+
+	return ret;
 }
 
 bool ConnectPinsOP::OnMouseDrag(int x, int y)
@@ -250,7 +260,7 @@ std::shared_ptr<Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr& node
 
 void ConnectPinsOP::QueryConnsByRect(const sm::rect& rect, std::vector<std::shared_ptr<Connecting>>& conns)
 {
-	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
+ 	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
 	{
 		if (!obj->HasUniqueComp<CompNode>()) {
 			return true;
@@ -399,11 +409,9 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	    }
     }
 
-	ee0::MsgHelper::InsertNode(*m_stage.GetSubjectMgr(), node);
+    ee0::MsgHelper::InsertNode(*m_stage.GetSubjectMgr(), node);
 
-	std::vector<n0::NodeWithPos> nwps;
-	nwps.push_back(n0::NodeWithPos(node, node, 0));
-	ee0::MsgHelper::InsertSelection(*m_stage.GetSubjectMgr(), nwps);
+    m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
 
 	return true;
 }
