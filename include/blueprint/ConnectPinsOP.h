@@ -9,6 +9,8 @@
 #include <node0/typedef.h>
 #include <geoshape/Bezier.h>
 
+//#define BP_CONNECT_PINS_OP_SELECT_CONNS
+
 namespace ee0 { class WxStagePage; }
 
 namespace bp
@@ -45,7 +47,9 @@ private:
 	const std::vector<NodePtr>& m_nodes;
 
 	std::shared_ptr<Pins> m_selected_pin = nullptr;
+#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
 	std::vector<std::shared_ptr<Connecting>> m_selected_conns;
+#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
 
 	sm::vec2 m_first_pos;
 	sm::vec2 m_last_pos;

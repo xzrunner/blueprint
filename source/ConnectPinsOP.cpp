@@ -73,6 +73,7 @@ bool ConnectPinsOP::OnKeyDown(int key_code)
 		return true;
 	}
 
+#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
 	if (key_code == WXK_DELETE)
 	{
 		for (auto& conn : m_selected_conns) {
@@ -80,6 +81,7 @@ bool ConnectPinsOP::OnKeyDown(int key_code)
 		}
 		m_selected_conns.clear();
 	}
+#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
 
 	return false;
 }
@@ -94,9 +96,11 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
     m_first_pos = pos;
 	m_last_pos = m_first_pos;
 
+#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
 	// query conn
 	m_selected_conns.clear();
 	QueryConnsByRect(sm::rect(pos, QUERY_REGION, QUERY_REGION), m_selected_conns);
+#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
 
 	// query pin
 	if (m_stage.GetSelection().Size() == 1)
@@ -129,7 +133,9 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
         }
         m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
+#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
         m_selected_conns.clear();
+#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
 
         // clear
         m_selected_pin = nullptr;
@@ -137,6 +143,7 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 
         ret = true;
 	}
+#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
 	else
 	{
 		if (m_first_pos.IsValid())
@@ -152,6 +159,7 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 			QueryConnsByRect(rect, m_selected_conns);
 		}
 	}
+#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
 
     m_first_pos.MakeInvalid();
     m_last_pos.MakeInvalid();
@@ -221,6 +229,7 @@ bool ConnectPinsOP::OnDraw() const
 			return true;
 		}
 
+#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
 		if (!m_selected_conns.empty())
 		{
 			tess::Painter pt;
@@ -230,6 +239,7 @@ bool ConnectPinsOP::OnDraw() const
 			}
 			pt2::RenderSystem::DrawPainter(pt);
 		}
+#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
 	}
 
 	return false;
