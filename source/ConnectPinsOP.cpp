@@ -55,6 +55,20 @@ bool ConnectPinsOP::OnKeyDown(int key_code)
         return true;
     }
 
+    if (key_code == WXK_DELETE)
+    {
+        m_stage.GetSelection().Traverse([](const ee0::GameObjWithPos& nwp)->bool
+        {
+            auto node = nwp.GetNode()->GetUniqueComp<bp::CompNode>().GetNode();
+            for (auto& port : node->GetAllInput()) {
+                for (auto& conn : port->GetConnecting()) {
+                    disconnect(conn);
+                }
+            }
+            return true;
+        });
+    }
+
 	if (ee0::EditOP::OnKeyDown(key_code)) {
 		return true;
 	}
