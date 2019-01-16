@@ -167,6 +167,17 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 	return ret;
 }
 
+bool ConnectPinsOP::OnMouseRightDown(int x, int y)
+{
+    if (ee0::EditOP::OnMouseRightDown(x, y)) {
+        return true;
+    }
+
+    m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
+
+    return false;
+}
+
 bool ConnectPinsOP::OnMouseDrag(int x, int y)
 {
 	if (m_selected_pin)
