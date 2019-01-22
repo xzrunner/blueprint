@@ -31,6 +31,7 @@ public:
 	virtual bool OnMouseLeftUp(int x, int y) override;
     virtual bool OnMouseRightDown(int x, int y) override;
 	virtual bool OnMouseDrag(int x, int y) override;
+    virtual bool OnMouseLeftDClick(int x, int y) override;
 
 	virtual bool OnDraw() const;
 
@@ -41,6 +42,8 @@ private:
 
 	bool QueryOrCreateNode(int x, int y, bool change_to);
 	bool CreateNode(int x, int y);
+
+    void SelectAllTree(const NodePtr& root) const;
 
 private:
 	ee0::WxStagePage& m_stage;
