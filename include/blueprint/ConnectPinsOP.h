@@ -41,7 +41,13 @@ private:
 	void QueryConnsByRect(const sm::rect& rect, std::vector<std::shared_ptr<Connecting>>& conns);
 
 	bool QueryOrCreateNode(int x, int y, bool change_to);
+    bool CreateNodeWithMousePos();
 	bool CreateNode(int x, int y);
+
+    void ClearSelectedConns();
+
+    void CopyConnections();
+    void PasteConnections();
 
     void SelectAllTree(const NodePtr& root) const;
 
@@ -59,6 +65,9 @@ private:
 	sm::vec2 m_last_pos;
 
 	gs::Bezier m_curve;
+
+    // for paste connections
+    std::vector<n0::SceneNodePtr> m_clipboard;
 
 }; // ConnectPinsOP
 

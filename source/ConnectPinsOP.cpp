@@ -47,43 +47,39 @@ ConnectPinsOP::ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxSta
 
 bool ConnectPinsOP::OnKeyDown(int key_code)
 {
-    if (key_code == WXK_SPACE)
-    {
-        wxPoint pos = wxGetMousePosition();
-        const wxPoint pt = wxGetMousePosition();
-        int mouse_x = pt.x - m_stage.GetScreenPosition().x;
-        int mouse_y = pt.y - m_stage.GetScreenPosition().y;
-        CreateNode(mouse_x, mouse_y);
+    // create new node
+    if (key_code == WXK_SPACE) {
+        CreateNodeWithMousePos();
         return true;
     }
 
-    if (key_code == WXK_DELETE)
-    {
-        m_stage.GetSelection().Traverse([](const ee0::GameObjWithPos& nwp)->bool
-        {
-            auto node = nwp.GetNode()->GetUniqueComp<bp::CompNode>().GetNode();
-            for (auto& port : node->GetAllInput()) {
-                for (auto& conn : port->GetConnecting()) {
-                    disconnect(conn);
-                }
-            }
-            return true;
-        });
+    // delete connections
+    if (key_code == WXK_DELETE) {
+        ClearSelectedConns();
     }
 
-	if (ee0::EditOP::OnKeyDown(key_code)) {
-		return true;
-	}
+    if (ee0::EditOP::OnKeyDown(key_code)) {
+        return true;
+    }
 
 #ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
-	if (key_code == WXK_DELETE)
-	{
-		for (auto& conn : m_selected_conns) {
-			disconnect(conn);
-		}
-		m_selected_conns.clear();
-	}
+    if (key_code == WXK_DELETE)
+    {
+        for (auto& conn : m_selected_conns) {
+            disconnect(conn);
+        }
+        m_selected_conns.clear();
+    }
 #endif // BP_CONNECT_PINS_OP_SELECT_CONNS
+
+    // copy/paste connections
+    if (wxGetKeyState(WXK_CONTROL)) {
+        if (key_code == 'C') {
+            CopyConnections();
+        } else if (key_code == 'V') {
+            PasteConnections();
+        }
+    }
 
 	return false;
 }
@@ -403,6 +399,15 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y, bool change_to)
 	return dirty;
 }
 
+bool ConnectPinsOP::CreateNodeWithMousePos()
+{
+    wxPoint pos = wxGetMousePosition();
+    const wxPoint pt = wxGetMousePosition();
+    int mouse_x = pt.x - m_stage.GetScreenPosition().x;
+    int mouse_y = pt.y - m_stage.GetScreenPosition().y;
+    return CreateNode(mouse_x, mouse_y);
+}
+
 bool ConnectPinsOP::CreateNode(int x, int y)
 {
 	auto base = m_stage.GetScreenPosition();
@@ -474,6 +479,84 @@ bool ConnectPinsOP::CreateNode(int x, int y)
     m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
 
 	return true;
+}
+
+void ConnectPinsOP::ClearSelectedConns()
+{
+    m_stage.GetSelection().Traverse([](const ee0::GameObjWithPos& nwp)->bool
+    {
+        auto node = nwp.GetNode()->GetUniqueComp<bp::CompNode>().GetNode();
+        for (auto& port : node->GetAllInput()) {
+            for (auto& conn : port->GetConnecting()) {
+                disconnect(conn);
+            }
+        }
+        return true;
+    });
+}
+
+void ConnectPinsOP::CopyConnections()
+{
+    m_clipboard.clear();
+    m_clipboard.reserve(m_stage.GetSelection().Size());
+    m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& owp)->bool
+    {
+        m_clipboard.push_back(owp.GetNode());
+        return true;
+    });
+}
+
+void ConnectPinsOP::PasteConnections()
+{
+    std::vector<n0::SceneNodePtr> new_cb;
+    m_clipboard.reserve(m_stage.GetSelection().Size());
+    m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& owp)->bool
+    {
+        new_cb.push_back(owp.GetNode());
+        return true;
+    });
+
+    // check
+    assert(m_clipboard.size() == new_cb.size());
+    for (int i = 0, n = m_clipboard.size(); i < n; ++i)
+    {
+        assert(m_clipboard[i]->HasUniqueComp<bp::CompNode>()
+            && new_cb[i]->HasUniqueComp<bp::CompNode>());
+        auto& old_cnode = m_clipboard[i]->GetUniqueComp<bp::CompNode>();
+        auto& new_cnode = new_cb[i]->GetUniqueComp<bp::CompNode>();
+        assert(old_cnode.GetNode()->get_type() == new_cnode.GetNode()->get_type());
+    }
+
+    // prepare lut
+    std::map<const bp::Node*, int> map_node2idx;
+    for (int i = 0, n = m_clipboard.size(); i < n; ++i) {
+        auto& cnode = m_clipboard[i]->GetUniqueComp<bp::CompNode>();
+        map_node2idx.insert({ cnode.GetNode().get(), i });
+    }
+
+    // connect
+    for (int i = 0, n = m_clipboard.size(); i < n; ++i)
+    {
+        auto& out_pins = m_clipboard[i]->GetUniqueComp<bp::CompNode>().GetNode()->GetAllOutput();
+        for (int j = 0, m = out_pins.size(); j < m; ++j)
+        {
+            auto& conns = out_pins[j]->GetConnecting();
+            for (int k = 0, l = conns.size(); k < l; ++k)
+            {
+                auto to_pins = conns[k]->GetTo();
+                auto itr = map_node2idx.find(&to_pins->GetParent());
+                if (itr == map_node2idx.end()) {
+                    continue;
+                }
+
+                auto pins_idx = to_pins->GetPosIdx();
+                auto node_idx = itr->second;
+                auto from = new_cb[i]->GetUniqueComp<bp::CompNode>().GetNode()->GetAllOutput()[j];
+                auto to = new_cb[node_idx]->GetUniqueComp<bp::CompNode>().GetNode()->GetAllInput()[pins_idx];
+                bp::make_connecting(from, to);
+            }
+        }
+    }
 }
 
 void ConnectPinsOP::SelectAllTree(const NodePtr& root) const
