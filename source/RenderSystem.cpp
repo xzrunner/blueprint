@@ -13,10 +13,10 @@ namespace
 
 const float PINS_RADIUS = bp::NodeLayout::PINS_RADIUS;
 
-const pt2::Color COL_PANEL_BG = pt2::Color(25, 25, 25, 196);
+const pt0::Color COL_PANEL_BG = pt0::Color(25, 25, 25, 196);
 
-const pt2::Color COL_TEXT     = pt2::Color(224, 224, 224);
-const pt2::Color COL_ZERO     = pt2::Color(0, 0, 0, 0);
+const pt0::Color COL_TEXT     = pt0::Color(224, 224, 224);
+const pt0::Color COL_ZERO     = pt0::Color(0, 0, 0, 0);
 
 const float TEXT_TITLE_SCALE = 0.7f;
 const float TEXT_PINS_SCALE  = 0.5f;

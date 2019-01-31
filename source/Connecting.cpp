@@ -83,7 +83,7 @@ void Connecting::UpdateCurveColor()
 	{
 		float p = curr_len / tot_len;
 		auto c4 = d_col * curr_len;
-		pt2::Color col = from->GetColor();
+		pt0::Color col = from->GetColor();
 		col.r += static_cast<int>(c4.x);
 		col.g += static_cast<int>(c4.y);
 		col.b += static_cast<int>(c4.z);

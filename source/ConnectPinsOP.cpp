@@ -26,7 +26,7 @@
 namespace
 {
 
-const pt2::Color COL_SELECTED = pt2::Color(255, 0, 0);
+const pt0::Color COL_SELECTED = pt0::Color(255, 0, 0);
 
 const float QUERY_REGION = 5;
 

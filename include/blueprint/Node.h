@@ -5,7 +5,7 @@
 #include <cu/cu_macro.h>
 #include <SM_Vector.h>
 #include <SM_Matrix2D.h>
-#include <painting2/Color.h>
+#include <painting0/Color.h>
 
 #include <rapidjson/document.h>
 #include <rttr/registration>

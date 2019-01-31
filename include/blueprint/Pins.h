@@ -1,6 +1,6 @@
 #pragma once
 
-#include <painting2/Color.h>
+#include <painting0/Color.h>
 
 #include <string>
 #include <memory>
@@ -36,7 +36,7 @@ public:
 
 	// for draw
 	virtual std::string GetDesc() const { return m_name; }
-	virtual const pt2::Color& GetColor() const;
+	virtual const pt0::Color& GetColor() const;
 
 	virtual bool CanTypeCast(int type) const;
 

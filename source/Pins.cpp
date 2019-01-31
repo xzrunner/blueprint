@@ -4,18 +4,18 @@
 namespace
 {
 
-const pt2::Color COL_DEFAULT   = pt2::Color(255, 255, 255);
+const pt0::Color COL_DEFAULT   = pt0::Color(255, 255, 255);
 
-const pt2::Color COL_PORT      = pt2::Color(255, 255, 255);
-const pt2::Color COL_BOOLEAN   = pt2::Color(140, 0, 0);
-const pt2::Color COL_INTEGER   = pt2::Color(79, 225, 174);
-const pt2::Color COL_FLOAT     = pt2::Color(168, 255, 81);
-const pt2::Color COL_STRING    = pt2::Color(241, 0, 205);
-const pt2::Color COL_TEXT      = pt2::Color(221, 119, 164);
-const pt2::Color COL_VECTOR    = pt2::Color(247, 199, 45);
-const pt2::Color COL_ROTATOR   = pt2::Color(160, 175, 250);
-const pt2::Color COL_TRANSFORM = pt2::Color(243, 111, 0);
-const pt2::Color COL_OBJECT    = pt2::Color(56, 165, 241);
+const pt0::Color COL_PORT      = pt0::Color(255, 255, 255);
+const pt0::Color COL_BOOLEAN   = pt0::Color(140, 0, 0);
+const pt0::Color COL_INTEGER   = pt0::Color(79, 225, 174);
+const pt0::Color COL_FLOAT     = pt0::Color(168, 255, 81);
+const pt0::Color COL_STRING    = pt0::Color(241, 0, 205);
+const pt0::Color COL_TEXT      = pt0::Color(221, 119, 164);
+const pt0::Color COL_VECTOR    = pt0::Color(247, 199, 45);
+const pt0::Color COL_ROTATOR   = pt0::Color(160, 175, 250);
+const pt0::Color COL_TRANSFORM = pt0::Color(243, 111, 0);
+const pt0::Color COL_OBJECT    = pt0::Color(56, 165, 241);
 
 }
 
@@ -45,7 +45,7 @@ Pins::~Pins()
 	}
 }
 
-const pt2::Color& Pins::GetColor() const
+const pt0::Color& Pins::GetColor() const
 {
 	switch (m_new_type)
 	{
