@@ -74,8 +74,9 @@ const pt0::Color& Pins::GetColor() const
 	}
 }
 
-bool Pins::CanTypeCast(int type) const
+bool Pins::CanTypeCast(const Pins& p) const
 {
+    auto type = p.GetType();
 	if (m_new_type == type) {
 		return true;
 	}

@@ -38,7 +38,7 @@ public:
 	virtual std::string GetDesc() const { return m_name; }
 	virtual const pt0::Color& GetColor() const;
 
-	virtual bool CanTypeCast(int type) const;
+	virtual bool CanTypeCast(const Pins& p) const;
 
 	bool IsInput() const { return m_is_input; }
 	int  GetPosIdx() const { return m_pos; }

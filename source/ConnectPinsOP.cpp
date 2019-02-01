@@ -375,7 +375,7 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y, bool change_to)
     {
 	    if (target)
 	    {
-		    if (m_selected_pin->CanTypeCast(target->GetType()) &&
+		    if (m_selected_pin->CanTypeCast(*target) &&
 			    m_selected_pin->IsInput() != target->IsInput())
 		    {
 			    if (m_selected_pin->IsInput()) {
@@ -451,12 +451,11 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	// connect
     if (m_selected_pin)
     {
-	    auto pins_type = m_selected_pin->GetType();
 	    if (m_selected_pin->IsInput())
 	    {
 		    auto& output = bp_node->GetAllOutput();
 		    for (auto& pins : output) {
-			    if (pins->CanTypeCast(pins_type)) {
+			    if (pins->CanTypeCast(*m_selected_pin)) {
 				    make_connecting(pins, m_selected_pin);
 				    break;
 			    }
@@ -466,7 +465,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	    {
 		    auto& input = bp_node->GetAllInput();
 		    for (auto& pins : input) {
-			    if (pins->CanTypeCast(pins_type)) {
+			    if (pins->CanTypeCast(*m_selected_pin)) {
 				    make_connecting(m_selected_pin, pins);
 				    break;
 			    }
