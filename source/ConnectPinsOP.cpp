@@ -490,6 +490,11 @@ void ConnectPinsOP::ClearSelectedConns()
                 disconnect(conn);
             }
         }
+        for (auto& port : node->GetAllOutput()) {
+            for (auto& conn : port->GetConnecting()) {
+                disconnect(conn);
+            }
+        }
         return true;
     });
 }
