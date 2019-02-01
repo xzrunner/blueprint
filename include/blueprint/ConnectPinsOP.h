@@ -49,7 +49,7 @@ private:
     void CopyConnections();
     void PasteConnections();
 
-    void SelectAllTree(const NodePtr& root) const;
+    void SelectAllTree(const NodePtr& root, bool successor) const;
 
 private:
 	ee0::WxStagePage& m_stage;

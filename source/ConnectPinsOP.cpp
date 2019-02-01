@@ -238,7 +238,8 @@ bool ConnectPinsOP::OnMouseLeftDClick(int x, int y)
             root = node->GetUniqueComp<bp::CompNode>().GetNode();
             return true;
         });
-        SelectAllTree(root);
+        bool successor = !wxGetKeyState(WXK_CONTROL);
+        SelectAllTree(root, successor);
     }
     
     return false;
@@ -563,20 +564,37 @@ void ConnectPinsOP::PasteConnections()
     }
 }
 
-void ConnectPinsOP::SelectAllTree(const NodePtr& root) const
+void ConnectPinsOP::SelectAllTree(const NodePtr& root, bool successor) const
 {
     std::set<const bp::Node*> sel_bp_nodes;
 
     std::queue<const bp::Node*> buf;
     buf.push(root.get());
-    while (!buf.empty())
+    if (successor)
     {
-        auto n = buf.front(); buf.pop();
-        sel_bp_nodes.insert(n);
+        while (!buf.empty())
+        {
+            auto n = buf.front(); buf.pop();
+            sel_bp_nodes.insert(n);
 
-        for (auto& out : n->GetAllOutput()) {
-            for (auto& conn : out->GetConnecting()) {
-                buf.push(&conn->GetTo()->GetParent());
+            for (auto& c : n->GetAllOutput()) {
+                for (auto& conn : c->GetConnecting()) {
+                    buf.push(&conn->GetTo()->GetParent());
+                }
+            }
+        }
+    }
+    else
+    {
+        while (!buf.empty())
+        {
+            auto n = buf.front(); buf.pop();
+            sel_bp_nodes.insert(n);
+
+            for (auto& c : n->GetAllInput()) {
+                for (auto& conn : c->GetConnecting()) {
+                    buf.push(&conn->GetFrom()->GetParent());
+                }
             }
         }
     }
