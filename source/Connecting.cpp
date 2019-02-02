@@ -130,6 +130,10 @@ std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
 
 void disconnect(const std::shared_ptr<Connecting>& conn)
 {
+    if (!conn) {
+        return;
+    }
+
 	auto& f = conn->GetFrom();
 	if (f)
 	{
