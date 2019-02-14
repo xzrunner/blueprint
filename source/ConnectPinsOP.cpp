@@ -235,7 +235,7 @@ bool ConnectPinsOP::OnMouseLeftDClick(int x, int y)
         {
             auto& node = nwp.GetNode();
             assert(node->HasUniqueComp<CompNode>());
-            root = node->GetUniqueComp<bp::CompNode>().GetNode();
+            root = node->GetUniqueComp<CompNode>().GetNode();
             return true;
         });
         bool successor = !wxGetKeyState(WXK_CONTROL);
@@ -433,11 +433,11 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	pos.y -= style.height * 0.5f;
 	bp_node->SetPos(pos);
 
-	auto builder = bp::NodeBuilder::Instance();
+	auto builder = NodeBuilder::Instance();
 	builder->AfterCreated(*bp_node, m_stage.GetSubjectMgr());
 
 	auto node = std::make_shared<n0::SceneNode>();
-	auto& cnode = node->AddUniqueComp<bp::CompNode>();
+	auto& cnode = node->AddUniqueComp<CompNode>();
 	cnode.SetNode(bp_node);
 	// trans
 	auto& ctrans = node->AddUniqueComp<n2::CompTransform>();
@@ -485,7 +485,7 @@ void ConnectPinsOP::ClearSelectedConns()
 {
     m_stage.GetSelection().Traverse([](const ee0::GameObjWithPos& nwp)->bool
     {
-        auto node = nwp.GetNode()->GetUniqueComp<bp::CompNode>().GetNode();
+        auto node = nwp.GetNode()->GetUniqueComp<CompNode>().GetNode();
         for (auto& port : node->GetAllInput()) {
             for (auto& conn : port->GetConnecting()) {
                 disconnect(conn);
@@ -525,24 +525,24 @@ void ConnectPinsOP::PasteConnections()
     assert(m_clipboard.size() == new_cb.size());
     for (int i = 0, n = m_clipboard.size(); i < n; ++i)
     {
-        assert(m_clipboard[i]->HasUniqueComp<bp::CompNode>()
-            && new_cb[i]->HasUniqueComp<bp::CompNode>());
-        auto& old_cnode = m_clipboard[i]->GetUniqueComp<bp::CompNode>();
-        auto& new_cnode = new_cb[i]->GetUniqueComp<bp::CompNode>();
+        assert(m_clipboard[i]->HasUniqueComp<CompNode>()
+            && new_cb[i]->HasUniqueComp<CompNode>());
+        auto& old_cnode = m_clipboard[i]->GetUniqueComp<CompNode>();
+        auto& new_cnode = new_cb[i]->GetUniqueComp<CompNode>();
         assert(old_cnode.GetNode()->get_type() == new_cnode.GetNode()->get_type());
     }
 
     // prepare lut
-    std::map<const bp::Node*, int> map_node2idx;
+    std::map<const Node*, int> map_node2idx;
     for (int i = 0, n = m_clipboard.size(); i < n; ++i) {
-        auto& cnode = m_clipboard[i]->GetUniqueComp<bp::CompNode>();
+        auto& cnode = m_clipboard[i]->GetUniqueComp<CompNode>();
         map_node2idx.insert({ cnode.GetNode().get(), i });
     }
 
     // connect
     for (int i = 0, n = m_clipboard.size(); i < n; ++i)
     {
-        auto& out_pins = m_clipboard[i]->GetUniqueComp<bp::CompNode>().GetNode()->GetAllOutput();
+        auto& out_pins = m_clipboard[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput();
         for (int j = 0, m = out_pins.size(); j < m; ++j)
         {
             auto& conns = out_pins[j]->GetConnecting();
@@ -556,9 +556,9 @@ void ConnectPinsOP::PasteConnections()
 
                 auto pins_idx = to_pins->GetPosIdx();
                 auto node_idx = itr->second;
-                auto from = new_cb[i]->GetUniqueComp<bp::CompNode>().GetNode()->GetAllOutput()[j];
-                auto to = new_cb[node_idx]->GetUniqueComp<bp::CompNode>().GetNode()->GetAllInput()[pins_idx];
-                bp::make_connecting(from, to);
+                auto from = new_cb[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput()[j];
+                auto to = new_cb[node_idx]->GetUniqueComp<CompNode>().GetNode()->GetAllInput()[pins_idx];
+                make_connecting(from, to);
             }
         }
     }
@@ -566,9 +566,9 @@ void ConnectPinsOP::PasteConnections()
 
 void ConnectPinsOP::SelectAllTree(const NodePtr& root, bool successor) const
 {
-    std::set<const bp::Node*> sel_bp_nodes;
+    std::set<const Node*> sel_bp_nodes;
 
-    std::queue<const bp::Node*> buf;
+    std::queue<const Node*> buf;
     buf.push(root.get());
     if (successor)
     {
@@ -606,9 +606,9 @@ void ConnectPinsOP::SelectAllTree(const NodePtr& root, bool successor) const
     std::vector<n0::SceneNodePtr> sel_nodes;
     m_stage.Traverse([&](const ee0::GameObj& obj)->bool
     {
-        if (obj->HasUniqueComp<bp::CompNode>())
+        if (obj->HasUniqueComp<CompNode>())
         {
-            auto& bp_node = obj->GetUniqueComp<bp::CompNode>().GetNode();
+            auto& bp_node = obj->GetUniqueComp<CompNode>().GetNode();
             if (sel_bp_nodes.find(bp_node.get()) != sel_bp_nodes.end()) {
                 sel_nodes.push_back(obj);
             }
