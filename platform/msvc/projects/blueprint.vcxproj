@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\Blueprint.h" />
     <ClInclude Include="..\..\..\include\blueprint\Connecting.h" />
+    <ClInclude Include="..\..\..\include\blueprint\ConnectPinsAO.h" />
+    <ClInclude Include="..\..\..\include\blueprint\DisconnectConnAO.h" />
     <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h" />
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h" />
     <ClInclude Include="..\..\..\include\blueprint\EventBeginPlay.h" />
@@ -32,6 +34,8 @@
     <ClCompile Include="..\..\..\source\Blueprint.cpp" />
     <ClCompile Include="..\..\..\source\Connecting.cpp" />
     <ClCompile Include="..\..\..\source\CompNode.cpp" />
+    <ClCompile Include="..\..\..\source\ConnectPinsAO.cpp" />
+    <ClCompile Include="..\..\..\source\DisconnectConnAO.cpp" />
     <ClCompile Include="..\..\..\source\Node.cpp" />
     <ClCompile Include="..\..\..\source\NodeBuilder.cpp" />
     <ClCompile Include="..\..\..\source\NodeLayout.cpp" />

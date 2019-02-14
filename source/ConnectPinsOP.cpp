@@ -6,6 +6,8 @@
 #include "blueprint/WxCreateNodeDlg.h"
 #include "blueprint/MessageID.h"
 #include "blueprint/NodeBuilder.h"
+#include "blueprint/ConnectPinsAO.h"
+#include "blueprint/DisconnectConnAO.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
@@ -66,7 +68,7 @@ bool ConnectPinsOP::OnKeyDown(int key_code)
     if (key_code == WXK_DELETE)
     {
         for (auto& conn : m_selected_conns) {
-            disconnect(conn);
+            Disconnect(conn);
         }
         m_selected_conns.clear();
     }
@@ -365,9 +367,9 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y, bool change_to)
             auto& conns = m_selected_pin->GetConnecting();
             assert(conns.size() == 1);
             auto from = conns[0]->GetFrom();
-            disconnect(conns[0]);
+            Disconnect(conns[0]);
             if (target && target->IsInput()) {
-                make_connecting(from, target);
+                MakeConnecting(from, target);
             }
             dirty = true;
         }
@@ -380,9 +382,9 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y, bool change_to)
 			    m_selected_pin->IsInput() != target->IsInput())
 		    {
 			    if (m_selected_pin->IsInput()) {
-				    make_connecting(target, m_selected_pin);
+				    MakeConnecting(target, m_selected_pin);
 			    } else {
-				    make_connecting(m_selected_pin, target);
+				    MakeConnecting(m_selected_pin, target);
 			    }
 			    dirty = true;
 		    }
@@ -457,7 +459,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 		    auto& output = bp_node->GetAllOutput();
 		    for (auto& pins : output) {
 			    if (pins->CanTypeCast(*m_selected_pin)) {
-				    make_connecting(pins, m_selected_pin);
+				    MakeConnecting(pins, m_selected_pin);
 				    break;
 			    }
 		    }
@@ -467,7 +469,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 		    auto& input = bp_node->GetAllInput();
 		    for (auto& pins : input) {
 			    if (pins->CanTypeCast(*m_selected_pin)) {
-				    make_connecting(m_selected_pin, pins);
+				    MakeConnecting(m_selected_pin, pins);
 				    break;
 			    }
 		    }
@@ -483,17 +485,17 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 
 void ConnectPinsOP::ClearSelectedConns()
 {
-    m_stage.GetSelection().Traverse([](const ee0::GameObjWithPos& nwp)->bool
+    m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& nwp)->bool
     {
         auto node = nwp.GetNode()->GetUniqueComp<CompNode>().GetNode();
         for (auto& port : node->GetAllInput()) {
             for (auto& conn : port->GetConnecting()) {
-                disconnect(conn);
+                Disconnect(conn);
             }
         }
         for (auto& port : node->GetAllOutput()) {
             for (auto& conn : port->GetConnecting()) {
-                disconnect(conn);
+                Disconnect(conn);
             }
         }
         return true;
@@ -558,7 +560,7 @@ void ConnectPinsOP::PasteConnections()
                 auto node_idx = itr->second;
                 auto from = new_cb[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput()[j];
                 auto to = new_cb[node_idx]->GetUniqueComp<CompNode>().GetNode()->GetAllInput()[pins_idx];
-                make_connecting(from, to);
+                MakeConnecting(from, to);
             }
         }
     }
@@ -623,6 +625,24 @@ void ConnectPinsOP::SelectAllTree(const NodePtr& root, bool successor) const
         nwps.push_back(n0::NodeWithPos(obj, obj, 0));
     }
     ee0::MsgHelper::InsertSelection(*sub_mgr, nwps);
+}
+
+void ConnectPinsOP::MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to) const
+{
+    auto conn = make_connecting(from, to);
+
+    auto sub_mgr = m_stage.GetSubjectMgr();
+    auto aop = std::make_shared<ConnectPinsAO>(sub_mgr, from, to, conn);
+    ee0::MsgHelper::AddAtomicOP(*sub_mgr, aop);
+}
+
+void ConnectPinsOP::Disconnect(const std::shared_ptr<Connecting>& conn) const
+{
+    disconnect(conn);
+
+    auto sub_mgr = m_stage.GetSubjectMgr();
+    auto aop = std::make_shared<DisconnectConnAO>(sub_mgr, conn);
+    ee0::MsgHelper::AddAtomicOP(*sub_mgr, aop);
 }
 
 }

@@ -51,6 +51,9 @@ private:
 
     void SelectAllTree(const NodePtr& root, bool successor) const;
 
+    void MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to) const;
+    void Disconnect(const std::shared_ptr<Connecting>& conn) const;
+
 private:
 	ee0::WxStagePage& m_stage;
 
