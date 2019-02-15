@@ -14,6 +14,7 @@
 #include <ee0/SubjectMgr.h>
 #include <ee0/MessageID.h>
 #include <ee0/MsgHelper.h>
+#include <ee0/CombineAOP.h>
 
 #include <SM_Calc.h>
 #include <node0/SceneNode.h>
@@ -163,6 +164,8 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 
     m_first_pos.MakeInvalid();
     m_last_pos.MakeInvalid();
+
+    FlushRecords();
 
 	return ret;
 }
@@ -627,22 +630,44 @@ void ConnectPinsOP::SelectAllTree(const NodePtr& root, bool successor) const
     ee0::MsgHelper::InsertSelection(*sub_mgr, nwps);
 }
 
-void ConnectPinsOP::MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to) const
+void ConnectPinsOP::MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to)
 {
-    auto conn = make_connecting(from, to);
-
     auto sub_mgr = m_stage.GetSubjectMgr();
-    auto aop = std::make_shared<ConnectPinsAO>(sub_mgr, from, to, conn);
-    ee0::MsgHelper::AddAtomicOP(*sub_mgr, aop);
+    auto aop = std::make_shared<ConnectPinsAO>(sub_mgr, from, to);
+    m_records.push_back(aop);
+
+    make_connecting(from, to);
 }
 
-void ConnectPinsOP::Disconnect(const std::shared_ptr<Connecting>& conn) const
+void ConnectPinsOP::Disconnect(const std::shared_ptr<Connecting>& conn)
 {
+    auto sub_mgr = m_stage.GetSubjectMgr();
+    auto aop = std::make_shared<DisconnectConnAO>(sub_mgr, conn->GetFrom(), conn->GetTo());
+    m_records.push_back(aop);
+
     disconnect(conn);
+}
+
+void ConnectPinsOP::FlushRecords()
+{
+    if (m_records.empty()) {
+        return;
+    }
 
     auto sub_mgr = m_stage.GetSubjectMgr();
-    auto aop = std::make_shared<DisconnectConnAO>(sub_mgr, conn);
-    ee0::MsgHelper::AddAtomicOP(*sub_mgr, aop);
+    if (m_records.size() == 1)
+    {
+        ee0::MsgHelper::AddAtomicOP(*sub_mgr, m_records[0]);
+    }
+    else
+    {
+        auto aop = std::make_shared<ee0::CombineAOP>();
+        for (auto& r : m_records) {
+            aop->Insert(r);
+        }
+        ee0::MsgHelper::AddAtomicOP(*sub_mgr, aop);
+    }
+    m_records.clear();
 }
 
 }

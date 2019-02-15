@@ -11,7 +11,7 @@
 
 //#define BP_CONNECT_PINS_OP_SELECT_CONNS
 
-namespace ee0 { class WxStagePage; }
+namespace ee0 { class WxStagePage; class AtomicOP; }
 
 namespace bp
 {
@@ -51,8 +51,10 @@ private:
 
     void SelectAllTree(const NodePtr& root, bool successor) const;
 
-    void MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to) const;
-    void Disconnect(const std::shared_ptr<Connecting>& conn) const;
+    void MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to);
+    void Disconnect(const std::shared_ptr<Connecting>& conn);
+
+    void FlushRecords();
 
 private:
 	ee0::WxStagePage& m_stage;
@@ -71,6 +73,8 @@ private:
 
     // for paste connections
     std::vector<n0::SceneNodePtr> m_clipboard;
+
+    std::vector<std::shared_ptr<ee0::AtomicOP>> m_records;
 
 }; // ConnectPinsOP
 
