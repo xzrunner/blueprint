@@ -6,13 +6,13 @@
 namespace bp
 {
 
-class Connecting;
+class Pins;
 
 class DisconnectConnAO : public ee0::AtomicOP
 {
 public:
     DisconnectConnAO(const ee0::SubjectMgrPtr& sub_mgr, 
-        const std::shared_ptr<Connecting>& conn);
+        const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to);
 
     virtual void Undo() override;
     virtual void Redo() override;
@@ -20,7 +20,7 @@ public:
 private:
     ee0::SubjectMgrPtr m_sub_mgr;
 
-    std::shared_ptr<Connecting> m_conn;
+    std::shared_ptr<Pins> m_from, m_to;
 
 }; // DisconnectConnAO
 
