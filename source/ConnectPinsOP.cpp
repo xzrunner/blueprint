@@ -165,7 +165,7 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
     m_first_pos.MakeInvalid();
     m_last_pos.MakeInvalid();
 
-    FlushRecords();
+//    FlushRecords();
 
 	return ret;
 }
@@ -632,18 +632,18 @@ void ConnectPinsOP::SelectAllTree(const NodePtr& root, bool successor) const
 
 void ConnectPinsOP::MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to)
 {
-    auto sub_mgr = m_stage.GetSubjectMgr();
-    auto aop = std::make_shared<ConnectPinsAO>(sub_mgr, from, to);
-    m_records.push_back(aop);
+    //auto sub_mgr = m_stage.GetSubjectMgr();
+    //auto aop = std::make_shared<ConnectPinsAO>(sub_mgr, from, to);
+    //m_records.push_back(aop);
 
     make_connecting(from, to);
 }
 
 void ConnectPinsOP::Disconnect(const std::shared_ptr<Connecting>& conn)
 {
-    auto sub_mgr = m_stage.GetSubjectMgr();
-    auto aop = std::make_shared<DisconnectConnAO>(sub_mgr, conn->GetFrom(), conn->GetTo());
-    m_records.push_back(aop);
+    //auto sub_mgr = m_stage.GetSubjectMgr();
+    //auto aop = std::make_shared<DisconnectConnAO>(sub_mgr, conn->GetFrom(), conn->GetTo());
+    //m_records.push_back(aop);
 
     disconnect(conn);
 }
