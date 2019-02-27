@@ -78,8 +78,6 @@ public:
 protected:
 	void AddPins(const std::shared_ptr<Pins>& pins);
 
-	void SetWidth(float width);
-
 protected:
 	static bool CheckPinsName(const Pins& src,
 		const std::vector<std::shared_ptr<Pins>>& dst);

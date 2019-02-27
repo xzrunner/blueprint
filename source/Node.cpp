@@ -97,11 +97,6 @@ void Node::AddPins(const std::shared_ptr<Pins>& pins)
 	array.push_back(pins);
 }
 
-void Node::SetWidth(float width)
-{
-	m_style.width = width;
-}
-
 bool Node::CheckPinsName(const Pins& src, const std::vector<std::shared_ptr<Pins>>& dst)
 {
 	if (src.GetType() == PINS_PORT) {
