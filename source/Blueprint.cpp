@@ -2,6 +2,7 @@
 #include "blueprint/CompNode.h"
 #include "blueprint/NSCompNode.h"
 #include "blueprint/Node.h"
+#include "blueprint/node/Commentary.h"
 
 #include <ns/CompIdxMgr.h>
 #include <ns/RegistCallback.h>
@@ -13,7 +14,15 @@
 namespace bp
 {
 
+CU_SINGLETON_DEFINITION(Blueprint);
+
 extern void regist_rttr();
+
+Blueprint::Blueprint()
+{
+	Init();
+	InitNodes();
+}
 
 void Blueprint::Init()
 {
@@ -54,6 +63,22 @@ void Blueprint::Init()
 		bound.Build(st.width, st.height);
 		return true;
 	});
+}
+
+void Blueprint::InitNodes()
+{
+    //auto list = rttr::type::get<Node>().get_derived_classes();
+    //m_nodes.reserve(list.size());
+    //for (auto& t : list)
+    //{
+    //    auto obj = t.create();
+    //    assert(obj.is_valid());
+    //    auto node = obj.get_value<bp::NodePtr>();
+    //    assert(node);
+    //    m_nodes.push_back(node);
+    //}
+
+    m_nodes.push_back(std::make_shared<node::Commentary>());
 }
 
 }

@@ -25,6 +25,9 @@
     <Filter Include="node">
       <UniqueIdentifier>{7a72a331-dfae-4a5a-9325-b582ab404ded}</UniqueIdentifier>
     </Filter>
+    <Filter Include="editor\aop">
+      <UniqueIdentifier>{30593747-2b05-4afd-bd14-1abf524e15f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -63,9 +66,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
     <ClCompile Include="..\..\..\source\ConnectPinsAO.cpp">
-      <Filter>editor</Filter>
+      <Filter>editor\aop</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\DisconnectConnAO.cpp">
+      <Filter>editor\aop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\ArrangeNodeOP.cpp">
       <Filter>editor</Filter>
     </ClCompile>
   </ItemGroup>
@@ -112,10 +118,16 @@
     <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h">
       <Filter>node</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h">
+      <Filter>node</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsAO.h">
-      <Filter>editor</Filter>
+      <Filter>editor\aop</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\DisconnectConnAO.h">
+      <Filter>editor\aop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\ArrangeNodeOP.h">
       <Filter>editor</Filter>
     </ClInclude>
   </ItemGroup>

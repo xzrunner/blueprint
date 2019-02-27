@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\blueprint\ArrangeNodeOP.h" />
     <ClInclude Include="..\..\..\include\blueprint\Blueprint.h" />
     <ClInclude Include="..\..\..\include\blueprint\Connecting.h" />
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsAO.h" />
@@ -23,6 +24,7 @@
     <ClInclude Include="..\..\..\include\blueprint\NodeBuilder.h" />
     <ClInclude Include="..\..\..\include\blueprint\NodeHelper.h" />
     <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h" />
     <ClInclude Include="..\..\..\include\blueprint\NSCompNode.h" />
     <ClInclude Include="..\..\..\include\blueprint\Pins.h" />
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h" />
@@ -31,6 +33,7 @@
     <ClInclude Include="..\..\..\include\blueprint\WxCreateNodeDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\ArrangeNodeOP.cpp" />
     <ClCompile Include="..\..\..\source\Blueprint.cpp" />
     <ClCompile Include="..\..\..\source\Connecting.cpp" />
     <ClCompile Include="..\..\..\source\CompNode.cpp" />
@@ -93,7 +96,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\js\include;..\..\..\..\memmgr\include;..\..\..\..\node0\include;..\..\..\..\node2\include;..\..\..\..\primitive\include;..\..\..\..\geoshape\include;..\..\..\..\tessellation\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\moon\include;..\..\..\..\nserializer\include;..\..\..\..\easyeditor0\include;..\..\..\..\external\boost\include;..\..\..\..\external\lua\include;..\..\..\..\external\rapidjson\include;..\..\..\..\external\rttr\include;..\..\..\..\external-editor\wx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\js\include;..\..\..\..\memmgr\include;..\..\..\..\node0\include;..\..\..\..\node2\include;..\..\..\..\primitive\include;..\..\..\..\geoshape\include;..\..\..\..\tessellation\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\moon\include;..\..\..\..\nserializer\include;..\..\..\..\easyeditor0\include;..\..\..\..\easyeditor2\include;..\..\..\..\external\boost\include;..\..\..\..\external\lua\include;..\..\..\..\external\rapidjson\include;..\..\..\..\external\rttr\include;..\..\..\..\external-editor\wx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -107,7 +110,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\js\include;..\..\..\..\memmgr\include;..\..\..\..\node0\include;..\..\..\..\node2\include;..\..\..\..\primitive\include;..\..\..\..\geoshape\include;..\..\..\..\tessellation\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\moon\include;..\..\..\..\nserializer\include;..\..\..\..\easyeditor0\include;..\..\..\..\external\boost\include;..\..\..\..\external\lua\include;..\..\..\..\external\rapidjson\include;..\..\..\..\external\rttr\include;..\..\..\..\external-editor\wx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\js\include;..\..\..\..\memmgr\include;..\..\..\..\node0\include;..\..\..\..\node2\include;..\..\..\..\primitive\include;..\..\..\..\geoshape\include;..\..\..\..\tessellation\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\moon\include;..\..\..\..\nserializer\include;..\..\..\..\easyeditor0\include;..\..\..\..\easyeditor2\include;..\..\..\..\external\boost\include;..\..\..\..\external\lua\include;..\..\..\..\external\rapidjson\include;..\..\..\..\external\rttr\include;..\..\..\..\external-editor\wx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

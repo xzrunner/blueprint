@@ -59,7 +59,7 @@ private:
 private:
 	ee0::WxStagePage& m_stage;
 
-	const std::vector<NodePtr>& m_nodes;
+	std::vector<NodePtr> m_nodes;
 
 	std::shared_ptr<Pins> m_selected_pin = nullptr;
 #ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
