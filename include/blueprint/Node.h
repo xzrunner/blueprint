@@ -70,6 +70,8 @@ public:
 		float height = 0.0f;
 
 		int line_num = 0;
+
+        pt0::Color panel_bg_col = pt0::Color(25, 25, 25, 196);
 	};
 
 	const Style& GetStyle() const { return m_style; }

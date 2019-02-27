@@ -13,8 +13,6 @@ namespace
 
 const float PINS_RADIUS = bp::NodeLayout::PINS_RADIUS;
 
-const pt0::Color COL_PANEL_BG = pt0::Color(25, 25, 25, 196);
-
 const pt0::Color COL_TEXT     = pt0::Color(224, 224, 224);
 const pt0::Color COL_ZERO     = pt0::Color(0, 0, 0, 0);
 
@@ -64,7 +62,7 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 {
 	// background
 	tess::Painter pt;
-	pt.AddRectFilled(sm::vec2(-hw, -hh) + pos, sm::vec2(hw, hh) + pos, COL_PANEL_BG.ToABGR());
+    pt.AddRectFilled(sm::vec2(-hw, -hh) + pos, sm::vec2(hw, hh) + pos, node.GetStyle().panel_bg_col.ToABGR());
 	pt2::RenderSystem::DrawPainter(pt);
 
 	// title
