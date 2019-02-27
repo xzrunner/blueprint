@@ -10,14 +10,7 @@ namespace node
 class Commentary : public Node
 {
 public:
-    Commentary()
-        : Node("Commentary")
-    {
-        m_style.width  = 512;
-        m_style.height = 512;
-
-        m_style.panel_bg_col = pt0::Color(60, 60, 60, 60);
-    }
+    Commentary();
 
     auto& GetCommentText() const { return m_comment_text; }
     void  SetCommentText(const std::string& str) {
@@ -30,8 +23,17 @@ public:
     void  SetHeight(float height) { m_style.height = height; }
     float GetHeight() const { return m_style.height; }
 
+    void AddChild(const NodePtr& node);
+    bool RemoveChild(const NodePtr& node);
+    auto& GetAllChildren() const { return m_children; }
+
+private:
+    void RemoveExpiredChild();
+
 private:
     std::string m_comment_text;
+
+    std::vector<std::weak_ptr<Node>> m_children;
 
     RTTR_ENABLE(Node)
 

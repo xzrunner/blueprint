@@ -28,6 +28,9 @@
     <Filter Include="editor\aop">
       <UniqueIdentifier>{30593747-2b05-4afd-bd14-1abf524e15f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="editor\sub">
+      <UniqueIdentifier>{44531115-7d09-4003-ac03-6c05ccf5c365}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -73,6 +76,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\ArrangeNodeOP.cpp">
       <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\TranslateNodeState.cpp">
+      <Filter>editor\sub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Commentary.cpp">
+      <Filter>node</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\ArrangeNodeOP.h">
       <Filter>editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\TranslateNodeState.h">
+      <Filter>editor\sub</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
