@@ -83,6 +83,9 @@
     <ClCompile Include="..\..\..\source\node\Commentary.cpp">
       <Filter>node</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\NodeSelectOP.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
@@ -141,6 +144,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\TranslateNodeState.h">
       <Filter>editor\sub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\SetLocalVar.h">
+      <Filter>node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\GetLocalVar.h">
+      <Filter>node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\NodeSelectOP.h">
+      <Filter>editor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeStyle.h">
       <Filter>dataset\node</Filter>

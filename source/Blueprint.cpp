@@ -3,6 +3,8 @@
 #include "blueprint/NSCompNode.h"
 #include "blueprint/Node.h"
 #include "blueprint/node/Commentary.h"
+#include "blueprint/node/SetLocalVar.h"
+#include "blueprint/node/GetLocalVar.h"
 
 #include <ns/CompIdxMgr.h>
 #include <ns/RegistCallback.h>
@@ -77,8 +79,10 @@ void Blueprint::InitNodes()
     //    assert(node);
     //    m_nodes.push_back(node);
     //}
-
+    
     m_nodes.push_back(std::make_shared<node::Commentary>());
+    m_nodes.push_back(std::make_shared<node::SetLocalVar>());
+    m_nodes.push_back(std::make_shared<node::GetLocalVar>());
 }
 
 }

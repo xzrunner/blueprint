@@ -1,6 +1,8 @@
 #include "blueprint/EventBeginPlay.h"
 #include "blueprint/FlowCtrlBranch.h"
 #include "blueprint/node/Commentary.h"
+#include "blueprint/node/SetLocalVar.h"
+#include "blueprint/node/GetLocalVar.h"
 
 #include <ee0/ReflectPropTypes.h>
 
@@ -37,6 +39,18 @@ REGIST_NODE_RTTI(Commentary,                                                    
 .property("height", &bp::node::Commentary::GetHeight, &bp::node::Commentary::SetHeight)            \
 (                                                                                                  \
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Height"))                                \
+)
+)
+REGIST_NODE_RTTI(SetLocalVar,                                                                      \
+.property("name", &bp::node::SetLocalVar::GetVarName, &bp::node::SetLocalVar::SetVarName)          \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Var Name"))                              \
+)
+)
+REGIST_NODE_RTTI(GetLocalVar,                                                                      \
+.property("name", &bp::node::GetLocalVar::GetVarName, &bp::node::GetLocalVar::SetVarName)          \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Var Name"))                              \
 )
 )
 
