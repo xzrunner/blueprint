@@ -11,7 +11,7 @@ Commentary::Commentary()
     m_style.width  = 512;
     m_style.height = 512;
 
-    m_style.panel_bg_col = pt0::Color(60, 60, 60, 60);
+    m_style.panel_bg_col = BG_COLOR_COMMENTARY;
 }
 
 void Commentary::AddChild(const NodePtr& node)

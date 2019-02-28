@@ -1,6 +1,7 @@
 #pragma once
 
 #include "blueprint/typedef.h"
+#include "blueprint/NodeStyle.h"
 
 #include <cu/cu_macro.h>
 #include <SM_Vector.h>
@@ -71,7 +72,7 @@ public:
 
 		int line_num = 0;
 
-        pt0::Color panel_bg_col = pt0::Color(25, 25, 25, 196);
+        pt0::Color panel_bg_col = BG_COLOR_DEFAULT;
 	};
 
 	const Style& GetStyle() const { return m_style; }
