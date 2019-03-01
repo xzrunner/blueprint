@@ -10,8 +10,9 @@
 namespace bp
 {
 
-NodeSelectOP::NodeSelectOP(const std::shared_ptr<pt0::Camera>& camera, ee0::WxStagePage& stage)
-    : ee2::NodeSelectOP(camera, ECS_WORLD_VAR stage)
+NodeSelectOP::NodeSelectOP(const std::shared_ptr<pt0::Camera>& camera, 
+                           ee0::WxStagePage& stage, uint32_t cam_cfg)
+    : ee2::NodeSelectOP(camera, ECS_WORLD_VAR stage, cam_cfg)
 {
 }
 

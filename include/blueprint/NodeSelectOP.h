@@ -13,7 +13,8 @@ class NodeSelectOP : public ee2::NodeSelectOP
 {
 public:
     NodeSelectOP(const std::shared_ptr<pt0::Camera>& camera,
-        ECS_WORLD_PARAM ee0::WxStagePage& stage);
+        ECS_WORLD_PARAM ee0::WxStagePage& stage,
+        uint32_t cam_cfg = ee2::CamControlOP::DEFAULT_FLAG);
 
 private:
     virtual void AfterInsertSelected(const n0::SceneNodePtr& node) const override;
