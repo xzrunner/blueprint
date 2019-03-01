@@ -28,8 +28,6 @@ private:
     void Translate(const std::vector<std::weak_ptr<Node>>& nodes,
         const sm::vec2& offset) const;
 
-    std::vector<n0::SceneNodePtr> QueryCommNodeByRect(const sm::rect& r) const;
-
     bool UpdateSelectionCommentary() const;
     bool UpdateNodeCommentary(const n0::SceneNodePtr& node,
         const sm::rect& src, const sm::rect& dst) const;

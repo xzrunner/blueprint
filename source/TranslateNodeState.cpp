@@ -1,5 +1,6 @@
 #include "blueprint/TranslateNodeState.h"
 #include "blueprint/CompNode.h"
+#include "blueprint/CommentaryNodeHelper.h"
 #include "blueprint/node/Commentary.h"
 
 #include <ee0/WxStagePage.h>
@@ -116,27 +117,6 @@ void TranslateNodeState::Translate(const std::vector<std::weak_ptr<Node>>& bp_no
     }
 }
 
-std::vector<n0::SceneNodePtr> TranslateNodeState::QueryCommNodeByRect(const sm::rect& r) const
-{
-    std::vector<n0::SceneNodePtr> ret;
-    m_stage.Traverse([&](const ee0::GameObj& obj)->bool
-    {
-        auto& cbb = obj->GetUniqueComp<n2::CompBoundingBox>();
-        if (!cbb.GetBounding(*obj).IsContain(r)) {
-            return true;
-        }
-
-        assert(obj->HasUniqueComp<CompNode>());
-        auto& cnode = obj->GetUniqueComp<CompNode>();
-        auto bp_node = cnode.GetNode();
-        if (bp_node->get_type() == rttr::type::get<node::Commentary>()) {
-            ret.push_back(obj);
-        }
-        return true;
-    });
-    return ret;
-}
-
 bool TranslateNodeState::UpdateSelectionCommentary() const
 {
     bool dirty = false;
@@ -176,11 +156,8 @@ bool TranslateNodeState::UpdateNodeCommentary(const n0::SceneNodePtr& node,
 {
     bool ret = false;
 
-    auto src_nodes = QueryCommNodeByRect(src);
-    auto dst_nodes = QueryCommNodeByRect(dst);
-    if (src_nodes == dst_nodes) {
-        return false;
-    }
+    auto src_nodes = CommentaryNodeHelper::QueryCommNodeByRect(m_stage, src);
+    auto dst_nodes = CommentaryNodeHelper::QueryCommNodeByRect(m_stage, dst);
 
     // remove
     auto bp_node = node->GetUniqueComp<CompNode>().GetNode();
@@ -200,20 +177,8 @@ bool TranslateNodeState::UpdateNodeCommentary(const n0::SceneNodePtr& node,
         return ret;
     }
 
-    n0::SceneNodePtr dst_node = nullptr;
-
-    auto& r_child = node->GetUniqueComp<n2::CompBoundingBox>().GetBounding(*node).GetSize();
-    for (auto& n : dst_nodes)
-    {
-        auto& r_parent = n->GetUniqueComp<n2::CompBoundingBox>().GetBounding(*n);
-        if (r_parent.IsContain(r_child)) {
-            dst_node = n;
-            break;
-        }
-    }
-    if (!dst_node) {
-        return ret;
-    }
+    n0::SceneNodePtr dst_node = dst_nodes[0];
+    assert(dst_node);
 
     ret = true;
 

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\ArrangeNodeOP.h" />
     <ClInclude Include="..\..\..\include\blueprint\Blueprint.h" />
+    <ClInclude Include="..\..\..\include\blueprint\CommentaryNodeHelper.h" />
     <ClInclude Include="..\..\..\include\blueprint\Connecting.h" />
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsAO.h" />
     <ClInclude Include="..\..\..\include\blueprint\DisconnectConnAO.h" />
@@ -40,6 +41,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\source\ArrangeNodeOP.cpp" />
     <ClCompile Include="..\..\..\source\Blueprint.cpp" />
+    <ClCompile Include="..\..\..\source\CommentaryNodeHelper.cpp" />
     <ClCompile Include="..\..\..\source\Connecting.cpp" />
     <ClCompile Include="..\..\..\source\CompNode.cpp" />
     <ClCompile Include="..\..\..\source\ConnectPinsAO.cpp" />

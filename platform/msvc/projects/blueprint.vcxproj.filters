@@ -31,6 +31,9 @@
     <Filter Include="editor\sub">
       <UniqueIdentifier>{44531115-7d09-4003-ac03-6c05ccf5c365}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{cb748614-6880-4383-a692-606d8d633b95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -85,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\NodeSelectOP.cpp">
       <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\CommentaryNodeHelper.cpp">
+      <Filter>tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +162,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeStyle.h">
       <Filter>dataset\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\CommentaryNodeHelper.h">
+      <Filter>tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
