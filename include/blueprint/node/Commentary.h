@@ -13,10 +13,7 @@ public:
     Commentary();
 
     auto& GetCommentText() const { return m_comment_text; }
-    void  SetCommentText(const std::string& str) {
-        m_comment_text = str;
-        m_title = str;
-    }
+    void  SetCommentText(const std::string& str);
 
     void  SetWidth(float width) { m_style.width = width; }
     float GetWidth() const { return m_style.width; }

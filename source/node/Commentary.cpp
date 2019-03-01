@@ -14,6 +14,16 @@ Commentary::Commentary()
     m_style.panel_bg_col = BG_COLOR_COMMENTARY;
 }
 
+void Commentary::SetCommentText(const std::string& str) 
+{
+    if (str.empty()) {
+        return;
+    }
+
+    m_comment_text = str;
+    m_title = str;
+}
+
 void Commentary::AddChild(const NodePtr& node)
 {
     RemoveExpiredChild();
