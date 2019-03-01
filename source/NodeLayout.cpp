@@ -20,7 +20,7 @@ const float    NodeLayout::CONNECTING_BEZIER_DIST = 0.3f;
 
 void NodeLayout::UpdateNodeStyle(Node& node)
 {
-	Node::Style s;
+	Node::Style s = node.GetStyle();
 
 	auto& input  = node.GetAllInput();
 	auto& output = node.GetAllOutput();
