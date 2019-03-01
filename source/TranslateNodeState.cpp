@@ -4,6 +4,8 @@
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
+#include <ee0/MsgHelper.h>
+#include <ee2/NodeReorderHelper.h>
 
 #include <node0/SceneNode.h>
 #include <node2/CompTransform.h>
@@ -27,14 +29,36 @@ bool TranslateNodeState::OnMouseRelease(int x, int y)
         return true;
     }
 
-    auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
-    AddSelectionToCommentary(m_first_pos, pos);
+    // translated
+    if (!m_selected_aabbs.empty()) {
+        UpdateSelectionCommentary();
+        m_selected_aabbs.clear();
+    }
+
+    return false;
+}
+
+bool TranslateNodeState::Clear()
+{
+    if (ee2::TranslateNodeState::Clear()) {
+        return true;
+    }
+
+    m_selected_aabbs.clear();
 
     return false;
 }
 
 void TranslateNodeState::Translate(const sm::vec2& offset)
 {
+    if (m_selection.IsEmpty()) {
+        return;
+    }
+
+    if (m_selected_aabbs.empty()) {
+        GetSelectedAABBs(m_selected_aabbs);
+    }
+
     ee2::TranslateNodeState::Translate(offset);
 
     m_selection.Traverse([&](const ee0::GameObjWithPos& opw)->bool
@@ -72,24 +96,33 @@ void TranslateNodeState::Translate(const std::vector<std::weak_ptr<Node>>& bp_no
     for (auto& bp_node : bp_nodes)
     {
         auto node = bp_node.lock();
-        if (node) {
-            auto itr = map_bp2scene.find(node);
-            if (itr != map_bp2scene.end()) {
-                auto& scene_node = itr->second;
-                auto& ctrans = scene_node->GetUniqueComp<n2::CompTransform>();
-                ctrans.SetPosition(*scene_node, ctrans.GetTrans().GetPosition() + offset);
-            }
+        if (!node) {
+            continue;
         }
+
+        auto itr = map_bp2scene.find(node);
+        if (itr == map_bp2scene.end()) {
+            continue;
+        }
+
+        auto& scene_node = itr->second;
+        // already translated
+        if (m_selection.IsExist(ee0::GameObjWithPos(scene_node, scene_node, 0))) {
+            continue;
+        }
+
+        auto& ctrans = scene_node->GetUniqueComp<n2::CompTransform>();
+        ctrans.SetPosition(*scene_node, ctrans.GetTrans().GetPosition() + offset);
     }
 }
 
-std::vector<n0::SceneNodePtr> TranslateNodeState::QueryCommNodeByPos(const sm::vec2& pos) const
+std::vector<n0::SceneNodePtr> TranslateNodeState::QueryCommNodeByRect(const sm::rect& r) const
 {
     std::vector<n0::SceneNodePtr> ret;
     m_stage.Traverse([&](const ee0::GameObj& obj)->bool
     {
         auto& cbb = obj->GetUniqueComp<n2::CompBoundingBox>();
-        if (!cbb.GetBounding(*obj).IsContain(pos)) {
+        if (!cbb.GetBounding(*obj).IsContain(r)) {
             return true;
         }
 
@@ -104,71 +137,109 @@ std::vector<n0::SceneNodePtr> TranslateNodeState::QueryCommNodeByPos(const sm::v
     return ret;
 }
 
-void TranslateNodeState::AddSelectionToCommentary(const sm::vec2& from, const sm::vec2& to) const
+bool TranslateNodeState::UpdateSelectionCommentary() const
 {
-    auto new_nodes = QueryCommNodeByPos(to);
-    auto old_nodes = QueryCommNodeByPos(from);
+    bool dirty = false;
 
-    bool new_contain_old = true;
-    for (auto& old : old_nodes)
+    std::vector<sm::rect> new_aabbs;
+    GetSelectedAABBs(new_aabbs);
+    // fixme
+    if (new_aabbs.size() != m_selected_aabbs.size()) {
+        return false;
+    }
+     
+    int idx = 0;
+    m_selection.Traverse([&](const ee0::GameObjWithPos& opw)->bool
     {
-        bool contain = false;
-        for (auto& n : new_nodes) {
-            if (old == n) {
-                contain = true;
-                break;
-            }
+        auto& node = opw.GetNode();
+        if (!node->HasUniqueComp<CompNode>()) {
+            return true;
         }
-        if (!contain) {
-            new_contain_old = false;
+        // commentary can't insert to another commentary
+        auto& bp_node = node->GetUniqueComp<CompNode>().GetNode();
+        if (bp_node->get_type() == rttr::type::get<node::Commentary>()) {
+            return true;
+        }
+
+        if (UpdateNodeCommentary(node, m_selected_aabbs[idx], new_aabbs[idx])) {
+            dirty = true;
+        }
+        ++idx;
+        return true;
+    });
+
+    return dirty;
+}
+
+bool TranslateNodeState::UpdateNodeCommentary(const n0::SceneNodePtr& node,
+                                              const sm::rect& src, const sm::rect& dst) const
+{
+    bool ret = false;
+
+    auto src_nodes = QueryCommNodeByRect(src);
+    auto dst_nodes = QueryCommNodeByRect(dst);
+    if (src_nodes == dst_nodes) {
+        return false;
+    }
+
+    // remove
+    auto bp_node = node->GetUniqueComp<CompNode>().GetNode();
+    for (auto& src : src_nodes)
+    {
+        auto src_bp_node = src->GetUniqueComp<CompNode>().GetNode();
+        assert(src_bp_node->get_type() == rttr::type::get<node::Commentary>());
+        auto comm_node = std::static_pointer_cast<node::Commentary>(src_bp_node);
+        if (comm_node->RemoveChild(bp_node)) {
+            ret = true;
             break;
         }
     }
-    if (old_nodes.empty()) {
-        new_contain_old = false;
+
+    // insert
+    if (dst_nodes.empty()) {
+        return ret;
     }
 
-    if (!new_contain_old)
+    n0::SceneNodePtr dst_node = nullptr;
+
+    auto& r_child = node->GetUniqueComp<n2::CompBoundingBox>().GetBounding(*node).GetSize();
+    for (auto& n : dst_nodes)
     {
-        // remove
-        m_selection.Traverse([&](const ee0::GameObjWithPos& opw)->bool
-        {
-            for (auto& old : old_nodes)
-            {
-                if (old == opw.GetNode()) {
-                    continue;
-                }
-
-                auto old_bp_node = old->GetUniqueComp<CompNode>().GetNode();
-                assert(old_bp_node->get_type() == rttr::type::get<node::Commentary>());
-                auto parent_bp = std::static_pointer_cast<node::Commentary>(old_bp_node);
-                auto child_bp = opw.GetNode()->GetUniqueComp<CompNode>().GetNode();
-                if (parent_bp->RemoveChild(child_bp)) {
-                    break;
-                }
-            }
-            return true;
-        });
-
-        // insert
-        if (!new_nodes.empty())
-        {
-            auto& new_node = new_nodes[0];
-            m_selection.Traverse([&](const ee0::GameObjWithPos& opw)->bool
-            {
-                if (new_node == opw.GetNode()) {
-                    return true;
-                }
-                auto& scene_node = opw.GetNode();
-                assert(scene_node->HasUniqueComp<CompNode>());
-                auto& cnode = scene_node->GetUniqueComp<CompNode>();
-                auto parent_node = new_node->GetUniqueComp<CompNode>().GetNode();
-                assert(parent_node->get_type() == rttr::type::get<node::Commentary>());
-                std::static_pointer_cast<node::Commentary>(parent_node)->AddChild(cnode.GetNode());
-                return true;
-            });
+        auto& r_parent = n->GetUniqueComp<n2::CompBoundingBox>().GetBounding(*n);
+        if (r_parent.IsContain(r_child)) {
+            dst_node = n;
+            break;
         }
     }
+    if (!dst_node) {
+        return ret;
+    }
+
+    ret = true;
+
+    assert(node->HasUniqueComp<CompNode>());
+    auto& cnode = node->GetUniqueComp<CompNode>();
+    auto parent_node = dst_node->GetUniqueComp<CompNode>().GetNode();
+    assert(parent_node->get_type() == rttr::type::get<node::Commentary>());
+    std::static_pointer_cast<node::Commentary>(parent_node)->AddChild(cnode.GetNode());
+
+    ee2::NodeReorderHelper::SortNodes(*m_sub_mgr, node, dst_node);
+
+    return ret;
+}
+
+void TranslateNodeState::GetSelectedAABBs(std::vector<sm::rect>& aabbs) const
+{
+    aabbs.clear();
+
+    aabbs.reserve(m_selection.Size());
+    m_selection.Traverse([&](const ee0::GameObjWithPos& opw)->bool
+    {
+        auto& obj = opw.GetNode();
+        auto& cbb = obj->GetUniqueComp<n2::CompBoundingBox>();
+        aabbs.push_back(cbb.GetBounding(*obj).GetSize());
+        return true;
+    });
 }
 
 }
