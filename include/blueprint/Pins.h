@@ -16,6 +16,8 @@ enum PinsType
 {
 	PINS_PORT = 0,
 
+    PINS_ANY_VAR,
+
 	// variable
 	PINS_BOOLEAN,
 	PINS_INTEGER,

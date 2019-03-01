@@ -14,7 +14,7 @@ public:
     GetLocalVar()
         : Node("GetLocalVar")
     {
-        AddPins(std::make_shared<Pins>(false, 0, PINS_PORT, "Out", *this));
+        AddPins(std::make_shared<Pins>(false, 0, PINS_ANY_VAR, "Out", *this));
 
         Layout();
     }
