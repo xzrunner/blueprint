@@ -80,6 +80,9 @@ bool Pins::CanTypeCast(const Pins& p) const
 	if (m_new_type == type) {
 		return true;
 	}
+    if (type == PINS_ANY_VAR || m_new_type == PINS_ANY_VAR) {
+        return true;
+    }
 
 	switch (m_new_type)
 	{
