@@ -188,7 +188,7 @@ bool TranslateNodeState::UpdateNodeCommentary(const n0::SceneNodePtr& node,
     assert(parent_node->get_type() == rttr::type::get<node::Commentary>());
     std::static_pointer_cast<node::Commentary>(parent_node)->AddChild(cnode.GetNode());
 
-    ee2::NodeReorderHelper::SortNodes(*m_sub_mgr, node, dst_node);
+    ee2::NodeReorderHelper::SwapNodes(*m_sub_mgr, node, dst_node);
 
     return ret;
 }
