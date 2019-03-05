@@ -3,6 +3,7 @@
 #include "blueprint/node/Commentary.h"
 #include "blueprint/node/SetLocalVar.h"
 #include "blueprint/node/GetLocalVar.h"
+#include "blueprint/node/Switch.h"
 
 #include <ee0/ReflectPropTypes.h>
 
@@ -51,6 +52,12 @@ REGIST_NODE_RTTI(GetLocalVar,                                                   
 .property("name", &bp::node::GetLocalVar::GetVarName, &bp::node::GetLocalVar::SetVarName)          \
 (                                                                                                  \
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Var Name"))                              \
+)
+)
+REGIST_NODE_RTTI(Switch,                                                                           \
+.property("toggle", &bp::node::Switch::GetToggle, &bp::node::Switch::SetToggle)                    \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Toggle"))                                \
 )
 )
 

@@ -5,6 +5,7 @@
 #include "blueprint/node/Commentary.h"
 #include "blueprint/node/SetLocalVar.h"
 #include "blueprint/node/GetLocalVar.h"
+#include "blueprint/node/Switch.h"
 
 #include <ns/CompIdxMgr.h>
 #include <ns/RegistCallback.h>
@@ -83,6 +84,7 @@ void Blueprint::InitNodes()
     m_nodes.push_back(std::make_shared<node::Commentary>());
     m_nodes.push_back(std::make_shared<node::SetLocalVar>());
     m_nodes.push_back(std::make_shared<node::GetLocalVar>());
+    m_nodes.push_back(std::make_shared<node::Switch>());
 }
 
 }

@@ -166,6 +166,9 @@
     <ClInclude Include="..\..\..\include\blueprint\CommentaryNodeHelper.h">
       <Filter>tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Switch.h">
+      <Filter>node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">
