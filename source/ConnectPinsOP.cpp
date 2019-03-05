@@ -226,30 +226,6 @@ bool ConnectPinsOP::OnMouseDrag(int x, int y)
 	return false;
 }
 
-bool ConnectPinsOP::OnMouseLeftDClick(int x, int y)
-{
-    if (ee0::EditOP::OnMouseLeftDClick(x, y)) {
-        return true;
-    }
-
-    // select tree
-    if (m_stage.GetSelection().Size() == 1)
-    {
-        NodePtr root = nullptr;
-        m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& nwp)->bool
-        {
-            auto& node = nwp.GetNode();
-            assert(node->HasUniqueComp<CompNode>());
-            root = node->GetUniqueComp<CompNode>().GetNode();
-            return true;
-        });
-        bool successor = !wxGetKeyState(WXK_CONTROL);
-        SelectAllTree(root, successor);
-    }
-    
-    return false;
-}
-
 bool ConnectPinsOP::OnDraw() const
 {
 	if (m_selected_pin)
@@ -567,67 +543,6 @@ void ConnectPinsOP::PasteConnections()
             }
         }
     }
-}
-
-void ConnectPinsOP::SelectAllTree(const NodePtr& root, bool successor) const
-{
-    std::set<const Node*> sel_bp_nodes;
-
-    std::queue<const Node*> buf;
-    buf.push(root.get());
-    if (successor)
-    {
-        while (!buf.empty())
-        {
-            auto n = buf.front(); buf.pop();
-            sel_bp_nodes.insert(n);
-
-            for (auto& c : n->GetAllOutput()) {
-                for (auto& conn : c->GetConnecting()) {
-                    buf.push(&conn->GetTo()->GetParent());
-                }
-            }
-        }
-    }
-    else
-    {
-        while (!buf.empty())
-        {
-            auto n = buf.front(); buf.pop();
-            sel_bp_nodes.insert(n);
-
-            for (auto& c : n->GetAllInput()) {
-                for (auto& conn : c->GetConnecting()) {
-                    buf.push(&conn->GetFrom()->GetParent());
-                }
-            }
-        }
-    }
-
-    if (sel_bp_nodes.empty()) {
-        return;
-    }
-
-    std::vector<n0::SceneNodePtr> sel_nodes;
-    m_stage.Traverse([&](const ee0::GameObj& obj)->bool
-    {
-        if (obj->HasUniqueComp<CompNode>())
-        {
-            auto& bp_node = obj->GetUniqueComp<CompNode>().GetNode();
-            if (sel_bp_nodes.find(bp_node.get()) != sel_bp_nodes.end()) {
-                sel_nodes.push_back(obj);
-            }
-        }
-        return true;
-    });
-    auto sub_mgr = m_stage.GetSubjectMgr();
-
-    std::vector<n0::NodeWithPos> nwps;
-    nwps.reserve(sel_nodes.size());
-    for (auto& obj : sel_nodes) {
-        nwps.push_back(n0::NodeWithPos(obj, obj, 0));
-    }
-    ee0::MsgHelper::InsertSelection(*sub_mgr, nwps);
 }
 
 void ConnectPinsOP::MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to)

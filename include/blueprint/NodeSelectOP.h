@@ -16,6 +16,8 @@ public:
         ECS_WORLD_PARAM ee0::WxStagePage& stage,
         uint32_t cam_cfg = ee2::CamControlOP::DEFAULT_FLAG);
 
+    virtual bool OnMouseLeftDClick(int x, int y) override;
+
 private:
     virtual void AfterInsertSelected(const n0::SceneNodePtr& node) const override;
     virtual void AfterDeleteSelected(const n0::SceneNodePtr& node) const override;
@@ -23,6 +25,8 @@ private:
 
     void ChangeVarHighlight(bool is_set_var, const std::string& name, bool set_highlight) const;
     void ClearVarHighlight() const;
+
+    void SelectAllTree(const NodePtr& root, bool successor) const;
 
     static void SetNodeBGColor(const NodePtr& node, const pt0::Color& color);
 

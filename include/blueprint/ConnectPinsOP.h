@@ -31,7 +31,6 @@ public:
 	virtual bool OnMouseLeftUp(int x, int y) override;
     virtual bool OnMouseRightDown(int x, int y) override;
 	virtual bool OnMouseDrag(int x, int y) override;
-    virtual bool OnMouseLeftDClick(int x, int y) override;
 
 	virtual bool OnDraw() const;
 
@@ -48,8 +47,6 @@ private:
 
     void CopyConnections();
     void PasteConnections();
-
-    void SelectAllTree(const NodePtr& root, bool successor) const;
 
     void MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to);
     void Disconnect(const std::shared_ptr<Connecting>& conn);
