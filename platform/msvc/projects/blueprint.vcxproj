@@ -28,7 +28,10 @@
     <ClInclude Include="..\..\..\include\blueprint\NodeSelectOP.h" />
     <ClInclude Include="..\..\..\include\blueprint\NodeStyle.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Function.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\GetLocalVar.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Input.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Output.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\SetLocalVar.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Switch.h" />
     <ClInclude Include="..\..\..\include\blueprint\NSCompNode.h" />
@@ -52,6 +55,9 @@
     <ClCompile Include="..\..\..\source\NodeLayout.cpp" />
     <ClCompile Include="..\..\..\source\NodeSelectOP.cpp" />
     <ClCompile Include="..\..\..\source\node\Commentary.cpp" />
+    <ClCompile Include="..\..\..\source\node\Function.cpp" />
+    <ClCompile Include="..\..\..\source\node\Input.cpp" />
+    <ClCompile Include="..\..\..\source\node\Output.cpp" />
     <ClCompile Include="..\..\..\source\NSCompNode.cpp" />
     <ClCompile Include="..\..\..\source\Pins.cpp" />
     <ClCompile Include="..\..\..\source\ConnectPinsOP.cpp" />

@@ -34,6 +34,12 @@
     <Filter Include="tools">
       <UniqueIdentifier>{cb748614-6880-4383-a692-606d8d633b95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="node\function">
+      <UniqueIdentifier>{c49e968b-77f4-45b5-903f-2bab2b673feb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="node\tools">
+      <UniqueIdentifier>{a06117ee-80f7-4532-bf6f-5d6bd95c5a0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -83,14 +89,23 @@
     <ClCompile Include="..\..\..\source\TranslateNodeState.cpp">
       <Filter>editor\sub</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Commentary.cpp">
-      <Filter>node</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\NodeSelectOP.cpp">
       <Filter>editor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\CommentaryNodeHelper.cpp">
       <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Commentary.cpp">
+      <Filter>node\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Input.cpp">
+      <Filter>node\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Output.cpp">
+      <Filter>node\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Function.cpp">
+      <Filter>node\function</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,9 +151,6 @@
     <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h">
       <Filter>node</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h">
-      <Filter>node</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsAO.h">
       <Filter>editor\aop</Filter>
     </ClInclude>
@@ -151,12 +163,6 @@
     <ClInclude Include="..\..\..\include\blueprint\TranslateNodeState.h">
       <Filter>editor\sub</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\node\SetLocalVar.h">
-      <Filter>node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\node\GetLocalVar.h">
-      <Filter>node</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeSelectOP.h">
       <Filter>editor</Filter>
     </ClInclude>
@@ -168,6 +174,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\Switch.h">
       <Filter>node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Input.h">
+      <Filter>node\function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Output.h">
+      <Filter>node\function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Function.h">
+      <Filter>node\function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h">
+      <Filter>node\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\GetLocalVar.h">
+      <Filter>node\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\SetLocalVar.h">
+      <Filter>node\tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

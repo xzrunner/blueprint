@@ -4,8 +4,13 @@
 #include "blueprint/node/SetLocalVar.h"
 #include "blueprint/node/GetLocalVar.h"
 #include "blueprint/node/Switch.h"
+#include "blueprint/node/Function.h"
+#include "blueprint/node/Input.h"
+#include "blueprint/node/Output.h"
 
 #include <ee0/ReflectPropTypes.h>
+
+#include <js/RTTR.h>
 
 #include <rttr/registration.h>
 
@@ -58,6 +63,37 @@ REGIST_NODE_RTTI(Switch,                                                        
 .property("toggle", &bp::node::Switch::GetToggle, &bp::node::Switch::SetToggle)                    \
 (                                                                                                  \
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Toggle"))                                \
+)
+)
+REGIST_NODE_RTTI(Function,                                                                         \
+.property("name", &bp::node::Function::GetName, &bp::node::Function::SetName)                      \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Name"))                                  \
+)                                                                                                  \
+.property("filepath", &bp::node::Function::GetFilepath, &bp::node::Function::SetFilepath)          \
+(                                                                                                  \
+    rttr::metadata(js::RTTR::FilePathTag(), true),                                                 \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Filepath"))                              \
+)
+)
+REGIST_NODE_RTTI(Input,                                                                            \
+.property("name", &bp::node::Input::GetName, &bp::node::Input::SetName)                            \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Name"))                                  \
+)                                                                                                  \
+.property("type", &bp::node::Input::GetType, &bp::node::Input::SetType)                            \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo(bp::node::Input::STR_TYPE))               \
+)
+)
+REGIST_NODE_RTTI(Output,                                                                           \
+.property("name", &bp::node::Output::GetName, &bp::node::Output::SetName)                          \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Name"))                                  \
+)                                                                                                  \
+.property("type", &bp::node::Output::GetType, &bp::node::Output::SetType)                          \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo(bp::node::Output::STR_TYPE))              \
 )
 )
 

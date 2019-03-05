@@ -6,6 +6,9 @@
 #include "blueprint/node/SetLocalVar.h"
 #include "blueprint/node/GetLocalVar.h"
 #include "blueprint/node/Switch.h"
+#include "blueprint/node/Function.h"
+#include "blueprint/node/Input.h"
+#include "blueprint/node/Output.h"
 
 #include <ns/CompIdxMgr.h>
 #include <ns/RegistCallback.h>
@@ -80,11 +83,14 @@ void Blueprint::InitNodes()
     //    assert(node);
     //    m_nodes.push_back(node);
     //}
-    
+
     m_nodes.push_back(std::make_shared<node::Commentary>());
     m_nodes.push_back(std::make_shared<node::SetLocalVar>());
     m_nodes.push_back(std::make_shared<node::GetLocalVar>());
     m_nodes.push_back(std::make_shared<node::Switch>());
+    m_nodes.push_back(std::make_shared<node::Function>());
+    m_nodes.push_back(std::make_shared<node::Input>());
+    m_nodes.push_back(std::make_shared<node::Output>());
 }
 
 }
