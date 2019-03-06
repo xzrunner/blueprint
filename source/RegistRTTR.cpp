@@ -4,6 +4,7 @@
 #include "blueprint/node/SetLocalVar.h"
 #include "blueprint/node/GetLocalVar.h"
 #include "blueprint/node/Switch.h"
+#include "blueprint/node/Boolean.h"
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
@@ -59,10 +60,11 @@ REGIST_NODE_RTTI(GetLocalVar,                                                   
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Var Name"))                              \
 )
 )
-REGIST_NODE_RTTI(Switch,                                                                           \
-.property("toggle", &bp::node::Switch::GetToggle, &bp::node::Switch::SetToggle)                    \
+REGIST_NODE_RTTI_DEFAULT(Switch)
+REGIST_NODE_RTTI(Boolean,                                                                          \
+.property("value", &bp::node::Boolean::GetValue, &bp::node::Boolean::SetValue)                     \
 (                                                                                                  \
-	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Toggle"))                                \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Bool"))                                  \
 )
 )
 REGIST_NODE_RTTI(Function,                                                                         \

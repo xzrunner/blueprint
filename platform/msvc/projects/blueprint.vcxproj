@@ -27,6 +27,7 @@
     <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h" />
     <ClInclude Include="..\..\..\include\blueprint\NodeSelectOP.h" />
     <ClInclude Include="..\..\..\include\blueprint\NodeStyle.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Boolean.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Function.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\GetLocalVar.h" />
