@@ -172,9 +172,6 @@
     <ClInclude Include="..\..\..\include\blueprint\CommentaryNodeHelper.h">
       <Filter>tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\node\Switch.h">
-      <Filter>node</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\Input.h">
       <Filter>node\function</Filter>
     </ClInclude>
@@ -191,6 +188,9 @@
       <Filter>node\tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\SetLocalVar.h">
+      <Filter>node\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Switch.h">
       <Filter>node\tools</Filter>
     </ClInclude>
   </ItemGroup>
