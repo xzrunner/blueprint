@@ -7,6 +7,7 @@
 #include <SM_Rect.h>
 #include <painting2/RenderSystem.h>
 #include <tessellation/Painter.h>
+#include <cpputil/StringHelper.h>
 
 namespace
 {
@@ -70,7 +71,8 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 	mat.Scale(TEXT_TITLE_SCALE, TEXT_TITLE_SCALE);
 	mat.Translate(pos.x, pos.y + hh - NodeLayout::TITLE_HEIGHT * 0.5f);
 	auto& tb = node.IsStyleSmallTitleFont() ? m_small_title_tb : m_title_tb;
-	pt2::RenderSystem::DrawText(node.GetTitle(), tb, mat, COL_TEXT, COL_ZERO);
+    auto str = cpputil::StringHelper::GBKToUTF8(node.GetTitle().c_str());
+	pt2::RenderSystem::DrawText(str, tb, mat, COL_TEXT, COL_ZERO);
 }
 
 void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
