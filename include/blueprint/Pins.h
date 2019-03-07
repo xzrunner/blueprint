@@ -44,6 +44,7 @@ public:
 
 	bool IsInput() const { return m_is_input; }
 	int  GetPosIdx() const { return m_pos; }
+    void SetPosIdx(int idx) { m_pos = idx; }
 
 	int  GetOldType() const { return m_old_type; }
 	int  GetType() const { return m_new_type; }

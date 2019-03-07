@@ -36,17 +36,18 @@ bool NodeSelectOP::OnMouseLeftDClick(int x, int y)
     NodePtr selected_bp = nullptr;
     m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& nwp)->bool
     {
-        auto& node = nwp.GetNode();
-        assert(node->HasUniqueComp<CompNode>());
-        selected_bp = node->GetUniqueComp<CompNode>().GetNode();
+        selected = nwp.GetNode();
+        assert(selected->HasUniqueComp<CompNode>());
+        selected_bp = selected->GetUniqueComp<CompNode>().GetNode();
         return true;
     });
 
+    assert(selected && selected_bp);
     if (selected_bp->get_type() == rttr::type::get<node::Function>())
     {
         auto func = std::static_pointer_cast<node::Function>(selected_bp);
         ee0::MsgHelper::CreateNewPage(*m_stage.GetSubjectMgr(), PAGE_TYPE,
-            func->GetFilepath().c_str());
+            func->GetFilepath().c_str(), selected);
     }
     else
     {

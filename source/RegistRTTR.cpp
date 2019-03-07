@@ -73,7 +73,8 @@ REGIST_NODE_RTTI(Function,                                                      
 .property("filepath", &bp::node::Function::GetFilepath, &bp::node::Function::SetFilepath)          \
 (                                                                                                  \
     rttr::metadata(js::RTTR::FilePathTag(), true),                                                 \
-	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Filepath"))                              \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Filepath")),                             \
+    rttr::metadata(ee0::PropOpenFileTag(), ee0::PropOpenFile("*.json"))                            \
 )
 )
 REGIST_NODE_RTTI(Input,                                                                            \
