@@ -52,9 +52,6 @@ public:
 	auto& GetPos() const { return m_pos; }
 	bool  SetPos(const sm::vec2& pos);
 
-	void  SetName(const std::string& name) { m_name = name; }
-	auto& GetName() const { return m_name; }
-
 	// wrapper for serialize
 	struct Flags
 	{
@@ -108,8 +105,6 @@ public:
 	CU_FLAG_METHOD(SizeChanging,        SIZE_CHANGING);
 
 private:
-	std::string m_name;
-
 	// for draw
 	sm::vec2 m_pos;
 
