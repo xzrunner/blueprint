@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl" />
+    <None Include="..\..\..\include\blueprint\node\Function.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>4.blueprint</ProjectName>

@@ -198,5 +198,8 @@
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">
       <Filter>dataset\node</Filter>
     </None>
+    <None Include="..\..\..\include\blueprint\node\Function.inl">
+      <Filter>node\function</Filter>
+    </None>
   </ItemGroup>
 </Project>
