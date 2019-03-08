@@ -8,7 +8,7 @@ namespace node
 template<typename NodeType>
 inline void Function::AddNode(std::vector<std::shared_ptr<NodeType>>& node_list,
                               std::vector<std::shared_ptr<Pins>>& pins_list,
-                              const std::shared_ptr<NodeType>& node, bool is_input)
+                              const std::shared_ptr<NodeType>& node, bool is_input, bool need_layout)
 {
     node_list.push_back(node);
 
@@ -16,7 +16,9 @@ inline void Function::AddNode(std::vector<std::shared_ptr<NodeType>>& node_list,
     auto pins = std::make_shared<Pins>(is_input, pins_list.size(), type, node->GetName(), *this);
     pins_list.push_back(pins);
 
-    Layout();
+    if (need_layout) {
+        Layout();
+    }
 }
 
 template<typename NodeType>

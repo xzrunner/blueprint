@@ -1,6 +1,9 @@
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
+#include "blueprint/CompNode.h"
+
+#include <node0/SceneNode.h>
 
 #include <boost/filesystem.hpp>
 
@@ -29,39 +32,94 @@ void Function::SetFilepath(const std::string& filepath)
     SetName(boost::filesystem::path(filepath).stem().string());
 }
 
-void Function::AddInputPort(const std::shared_ptr<Input>& input)
+bool Function::AddChild(std::shared_ptr<Function>& parent, const n0::SceneNodePtr& const child)
 {
-    AddNode<Input>(m_input_nodes, m_all_input, input, true);
-}
+    bool port_dirty = false;
 
-void Function::RemoveInputPort(const std::shared_ptr<Input>& input)
-{
-    RemoveNode<Input>(m_input_nodes, m_all_input, input);
-}
+    assert(child->HasUniqueComp<CompNode>());
 
-void Function::AddOutputPort(const std::shared_ptr<Output>& output)
-{
-    AddNode<Output>(m_output_nodes, m_all_output, output, false);
-}
-
-void Function::RemoveOutputPort(const std::shared_ptr<Output>& output)
-{
-    RemoveNode<Output>(m_output_nodes, m_all_output, output);
-}
-
-void Function::ClearAllPorts()
-{
-    for (auto& i : m_input_nodes) {
-        i->SetParent(nullptr);
+    auto& cbp = child->GetUniqueComp<CompNode>();
+    auto& bp_node = cbp.GetNode();
+    auto bp_type = bp_node->get_type();
+    if (bp_type == rttr::type::get<node::Input>())
+    {
+        auto input = std::static_pointer_cast<node::Input>(bp_node);
+        input->SetParent(parent);
+        parent->AddNode<Input>(parent->m_input_nodes, parent->m_all_input, input, true, true);
     }
-    for (auto& o : m_output_nodes) {
-        o->SetParent(nullptr);
+    else if (bp_type == rttr::type::get<node::Output>())
+    {
+        auto output = std::static_pointer_cast<node::Output>(bp_node);
+        output->SetParent(parent);
+        parent->AddNode<Output>(parent->m_output_nodes, parent->m_all_output, output, false, true);
     }
+
+    return port_dirty;
+}
+
+bool Function::RemoveChild(std::shared_ptr<Function>& parent, const n0::SceneNodePtr& child)
+{
+    bool port_dirty = false;
+
+    auto& children = parent->m_children;
+    children.erase(std::find(children.begin(), children.end(), child));
+
+    auto& cbp = child->GetUniqueComp<CompNode>();
+    auto& bp_node = cbp.GetNode();
+    auto bp_type = bp_node->get_type();
+    if (bp_type == rttr::type::get<node::Input>()) {
+        auto input = std::static_pointer_cast<node::Input>(bp_node);
+        parent->RemoveNode<Input>(parent->m_input_nodes, parent->m_all_input, input);
+    } else if (bp_type == rttr::type::get<node::Output>()) {
+        auto output = std::static_pointer_cast<node::Output>(bp_node);
+        parent->RemoveNode<Output>(parent->m_output_nodes, parent->m_all_output, output);
+    }
+
+    return port_dirty;
+}
+
+void Function::SetChildren(std::shared_ptr<Function>& parent, const std::vector<n0::SceneNodePtr>& children)
+{
+    parent->m_children = children;
+
+    parent->m_input_nodes.clear();
+    parent->m_output_nodes.clear();
+    parent->m_all_input.clear();
+    parent->m_all_output.clear();
+
+    for (auto& c : children)
+    {
+        assert(c->HasUniqueComp<CompNode>());
+        auto& cnode = c->GetUniqueComp<CompNode>();
+        auto bp_node = cnode.GetNode();
+        auto bp_type = bp_node->get_type();
+        if (bp_type == rttr::type::get<node::Input>())
+        {
+            auto input = std::static_pointer_cast<node::Input>(bp_node);
+            input->SetParent(parent);
+            parent->AddNode<Input>(parent->m_input_nodes, parent->m_all_input, input, true, false);
+        }
+        else if (bp_type == rttr::type::get<node::Output>())
+        {
+            auto output = std::static_pointer_cast<node::Output>(bp_node);
+            output->SetParent(parent);
+            parent->AddNode<Output>(parent->m_output_nodes, parent->m_all_output, output, false, false);
+        }
+    }
+
+    parent->Layout();
+}
+
+void Function::ClearChildren()
+{
+    m_children.clear();
 
     m_input_nodes.clear();
     m_output_nodes.clear();
     m_all_input.clear();
     m_all_output.clear();
+
+    Layout();
 }
 
 void Function::UpdatePins()
