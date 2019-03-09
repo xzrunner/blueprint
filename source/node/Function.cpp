@@ -38,6 +38,8 @@ bool Function::AddChild(std::shared_ptr<Function>& parent, const n0::SceneNodePt
 
     assert(child->HasUniqueComp<CompNode>());
 
+    parent->m_children.push_back(child);
+
     auto& cbp = child->GetUniqueComp<CompNode>();
     auto& bp_node = cbp.GetNode();
     auto bp_type = bp_node->get_type();
