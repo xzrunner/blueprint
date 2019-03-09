@@ -22,6 +22,8 @@ const pt0::Color COL_OBJECT    = pt0::Color(56, 165, 241);
 namespace bp
 {
 
+Pins::ExtendFuncs Pins::m_funcs;
+
 Pins::Pins(bool is_input, int pos, int type, const std::string& name, const Node& parent)
 	: m_is_input(is_input)
 	, m_pos(pos)
@@ -45,8 +47,21 @@ Pins::~Pins()
 	}
 }
 
+std::string Pins::GetDesc() const
+{
+    if (m_funcs.get_desc_func) {
+        return m_funcs.get_desc_func(GetName(), GetType());
+    }
+
+    return m_name;
+}
+
 const pt0::Color& Pins::GetColor() const
 {
+    if (m_funcs.get_color_func) {
+        return m_funcs.get_color_func(GetType());
+    }
+
 	switch (m_new_type)
 	{
 	case PINS_PORT:
@@ -76,6 +91,10 @@ const pt0::Color& Pins::GetColor() const
 
 bool Pins::CanTypeCast(const Pins& p) const
 {
+    if (m_funcs.can_type_cast_func) {
+        return m_funcs.can_type_cast_func(GetType(), p.GetType());
+    }
+
     auto type = p.GetType();
 	if (m_new_type == type) {
 		return true;

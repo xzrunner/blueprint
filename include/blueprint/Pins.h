@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <functional>
 
 namespace bp
 {
@@ -37,10 +38,10 @@ public:
 	~Pins();
 
 	// for draw
-	virtual std::string GetDesc() const { return m_name; }
-	virtual const pt0::Color& GetColor() const;
+    std::string GetDesc() const;
+	const pt0::Color& GetColor() const;
 
-	virtual bool CanTypeCast(const Pins& p) const;
+	bool CanTypeCast(const Pins& p) const;
 
 	bool IsInput() const { return m_is_input; }
 	int  GetPosIdx() const { return m_pos; }
@@ -61,6 +62,19 @@ public:
 	auto& GetName() const { return m_name; }
     void  SetName(const std::string& name) { m_name = name; }
 
+public:
+    struct ExtendFuncs
+    {
+        std::function<std::string(const std::string& name, int type)>
+            get_desc_func = nullptr;
+        std::function<const pt0::Color&(int type)>
+            get_color_func = nullptr;
+        std::function<bool(int type_from, int type_to)>
+            can_type_cast_func = nullptr;
+    };
+
+    static void SetExtendFuncs(ExtendFuncs funcs) { m_funcs = funcs; }
+
 private:
 	// for parent
 	bool m_is_input;
@@ -74,6 +88,8 @@ private:
 	const Node& m_parent;
 
 	std::vector<std::shared_ptr<Connecting>> m_connecting;
+
+    static ExtendFuncs m_funcs;
 
 }; // Pins
 
