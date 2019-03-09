@@ -32,7 +32,7 @@ void Function::SetFilepath(const std::string& filepath)
     SetName(boost::filesystem::path(filepath).stem().string());
 }
 
-bool Function::AddChild(std::shared_ptr<Function>& parent, const n0::SceneNodePtr& const child)
+bool Function::AddChild(std::shared_ptr<Function>& parent, const n0::SceneNodePtr& child)
 {
     bool port_dirty = false;
 
@@ -107,6 +107,8 @@ void Function::SetChildren(std::shared_ptr<Function>& parent, const std::vector<
         }
     }
 
+    parent->UpdatePins();
+
     parent->Layout();
 }
 
@@ -127,11 +129,13 @@ void Function::UpdatePins()
     assert(m_input_nodes.size() == m_all_input.size());
     for (int i = 0, n = m_input_nodes.size(); i < n; ++i) {
         m_all_input[i]->SetName(m_input_nodes[i]->GetName());
+        m_all_input[i]->SetType(m_input_nodes[i]->GetType());
     }
 
     assert(m_output_nodes.size() == m_all_output.size());
     for (int i = 0, n = m_output_nodes.size(); i < n; ++i) {
         m_all_output[i]->SetName(m_output_nodes[i]->GetName());
+        m_all_output[i]->SetType(m_output_nodes[i]->GetType());
     }
 }
 

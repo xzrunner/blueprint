@@ -18,8 +18,28 @@ Input::Input()
 
 void Input::SetName(const std::string& name)
 {
+    if (m_name == name) {
+        return;
+    }
+
     m_name  = name;
     m_title = name;
+
+    auto p = m_parent.lock();
+    if (p) {
+        p->UpdatePins();
+    }
+}
+
+void Input::SetType(int type)
+{
+    if (m_type == type) {
+        return;
+    }
+
+    m_type = type;
+
+    m_all_output[0]->SetType(type);
 
     auto p = m_parent.lock();
     if (p) {

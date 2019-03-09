@@ -19,7 +19,7 @@ public:
     void  SetName(const std::string& name);
 
     int  GetType() const { return m_type; }
-    void SetType(int type) { m_type = type; }
+    void SetType(int type);
 
     void SetParent(const std::shared_ptr<Function>& func) {
         m_parent = func;

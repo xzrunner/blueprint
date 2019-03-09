@@ -25,7 +25,7 @@ public:
     void  SetFilepath(const std::string& filepath);
 
     static bool AddChild(std::shared_ptr<Function>& parent,
-        const n0::SceneNodePtr& const child);
+        const n0::SceneNodePtr& child);
     static bool RemoveChild(std::shared_ptr<Function>& parent,
         const n0::SceneNodePtr& child);
 
