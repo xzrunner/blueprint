@@ -159,6 +159,8 @@ void disconnect(const std::shared_ptr<Connecting>& conn)
 			tn.SetSizeChanging(true);
 		}
 	}
+
+    NodeBuilder::Instance()->OnDisconnected(*f, *t);
 }
 
 }

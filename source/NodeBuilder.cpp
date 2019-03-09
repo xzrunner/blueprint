@@ -38,4 +38,11 @@ void NodeBuilder::OnConnected(Pins& from, Pins& to)
 	}
 }
 
+void NodeBuilder::OnDisconnected(Pins& from, Pins& to)
+{
+    if (m_cb.on_disconnected) {
+        m_cb.on_disconnected(from, to);
+    }
+}
+
 }

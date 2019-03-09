@@ -20,8 +20,9 @@ public:
 	struct Callback
 	{
 		std::function<void(Node&, std::vector<n0::SceneNodePtr>&)> on_created = nullptr;
-		std::function<void(Pins&, Pins&)>                          on_connecting = nullptr;
-		std::function<void(Pins&, Pins&)>                          on_connected = nullptr;
+		std::function<void(Pins&, Pins&)> on_connecting = nullptr;
+		std::function<void(Pins&, Pins&)> on_connected = nullptr;
+        std::function<void(Pins&, Pins&)> on_disconnected = nullptr;
 	};
 
 	void RegistCB(const NodeBuilder::Callback& cb) { m_cb = cb; }
@@ -31,6 +32,8 @@ public:
 
 	void OnConnecting(Pins& from, Pins& to);
 	void OnConnected(Pins& from, Pins& to);
+
+    void OnDisconnected(Pins& from, Pins& to);
 
 private:
 	Callback m_cb;
