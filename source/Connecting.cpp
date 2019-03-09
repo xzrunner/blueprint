@@ -99,7 +99,7 @@ std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
 	                                        const std::shared_ptr<Pins>& to)
 {
 	auto builder = NodeBuilder::Instance();
-	builder->BeforeConnected(*from, *to);
+	builder->OnConnecting(*from, *to);
 
 	auto& to_conn = to->GetConnecting();
 	if (!to_conn.empty())
@@ -123,7 +123,7 @@ std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
 	from->AddConnecting(conn);
 	to->AddConnecting(conn);
 
-	builder->AfterConnected(*from, *to);
+	builder->OnConnected(*from, *to);
 
 	return conn;
 }

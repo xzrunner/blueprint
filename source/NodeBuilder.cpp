@@ -11,30 +11,30 @@ NodeBuilder::NodeBuilder()
 {
 }
 
-void NodeBuilder::AfterCreated(Node& node, const ee0::SubjectMgrPtr& sub_mgr)
+void NodeBuilder::OnCreated(Node& node, const ee0::SubjectMgrPtr& sub_mgr)
 {
-	if (!m_cb.after_created) {
+	if (!m_cb.on_created) {
 		return;
 	}
 
 	std::vector<n0::SceneNodePtr> nodes;
-	m_cb.after_created(node, nodes);
+	m_cb.on_created(node, nodes);
 	for (auto& n : nodes) {
 		ee0::MsgHelper::InsertNode(*sub_mgr, n);
 	}
 }
 
-void NodeBuilder::BeforeConnected(Pins& from, Pins& to)
+void NodeBuilder::OnConnecting(Pins& from, Pins& to)
 {
-	if (m_cb.before_connected) {
-		m_cb.before_connected(from, to);
+	if (m_cb.on_connecting) {
+		m_cb.on_connecting(from, to);
 	}
 }
 
-void NodeBuilder::AfterConnected(Pins& from, Pins& to)
+void NodeBuilder::OnConnected(Pins& from, Pins& to)
 {
-	if (m_cb.after_connected) {
-		m_cb.after_connected(from, to);
+	if (m_cb.on_connected) {
+		m_cb.on_connected(from, to);
 	}
 }
 

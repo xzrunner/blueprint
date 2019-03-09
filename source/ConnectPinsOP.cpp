@@ -415,7 +415,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	bp_node->SetPos(pos);
 
 	auto builder = NodeBuilder::Instance();
-	builder->AfterCreated(*bp_node, m_stage.GetSubjectMgr());
+	builder->OnCreated(*bp_node, m_stage.GetSubjectMgr());
 
 	auto node = std::make_shared<n0::SceneNode>();
 	auto& cnode = node->AddUniqueComp<CompNode>();

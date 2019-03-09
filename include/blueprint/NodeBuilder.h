@@ -19,18 +19,18 @@ class NodeBuilder
 public:
 	struct Callback
 	{
-		std::function<void(Node&, std::vector<n0::SceneNodePtr>&)> after_created = nullptr;
-		std::function<void(Pins&, Pins&)>                          before_connected = nullptr;
-		std::function<void(Pins&, Pins&)>                          after_connected = nullptr;
+		std::function<void(Node&, std::vector<n0::SceneNodePtr>&)> on_created = nullptr;
+		std::function<void(Pins&, Pins&)>                          on_connecting = nullptr;
+		std::function<void(Pins&, Pins&)>                          on_connected = nullptr;
 	};
 
 	void RegistCB(const NodeBuilder::Callback& cb) { m_cb = cb; }
 
 public:
-	void AfterCreated(Node& node, const ee0::SubjectMgrPtr& sub_mgr);
+	void OnCreated(Node& node, const ee0::SubjectMgrPtr& sub_mgr);
 
-	void BeforeConnected(Pins& from, Pins& to);
-	void AfterConnected(Pins& from, Pins& to);
+	void OnConnecting(Pins& from, Pins& to);
+	void OnConnected(Pins& from, Pins& to);
 
 private:
 	Callback m_cb;
