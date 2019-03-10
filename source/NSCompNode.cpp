@@ -130,7 +130,7 @@ void NSCompNode::StoreConnection(const std::vector<n0::SceneNodePtr>& nodes,
 	}
 }
 
-void NSCompNode::LoadConnection(std::vector<n0::SceneNodePtr>& nodes,
+void NSCompNode::LoadConnection(const std::vector<n0::SceneNodePtr>& nodes,
 	                            const rapidjson::Value& nodes_val)
 {
 	assert(nodes_val.Size() == nodes.size());

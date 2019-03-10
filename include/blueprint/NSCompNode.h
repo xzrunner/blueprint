@@ -39,7 +39,7 @@ public:
 
 	static void StoreConnection(const std::vector<n0::SceneNodePtr>& nodes,
 		rapidjson::Value& nodes_val, rapidjson::MemoryPoolAllocator<>& alloc);
-	static void LoadConnection(std::vector<n0::SceneNodePtr>& nodes,
+	static void LoadConnection(const std::vector<n0::SceneNodePtr>& nodes,
 		const rapidjson::Value& nodes_val);
 
 private:
