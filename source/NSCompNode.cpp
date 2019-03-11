@@ -158,6 +158,9 @@ void NSCompNode::LoadConnection(const std::vector<n0::SceneNodePtr>& nodes,
 		{
 			auto src_name = output_val["from"].GetString();
 			auto src = QueryPinsByName(*nodes[src_node_idx]->GetUniqueComp<CompNode>().GetNode(), false, src_name);
+            if (!src) {
+                continue;
+            }
 
 			auto& conns_val = output_val["to"];
 			for (auto& conn_val : conns_val.GetArray())
@@ -165,6 +168,9 @@ void NSCompNode::LoadConnection(const std::vector<n0::SceneNodePtr>& nodes,
 				int node_idx = conn_val["node_idx"].GetInt();
 				auto dst_name = conn_val["pin"].GetString();
 				auto dst = QueryPinsByName(*nodes[node_idx]->GetUniqueComp<CompNode>().GetNode(), true, dst_name);
+                if (!dst) {
+                    continue;
+                }
 				make_connecting(src, dst);
 			}
 		}
