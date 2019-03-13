@@ -40,6 +40,9 @@
     <Filter Include="node\tools">
       <UniqueIdentifier>{a06117ee-80f7-4532-bf6f-5d6bd95c5a0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="node\logical">
+      <UniqueIdentifier>{29d7e3ce-83d9-4e3d-9c34-9da6c8b0c37c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -190,11 +193,17 @@
     <ClInclude Include="..\..\..\include\blueprint\node\SetLocalVar.h">
       <Filter>node\tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\node\Switch.h">
-      <Filter>node\tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\Boolean.h">
       <Filter>node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Switch.h">
+      <Filter>node\logical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\CompareLess.h">
+      <Filter>node\logical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Proxy.h">
+      <Filter>node\tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
