@@ -6,6 +6,8 @@
 #include "blueprint/node/Proxy.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
+#include "blueprint/node/CompareGreater.h"
+#include "blueprint/node/CompareEqual.h"
 #include "blueprint/node/Boolean.h"
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
@@ -65,6 +67,8 @@ REGIST_NODE_RTTI(GetLocalVar,                                                   
 REGIST_NODE_RTTI_DEFAULT(Proxy)
 REGIST_NODE_RTTI_DEFAULT(Switch)
 REGIST_NODE_RTTI_DEFAULT(CompareLess)
+REGIST_NODE_RTTI_DEFAULT(CompareGreater)
+REGIST_NODE_RTTI_DEFAULT(CompareEqual)
 REGIST_NODE_RTTI(Boolean,                                                                          \
 .property("value", &bp::node::Boolean::GetValue, &bp::node::Boolean::SetValue)                     \
 (                                                                                                  \

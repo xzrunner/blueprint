@@ -205,6 +205,12 @@
     <ClInclude Include="..\..\..\include\blueprint\node\Proxy.h">
       <Filter>node\tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\CompareEqual.h">
+      <Filter>node\logical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\CompareGreater.h">
+      <Filter>node\logical</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">

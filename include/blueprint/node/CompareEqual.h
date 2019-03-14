@@ -8,11 +8,11 @@ namespace bp
 namespace node
 {
 
-class CompareLess : public Node
+class CompareEqual : public Node
 {
 public:
-    CompareLess()
-        : Node("Compare(A<B)")
+    CompareEqual()
+        : Node("Compare(A=B)")
     {
         AddPins(std::make_shared<Pins>(true, 0, PINS_ANY_VAR, "A",     *this));
         AddPins(std::make_shared<Pins>(true, 1, PINS_ANY_VAR, "B",     *this));
@@ -34,7 +34,7 @@ public:
 
     RTTR_ENABLE(Node)
 
-}; // CompareLess
+}; // CompareEqual
 
 }
 }
