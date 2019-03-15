@@ -3,6 +3,7 @@
 #include "blueprint/Pins.h"
 #include "blueprint/NodeLayout.h"
 #include "blueprint/Connecting.h"
+#include "blueprint/NodeStyle.h"
 
 #include <SM_Rect.h>
 #include <painting2/RenderSystem.h>
@@ -139,14 +140,22 @@ void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat)
 			}
 			auto& dst = c->GetTo();
 			assert(dst);
-			if (src->GetType() == dst->GetType()) {
-				auto& vertices = curve.shape.GetVertices();
-				pt.AddPolyline(vertices.data(), vertices.size(), src->GetColor().ToABGR());
-			} else {
-				assert(!curve.color.empty());
-				auto& vertices = curve.shape.GetVertices();
-				pt.AddPolylineMultiColor(vertices.data(), curve.color.data(), vertices.size());
-			}
+            if (!c->IsActive())
+            {
+                auto& vertices = curve.shape.GetVertices();
+                pt.AddPolylineDash(vertices.data(), vertices.size(), BG_COLOR_DEFAULT.ToABGR(), tess::DEFAULT_LINE_WIDTH, 5);
+            }
+            else
+            {
+			    if (src->GetType() == dst->GetType()) {
+				    auto& vertices = curve.shape.GetVertices();
+				    pt.AddPolyline(vertices.data(), vertices.size(), src->GetColor().ToABGR());
+			    } else {
+				    assert(!curve.color.empty());
+				    auto& vertices = curve.shape.GetVertices();
+				    pt.AddPolylineMultiColor(vertices.data(), curve.color.data(), vertices.size());
+			    }
+            }
 		}
 	}
 	pt2::RenderSystem::DrawPainter(pt);

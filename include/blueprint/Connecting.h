@@ -22,6 +22,9 @@ public:
 
 	auto& GetCurve() const { return m_curve; }
 
+    bool IsActive() const { return m_active; }
+    void SetActive(bool active) { m_active = active; }
+
 private:
 	struct Curve
 	{
@@ -38,6 +41,8 @@ private:
 	std::weak_ptr<Pins> m_to;
 
 	Curve m_curve;
+
+    bool m_active = false;
 
 }; // Connecting
 
