@@ -42,7 +42,7 @@ private:
 
 	Curve m_curve;
 
-    bool m_active = false;
+    bool m_active = true;
 
 }; // Connecting
 
