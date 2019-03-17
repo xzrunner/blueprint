@@ -36,6 +36,8 @@ public:
 
     void UpdatePins();
 
+    bool IsEmpty() const { return m_children.empty(); }
+
 private:
     template<typename NodeType>
     void AddNode(std::vector<std::shared_ptr<NodeType>>& node_list, std::vector<std::shared_ptr<Pins>>& pins_list,
