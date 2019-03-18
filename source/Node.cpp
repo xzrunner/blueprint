@@ -52,17 +52,33 @@ void Node::Draw(const sm::Matrix2D& mt) const
 	render->DrawConnecting(*this, mt);
 }
 
-Node::Flags Node::GetFlags() const
+bool Node::UpdateExtInputPorts(bool is_connecting)
 {
-	return Flags({ IsStyleOnlyTitle(), IsStyleSmallTitleFont() });
-}
+    if (!IsExtensibleInputPorts()) {
+        return false;
+    }
 
-void Node::SetFlags(Flags flags)
-{
-	SetStyleOnlyTitle(flags.only_title);
-	SetStyleSmallTitleFont(flags.small_title_font);
+    bool dirty = false;
 
-	Layout();
+    if (is_connecting)
+    {
+        const int n = m_all_input.size();
+        std::string name;
+        name.push_back(static_cast<char>('A' + n));
+        AddPins(std::make_shared<Pins>(true, n, PINS_ANY_VAR, name, *this));
+        dirty = true;
+    }
+    else
+    {
+        if (m_all_input.size() > 2) {
+            if (m_all_input.back()->GetConnecting().empty()) {
+                m_all_input.pop_back();
+                dirty = true;
+            }
+        }
+    }
+
+    return dirty;
 }
 
 bool Node::SetPos(const sm::vec2& pos)
@@ -85,6 +101,19 @@ bool Node::SetPos(const sm::vec2& pos)
 	}
 
 	return true;
+}
+
+Node::Flags Node::GetFlags() const
+{
+	return Flags({ IsStyleOnlyTitle(), IsStyleSmallTitleFont() });
+}
+
+void Node::SetFlags(Flags flags)
+{
+	SetStyleOnlyTitle(flags.only_title);
+	SetStyleSmallTitleFont(flags.small_title_font);
+
+	Layout();
 }
 
 void Node::AddPins(const std::shared_ptr<Pins>& pins)

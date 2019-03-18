@@ -53,6 +53,13 @@ private:
 
     void FlushRecords();
 
+    enum class ConnEvent
+    {
+        Connecting,
+        Connected,
+    };
+    void UpdatemExtInputPorts(ConnEvent event);
+
 private:
 	ee0::WxStagePage& m_stage;
 
@@ -72,6 +79,8 @@ private:
     std::vector<n0::SceneNodePtr> m_clipboard;
 
     std::vector<std::shared_ptr<ee0::AtomicOP>> m_records;
+
+    std::shared_ptr<Pins> m_last_selected_pin = nullptr;
 
 }; // ConnectPinsOP
 

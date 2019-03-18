@@ -8,6 +8,7 @@
 #include "blueprint/NodeBuilder.h"
 #include "blueprint/ConnectPinsAO.h"
 #include "blueprint/DisconnectConnAO.h"
+#include "blueprint/NodeStyle.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
@@ -114,6 +115,9 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
 
 		m_selected_pin = QueryPinsByPos(node, pos, m_first_pos);
 		m_last_pos = m_first_pos;
+
+        m_last_selected_pin = m_selected_pin;
+        UpdatemExtInputPorts(ConnEvent::Connecting);
 	}
 
 	return false;
@@ -137,6 +141,8 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 #ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
         m_selected_conns.clear();
 #endif // BP_CONNECT_PINS_OP_SELECT_CONNS
+
+        UpdatemExtInputPorts(ConnEvent::Connected);
 
         // clear
         m_selected_pin = nullptr;
@@ -164,6 +170,8 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 
     m_first_pos.MakeInvalid();
     m_last_pos.MakeInvalid();
+
+    m_last_selected_pin.reset();
 
 //    FlushRecords();
 
@@ -583,6 +591,49 @@ void ConnectPinsOP::FlushRecords()
         ee0::MsgHelper::AddAtomicOP(*sub_mgr, aop);
     }
     m_records.clear();
+}
+
+void ConnectPinsOP::UpdatemExtInputPorts(ConnEvent event)
+{
+    if (!m_last_selected_pin) {
+        return;
+    }
+
+    bool is_connecting = event == ConnEvent::Connecting;
+ 	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
+	{
+		if (!obj->HasUniqueComp<CompNode>()) {
+			return true;
+		}
+		auto& cnode = obj->GetUniqueComp<CompNode>();
+		auto bp_node = cnode.GetNode();
+		if (bp_node && bp_node->IsExtensibleInputPorts())
+        {
+            if (is_connecting && bp_node.get() == &m_last_selected_pin->GetParent()) {
+                return true;
+            }
+
+            if (bp_node->UpdateExtInputPorts(is_connecting))
+            {
+                auto& st = bp_node->GetStyle();
+                sm::vec2 old_sz(st.width, st.height);
+
+                NodeLayout::UpdateNodeStyle(*bp_node);
+                sm::vec2 new_sz(st.width, st.height);
+
+                auto& caabb = obj->GetUniqueComp<n2::CompBoundingBox>();
+                caabb.SetSize(*obj, sm::rect(st.width, st.height));
+
+                auto& ctrans = obj->GetUniqueComp<n2::CompTransform>();
+                auto pos = ctrans.GetTrans().GetPosition();
+                pos.x += (new_sz.x - old_sz.x) * 0.5f;
+                pos.y -= (new_sz.y - old_sz.y) * 0.5f;
+                ctrans.SetPosition(*obj, pos);
+            }
+		}
+
+		return true;
+	});
 }
 
 }
