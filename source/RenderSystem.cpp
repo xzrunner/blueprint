@@ -34,7 +34,7 @@ RenderSystem::RenderSystem()
 {
 	m_title_tb.font_size = 24;
 	m_title_tb.align_hori = pt2::Textbox::HA_CENTER;
-	m_title_tb.width  = 200;
+	m_title_tb.width  = 500;
 	m_title_tb.height = NodeLayout::DEFAULT_HEIGHT;
 	m_small_title_tb = m_title_tb;
 	m_small_title_tb.font_size = 18;
