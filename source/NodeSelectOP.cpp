@@ -1,8 +1,8 @@
 #include "blueprint/NodeSelectOP.h"
 #include "blueprint/CompNode.h"
 #include "blueprint/Connecting.h"
-#include "blueprint/node/SetLocalVar.h"
-#include "blueprint/node/GetLocalVar.h"
+#include "blueprint/node/SetReference.h"
+#include "blueprint/node/GetReference.h"
 #include "blueprint/node/Function.h"
 
 #include <ee0/WxStagePage.h>
@@ -65,14 +65,14 @@ void NodeSelectOP::AfterInsertSelected(const n0::SceneNodePtr& node) const
     }
 
     auto bp_node = node->GetUniqueComp<CompNode>().GetNode();
-    if (bp_node->get_type() == rttr::type::get<node::SetLocalVar>())
+    if (bp_node->get_type() == rttr::type::get<node::SetReference>())
     {
-        auto& name = std::static_pointer_cast<node::SetLocalVar>(bp_node)->GetVarName();
+        auto& name = std::static_pointer_cast<node::SetReference>(bp_node)->GetName();
         ChangeVarHighlight(false, name, true);
     }
-    else if (bp_node->get_type() == rttr::type::get<node::GetLocalVar>())
+    else if (bp_node->get_type() == rttr::type::get<node::GetReference>())
     {
-        auto& name = std::static_pointer_cast<node::GetLocalVar>(bp_node)->GetVarName();
+        auto& name = std::static_pointer_cast<node::GetReference>(bp_node)->GetName();
         ChangeVarHighlight(true, name, true);
     }
 }
@@ -85,14 +85,14 @@ void NodeSelectOP::AfterDeleteSelected(const n0::SceneNodePtr& node) const
 
 
     auto bp_node = node->GetUniqueComp<CompNode>().GetNode();
-    if (bp_node->get_type() == rttr::type::get<node::SetLocalVar>())
+    if (bp_node->get_type() == rttr::type::get<node::SetReference>())
     {
-        auto& name = std::static_pointer_cast<node::SetLocalVar>(bp_node)->GetVarName();
+        auto& name = std::static_pointer_cast<node::SetReference>(bp_node)->GetName();
         ChangeVarHighlight(false, name, false);
     }
-    else if (bp_node->get_type() == rttr::type::get<node::GetLocalVar>())
+    else if (bp_node->get_type() == rttr::type::get<node::GetReference>())
     {
-        auto& name = std::static_pointer_cast<node::GetLocalVar>(bp_node)->GetVarName();
+        auto& name = std::static_pointer_cast<node::GetReference>(bp_node)->GetName();
         ChangeVarHighlight(true, name, false);
     }
 }
@@ -116,11 +116,11 @@ void NodeSelectOP::ChangeVarHighlight(bool is_set_var, const std::string& name, 
         auto& cnode = obj->GetUniqueComp<CompNode>();
         auto node = cnode.GetNode();
         auto type = node->get_type();
-        if (is_set_var && type == rttr::type::get<node::SetLocalVar>() &&
-            std::static_pointer_cast<node::SetLocalVar>(node)->GetVarName() == name) {
+        if (is_set_var && type == rttr::type::get<node::SetReference>() &&
+            std::static_pointer_cast<node::SetReference>(node)->GetName() == name) {
             SetNodeBGColor(node, set_highlight ? BG_COLOR_HIGHLIGHT : BG_COLOR_DEFAULT);
-        } else if (!is_set_var && type == rttr::type::get<node::GetLocalVar>() &&
-            std::static_pointer_cast<node::GetLocalVar>(node)->GetVarName() == name) {
+        } else if (!is_set_var && type == rttr::type::get<node::GetReference>() &&
+            std::static_pointer_cast<node::GetReference>(node)->GetName() == name) {
             SetNodeBGColor(node, set_highlight ? BG_COLOR_HIGHLIGHT : BG_COLOR_DEFAULT);
         }
         return true;
@@ -137,8 +137,8 @@ void NodeSelectOP::ClearVarHighlight() const
         auto& cnode = obj->GetUniqueComp<CompNode>();
         auto node = cnode.GetNode();
         auto type = node->get_type();
-        if (type == rttr::type::get<node::SetLocalVar>() ||
-            type == rttr::type::get<node::GetLocalVar>()) {
+        if (type == rttr::type::get<node::SetReference>() ||
+            type == rttr::type::get<node::GetReference>()) {
             SetNodeBGColor(node, BG_COLOR_DEFAULT);
         }
         return true;

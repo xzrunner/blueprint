@@ -3,8 +3,8 @@
 #include "blueprint/NSCompNode.h"
 #include "blueprint/Node.h"
 #include "blueprint/node/Commentary.h"
-#include "blueprint/node/SetLocalVar.h"
-#include "blueprint/node/GetLocalVar.h"
+#include "blueprint/node/SetReference.h"
+#include "blueprint/node/GetReference.h"
 #include "blueprint/node/Proxy.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
@@ -90,8 +90,8 @@ void Blueprint::InitNodes()
     //}
 
     m_nodes.push_back(std::make_shared<node::Commentary>());
-    m_nodes.push_back(std::make_shared<node::SetLocalVar>());
-    m_nodes.push_back(std::make_shared<node::GetLocalVar>());
+    m_nodes.push_back(std::make_shared<node::SetReference>());
+    m_nodes.push_back(std::make_shared<node::GetReference>());
     m_nodes.push_back(std::make_shared<node::Proxy>());
     m_nodes.push_back(std::make_shared<node::Switch>());
     m_nodes.push_back(std::make_shared<node::CompareLess>());

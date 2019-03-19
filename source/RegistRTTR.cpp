@@ -1,8 +1,8 @@
 #include "blueprint/EventBeginPlay.h"
 #include "blueprint/FlowCtrlBranch.h"
 #include "blueprint/node/Commentary.h"
-#include "blueprint/node/SetLocalVar.h"
-#include "blueprint/node/GetLocalVar.h"
+#include "blueprint/node/SetReference.h"
+#include "blueprint/node/GetReference.h"
 #include "blueprint/node/Proxy.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
@@ -52,16 +52,16 @@ REGIST_NODE_RTTI(Commentary,                                                    
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Height"))                                \
 )
 )
-REGIST_NODE_RTTI(SetLocalVar,                                                                      \
-.property("name", &bp::node::SetLocalVar::GetVarName, &bp::node::SetLocalVar::SetVarName)          \
+REGIST_NODE_RTTI(SetReference,                                                                      \
+.property("name", &bp::node::SetReference::GetName, &bp::node::SetReference::SetName)                \
 (                                                                                                  \
-	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Var Name"))                              \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Name"))                                  \
 )
 )
-REGIST_NODE_RTTI(GetLocalVar,                                                                      \
-.property("name", &bp::node::GetLocalVar::GetVarName, &bp::node::GetLocalVar::SetVarName)          \
+REGIST_NODE_RTTI(GetReference,                                                                      \
+.property("name", &bp::node::GetReference::GetName, &bp::node::GetReference::SetName)                \
 (                                                                                                  \
-	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Var Name"))                              \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Name"))                                  \
 )
 )
 REGIST_NODE_RTTI_DEFAULT(Proxy)
