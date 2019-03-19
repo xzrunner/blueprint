@@ -5,6 +5,8 @@
 #include "blueprint/node/Commentary.h"
 #include "blueprint/node/SetReference.h"
 #include "blueprint/node/GetReference.h"
+#include "blueprint/node/SetValue.h"
+#include "blueprint/node/GetValue.h"
 #include "blueprint/node/Proxy.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
@@ -92,6 +94,8 @@ void Blueprint::InitNodes()
     m_nodes.push_back(std::make_shared<node::Commentary>());
     m_nodes.push_back(std::make_shared<node::SetReference>());
     m_nodes.push_back(std::make_shared<node::GetReference>());
+    m_nodes.push_back(std::make_shared<node::SetValue>());
+    m_nodes.push_back(std::make_shared<node::GetValue>());
     m_nodes.push_back(std::make_shared<node::Proxy>());
     m_nodes.push_back(std::make_shared<node::Switch>());
     m_nodes.push_back(std::make_shared<node::CompareLess>());

@@ -8,12 +8,13 @@ namespace bp
 namespace node
 {
 
-class GetReference : public Node
+class SetValue : public Node
 {
 public:
-    GetReference()
-        : Node("GetReference")
+    SetValue()
+        : Node("SetValue")
     {
+        AddPins(std::make_shared<Pins>(true, 0, PINS_ANY_VAR, "In", *this));
         AddPins(std::make_shared<Pins>(false, 0, PINS_ANY_VAR, "Out", *this));
 
         Layout();
@@ -21,7 +22,7 @@ public:
 
     void SetName(const std::string& name) { 
         m_name = name; 
-        m_title = "Get " + name;
+        m_title = "Set " + name;
     }
     auto& GetName() const { return m_name; }
 
@@ -30,7 +31,7 @@ private:
 
     RTTR_ENABLE(Node)
 
-}; // GetReference
+}; // SetValue
 
 }
 }

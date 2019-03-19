@@ -3,6 +3,8 @@
 #include "blueprint/node/Commentary.h"
 #include "blueprint/node/SetReference.h"
 #include "blueprint/node/GetReference.h"
+#include "blueprint/node/SetValue.h"
+#include "blueprint/node/GetValue.h"
 #include "blueprint/node/Proxy.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
@@ -52,14 +54,26 @@ REGIST_NODE_RTTI(Commentary,                                                    
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Height"))                                \
 )
 )
-REGIST_NODE_RTTI(SetReference,                                                                      \
-.property("name", &bp::node::SetReference::GetName, &bp::node::SetReference::SetName)                \
+REGIST_NODE_RTTI(SetReference,                                                                     \
+.property("name", &bp::node::SetReference::GetName, &bp::node::SetReference::SetName)              \
 (                                                                                                  \
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Name"))                                  \
 )
 )
-REGIST_NODE_RTTI(GetReference,                                                                      \
-.property("name", &bp::node::GetReference::GetName, &bp::node::GetReference::SetName)                \
+REGIST_NODE_RTTI(GetReference,                                                                     \
+.property("name", &bp::node::GetReference::GetName, &bp::node::GetReference::SetName)              \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Name"))                                  \
+)
+)
+REGIST_NODE_RTTI(SetValue,                                                                         \
+.property("name", &bp::node::SetValue::GetName, &bp::node::SetValue::SetName)                      \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Name"))                                  \
+)
+)
+REGIST_NODE_RTTI(GetValue,                                                                         \
+.property("name", &bp::node::GetValue::GetName, &bp::node::GetValue::SetName)                      \
 (                                                                                                  \
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Name"))                                  \
 )

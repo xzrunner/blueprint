@@ -22,7 +22,7 @@ public:
 
     void SetName(const std::string& name) { 
         m_name = name; 
-        m_title = name;
+        m_title = "Set " + name;
     }
     auto& GetName() const { return m_name; }
 

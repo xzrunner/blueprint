@@ -8,11 +8,11 @@ namespace bp
 namespace node
 {
 
-class GetReference : public Node
+class GetValue : public Node
 {
 public:
-    GetReference()
-        : Node("GetReference")
+    GetValue()
+        : Node("GetValue")
     {
         AddPins(std::make_shared<Pins>(false, 0, PINS_ANY_VAR, "Out", *this));
 
@@ -30,7 +30,7 @@ private:
 
     RTTR_ENABLE(Node)
 
-}; // GetReference
+}; // GetValue
 
 }
 }

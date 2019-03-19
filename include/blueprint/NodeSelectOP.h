@@ -23,7 +23,8 @@ private:
     virtual void AfterDeleteSelected(const n0::SceneNodePtr& node) const override;
     virtual void AfterClearSelection() const override;
 
-    void ChangeVarHighlight(bool is_set_var, const std::string& name, bool set_highlight) const;
+    void ChangeReferenceHighlight(bool is_set_var, const std::string& name, bool set_highlight) const;
+    void ChangeValueHighlight(bool is_set_var, const std::string& name, bool set_highlight) const;
     void ClearVarHighlight() const;
 
     void SelectAllTree(const NodePtr& root, bool successor) const;

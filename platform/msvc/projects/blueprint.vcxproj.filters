@@ -43,6 +43,15 @@
     <Filter Include="node\logical">
       <UniqueIdentifier>{29d7e3ce-83d9-4e3d-9c34-9da6c8b0c37c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="node\tools\reference">
+      <UniqueIdentifier>{a1590805-6b46-4866-998b-2c4a29335765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="node\tools\value">
+      <UniqueIdentifier>{0349afea-3a81-4201-81a2-d3b0e2c57266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="node\tools\NewFilter1">
+      <UniqueIdentifier>{8a5f7062-3ba6-4bac-b140-9c61ecf463f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -187,12 +196,6 @@
     <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h">
       <Filter>node\tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\node\GetLocalVar.h">
-      <Filter>node\tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\node\SetLocalVar.h">
-      <Filter>node\tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\Boolean.h">
       <Filter>node</Filter>
     </ClInclude>
@@ -210,6 +213,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\CompareGreater.h">
       <Filter>node\logical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\GetReference.h">
+      <Filter>node\tools\reference</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\SetReference.h">
+      <Filter>node\tools\reference</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\GetValue.h">
+      <Filter>node\tools\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\SetValue.h">
+      <Filter>node\tools\value</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,8 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/node/SetReference.h"
 #include "blueprint/node/GetReference.h"
+#include "blueprint/node/SetValue.h"
+#include "blueprint/node/GetValue.h"
 #include "blueprint/node/Function.h"
 
 #include <ee0/WxStagePage.h>
@@ -65,15 +67,26 @@ void NodeSelectOP::AfterInsertSelected(const n0::SceneNodePtr& node) const
     }
 
     auto bp_node = node->GetUniqueComp<CompNode>().GetNode();
-    if (bp_node->get_type() == rttr::type::get<node::SetReference>())
+    auto bp_type = bp_node->get_type();
+    if (bp_type == rttr::type::get<node::SetReference>())
     {
         auto& name = std::static_pointer_cast<node::SetReference>(bp_node)->GetName();
-        ChangeVarHighlight(false, name, true);
+        ChangeReferenceHighlight(false, name, true);
     }
-    else if (bp_node->get_type() == rttr::type::get<node::GetReference>())
+    else if (bp_type == rttr::type::get<node::GetReference>())
     {
         auto& name = std::static_pointer_cast<node::GetReference>(bp_node)->GetName();
-        ChangeVarHighlight(true, name, true);
+        ChangeReferenceHighlight(true, name, true);
+    } 
+    else if (bp_type == rttr::type::get<node::SetValue>())
+    {
+        auto& name = std::static_pointer_cast<node::SetValue>(bp_node)->GetName();
+        ChangeValueHighlight(false, name, true);
+    }
+    else if (bp_type == rttr::type::get<node::GetValue>())
+    {
+        auto& name = std::static_pointer_cast<node::GetValue>(bp_node)->GetName();
+        ChangeValueHighlight(true, name, true);
     }
 }
 
@@ -83,17 +96,27 @@ void NodeSelectOP::AfterDeleteSelected(const n0::SceneNodePtr& node) const
         return;
     }
 
-
     auto bp_node = node->GetUniqueComp<CompNode>().GetNode();
-    if (bp_node->get_type() == rttr::type::get<node::SetReference>())
+    auto bp_type = bp_node->get_type();
+    if (bp_type == rttr::type::get<node::SetReference>())
     {
         auto& name = std::static_pointer_cast<node::SetReference>(bp_node)->GetName();
-        ChangeVarHighlight(false, name, false);
+        ChangeReferenceHighlight(false, name, false);
     }
-    else if (bp_node->get_type() == rttr::type::get<node::GetReference>())
+    else if (bp_type == rttr::type::get<node::GetReference>())
     {
         auto& name = std::static_pointer_cast<node::GetReference>(bp_node)->GetName();
-        ChangeVarHighlight(true, name, false);
+        ChangeReferenceHighlight(true, name, false);
+    }
+    else if (bp_type == rttr::type::get<node::SetValue>())
+    {
+        auto& name = std::static_pointer_cast<node::SetValue>(bp_node)->GetName();
+        ChangeValueHighlight(false, name, false);
+    }
+    else if (bp_type == rttr::type::get<node::GetValue>())
+    {
+        auto& name = std::static_pointer_cast<node::GetValue>(bp_node)->GetName();
+        ChangeValueHighlight(true, name, false);
     }
 }
 
@@ -102,7 +125,7 @@ void NodeSelectOP::AfterClearSelection() const
     ClearVarHighlight();
 }
 
-void NodeSelectOP::ChangeVarHighlight(bool is_set_var, const std::string& name, bool set_highlight) const
+void NodeSelectOP::ChangeReferenceHighlight(bool is_set_var, const std::string& name, bool set_highlight) const
 {
     if (name.empty()) {
         return;
@@ -127,6 +150,31 @@ void NodeSelectOP::ChangeVarHighlight(bool is_set_var, const std::string& name, 
     });
 }
 
+void NodeSelectOP::ChangeValueHighlight(bool is_set_var, const std::string& name, bool set_highlight) const
+{
+    if (name.empty()) {
+        return;
+    }
+
+    m_stage.Traverse([&](const ee0::GameObj& obj)->bool
+    {
+        if (!obj->HasUniqueComp<CompNode>()) {
+            return true;
+        }
+        auto& cnode = obj->GetUniqueComp<CompNode>();
+        auto node = cnode.GetNode();
+        auto type = node->get_type();
+        if (is_set_var && type == rttr::type::get<node::SetValue>() &&
+            std::static_pointer_cast<node::SetValue>(node)->GetName() == name) {
+            SetNodeBGColor(node, set_highlight ? BG_COLOR_HIGHLIGHT : BG_COLOR_DEFAULT);
+        } else if (!is_set_var && type == rttr::type::get<node::GetValue>() &&
+            std::static_pointer_cast<node::GetValue>(node)->GetName() == name) {
+            SetNodeBGColor(node, set_highlight ? BG_COLOR_HIGHLIGHT : BG_COLOR_DEFAULT);
+        }
+        return true;
+    });
+}
+
 void NodeSelectOP::ClearVarHighlight() const
 {
     m_stage.Traverse([&](const ee0::GameObj& obj)->bool
@@ -138,7 +186,9 @@ void NodeSelectOP::ClearVarHighlight() const
         auto node = cnode.GetNode();
         auto type = node->get_type();
         if (type == rttr::type::get<node::SetReference>() ||
-            type == rttr::type::get<node::GetReference>()) {
+            type == rttr::type::get<node::GetReference>() ||
+            type == rttr::type::get<node::SetValue>() ||
+            type == rttr::type::get<node::GetValue>()) {
             SetNodeBGColor(node, BG_COLOR_DEFAULT);
         }
         return true;

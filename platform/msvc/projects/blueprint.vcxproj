@@ -33,12 +33,14 @@
     <ClInclude Include="..\..\..\include\blueprint\node\CompareGreater.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\CompareLess.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Function.h" />
-    <ClInclude Include="..\..\..\include\blueprint\node\GetLocalVar.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\GetReference.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Input.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Output.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Proxy.h" />
-    <ClInclude Include="..\..\..\include\blueprint\node\SetLocalVar.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\GetValue.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\SetReference.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Switch.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\SetValue.h" />
     <ClInclude Include="..\..\..\include\blueprint\NSCompNode.h" />
     <ClInclude Include="..\..\..\include\blueprint\Pins.h" />
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h" />
