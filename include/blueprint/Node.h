@@ -50,6 +50,7 @@ public:
 	auto& GetAllOutput() const { return m_all_output; }
 
     bool UpdateExtInputPorts(bool is_connecting);
+    void PrepareExtInputPorts(int count);
 
 	auto& GetPos() const { return m_pos; }
 	bool  SetPos(const sm::vec2& pos);

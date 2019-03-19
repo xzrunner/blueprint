@@ -81,6 +81,22 @@ bool Node::UpdateExtInputPorts(bool is_connecting)
     return dirty;
 }
 
+void Node::PrepareExtInputPorts(int count)
+{
+    if (count <= m_all_input.size()) {
+        return;
+    }
+
+    for (int i = m_all_input.size(); i < count; ++i)
+    {
+        std::string name;
+        name.push_back(static_cast<char>('A' + i));
+        AddPins(std::make_shared<Pins>(true, i, PINS_ANY_VAR, name, *this));
+    }
+
+    Layout();
+}
+
 bool Node::SetPos(const sm::vec2& pos)
 {
 	if (m_pos == pos) {
