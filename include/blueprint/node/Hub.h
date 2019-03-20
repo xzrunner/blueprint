@@ -19,6 +19,8 @@ public:
 
         AddPins(std::make_shared<Pins>(false, 0, PINS_ANY_VAR, "Out", *this));
 
+        SetExtensibleInputPorts(true);
+
         Layout();
     }
 

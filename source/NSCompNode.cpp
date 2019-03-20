@@ -38,6 +38,10 @@ void NSCompNode::StoreToJson(const std::string& dir, rapidjson::Value& val, rapi
 	rapidjson::Document doc;
 	doc.Parse(json_str.c_str());
 
+    if (m_node->IsExtensibleInputPorts()) {
+        doc.AddMember("inputs_count", m_node->GetAllInput().size(), alloc);
+    }
+
 	val.AddMember("node_val", rapidjson::Value(doc, alloc), alloc);
 }
 
@@ -53,6 +57,14 @@ void NSCompNode::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir
 
 	std::string json_str = js::RapidJsonHelper::ValueToString(val["node_val"]);
 	js::RTTR::FromRapidJson(json_str, dir, *m_node);
+
+    if (m_node->IsExtensibleInputPorts())
+    {
+        if (val["node_val"].HasMember("inputs_count")) {
+            int n = val["node_val"]["inputs_count"].GetInt();
+            m_node->PrepareExtInputPorts(n);
+        }
+    }
 }
 
 void NSCompNode::StoreToMem(CompNode& comp) const
