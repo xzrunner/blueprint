@@ -143,7 +143,7 @@ void disconnect(const std::shared_ptr<Connecting>& conn)
 		{
 			fn.SetStyleOnlyTitle(false);
 			bp::NodeLayout::UpdateNodeStyle(const_cast<Node&>(fn));
-			fn.SetSizeChanging(true);
+			fn.SetSizeChanged(true);
 		}
 	}
 
@@ -156,7 +156,7 @@ void disconnect(const std::shared_ptr<Connecting>& conn)
 		{
 			tn.SetStyleOnlyTitle(false);
 			bp::NodeLayout::UpdateNodeStyle(const_cast<Node&>(tn));
-			tn.SetSizeChanging(true);
+			tn.SetSizeChanged(true);
 		}
 	}
 
