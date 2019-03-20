@@ -15,9 +15,6 @@ namespace
 
 const float PINS_RADIUS = bp::NodeLayout::PINS_RADIUS;
 
-const pt0::Color COL_TEXT     = pt0::Color(224, 224, 224);
-const pt0::Color COL_ZERO     = pt0::Color(0, 0, 0, 0);
-
 const float TEXT_TITLE_SCALE = 0.7f;
 const float TEXT_PINS_SCALE  = 0.5f;
 
@@ -29,6 +26,9 @@ namespace bp
 {
 
 CU_SINGLETON_DEFINITION(RenderSystem);
+
+const pt0::Color RenderSystem::COL_TEXT = pt0::Color(224, 224, 224);
+const pt0::Color RenderSystem::COL_ZERO = pt0::Color(0, 0, 0, 0);
 
 RenderSystem::RenderSystem()
 {

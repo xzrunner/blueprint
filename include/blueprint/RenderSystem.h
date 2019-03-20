@@ -25,6 +25,10 @@ public:
 	void DrawPins(const Pins& pins, const sm::vec2& pos);
 	void DrawConnecting(const Node& node, const sm::Matrix2D& mat);
 
+public:
+    static const pt0::Color COL_TEXT;
+    static const pt0::Color COL_ZERO;
+
 private:
 	pt2::Textbox m_title_tb, m_small_title_tb;
 	pt2::Textbox m_input_tb, m_output_tb;
