@@ -8,6 +8,7 @@
 #include "blueprint/node/SetValue.h"
 #include "blueprint/node/GetValue.h"
 #include "blueprint/node/Proxy.h"
+#include "blueprint/node/Hub.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
 #include "blueprint/node/CompareGreater.h"
@@ -16,6 +17,7 @@
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
+#include "blueprint/node/Abs.h"
 
 #include <ns/CompIdxMgr.h>
 #include <ns/RegistCallback.h>
@@ -97,6 +99,7 @@ void Blueprint::InitNodes()
     m_nodes.push_back(std::make_shared<node::SetValue>());
     m_nodes.push_back(std::make_shared<node::GetValue>());
     m_nodes.push_back(std::make_shared<node::Proxy>());
+    m_nodes.push_back(std::make_shared<node::Hub>());
     m_nodes.push_back(std::make_shared<node::Switch>());
     m_nodes.push_back(std::make_shared<node::CompareLess>());
     m_nodes.push_back(std::make_shared<node::CompareGreater>());
@@ -105,6 +108,7 @@ void Blueprint::InitNodes()
     m_nodes.push_back(std::make_shared<node::Function>());
     m_nodes.push_back(std::make_shared<node::Input>());
     m_nodes.push_back(std::make_shared<node::Output>());
+    m_nodes.push_back(std::make_shared<node::Abs>());
 }
 
 }

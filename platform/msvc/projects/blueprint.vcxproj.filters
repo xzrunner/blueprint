@@ -49,8 +49,8 @@
     <Filter Include="node\tools\value">
       <UniqueIdentifier>{0349afea-3a81-4201-81a2-d3b0e2c57266}</UniqueIdentifier>
     </Filter>
-    <Filter Include="node\tools\NewFilter1">
-      <UniqueIdentifier>{8a5f7062-3ba6-4bac-b140-9c61ecf463f2}</UniqueIdentifier>
+    <Filter Include="node\math">
+      <UniqueIdentifier>{4b13299b-98a5-4402-a135-7109d6d30f6d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +225,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\SetValue.h">
       <Filter>node\tools\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Hub.h">
+      <Filter>node\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Abs.h">
+      <Filter>node\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

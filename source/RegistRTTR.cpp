@@ -6,6 +6,7 @@
 #include "blueprint/node/SetValue.h"
 #include "blueprint/node/GetValue.h"
 #include "blueprint/node/Proxy.h"
+#include "blueprint/node/Hub.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
 #include "blueprint/node/CompareGreater.h"
@@ -14,6 +15,7 @@
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
+#include "blueprint/node/Abs.h"
 
 #include <ee0/ReflectPropTypes.h>
 
@@ -79,6 +81,7 @@ REGIST_NODE_RTTI(GetValue,                                                      
 )
 )
 REGIST_NODE_RTTI_DEFAULT(Proxy)
+REGIST_NODE_RTTI_DEFAULT(Hub)
 REGIST_NODE_RTTI_DEFAULT(Switch)
 REGIST_NODE_RTTI_DEFAULT(CompareLess)
 REGIST_NODE_RTTI_DEFAULT(CompareGreater)
@@ -121,6 +124,7 @@ REGIST_NODE_RTTI(Output,                                                        
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo(bp::node::Output::STR_TYPE))              \
 )
 )
+REGIST_NODE_RTTI_DEFAULT(Abs)
 
 }
 

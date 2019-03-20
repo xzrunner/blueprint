@@ -27,7 +27,9 @@
     <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h" />
     <ClInclude Include="..\..\..\include\blueprint\NodeSelectOP.h" />
     <ClInclude Include="..\..\..\include\blueprint\NodeStyle.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Abs.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Boolean.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Hub.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\CompareEqual.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\CompareGreater.h" />
