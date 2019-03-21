@@ -16,6 +16,7 @@
 #include <ee0/MessageID.h>
 #include <ee0/MsgHelper.h>
 #include <ee0/CombineAOP.h>
+#include <ee0/Clipboard.h>
 
 #include <SM_Calc.h>
 #include <node0/SceneNode.h>
@@ -77,12 +78,8 @@ bool ConnectPinsOP::OnKeyDown(int key_code)
 #endif // BP_CONNECT_PINS_OP_SELECT_CONNS
 
     // copy/paste connections
-    if (wxGetKeyState(WXK_CONTROL)) {
-        if (key_code == 'C') {
-            CopyConnections();
-        } else if (key_code == 'V') {
-            PasteConnections();
-        }
+    if (wxGetKeyState(WXK_CONTROL) && key_code == 'V') {
+        PasteConnections();
     }
 
 	return false;
@@ -489,21 +486,12 @@ void ConnectPinsOP::ClearSelectedConns()
     });
 }
 
-void ConnectPinsOP::CopyConnections()
-{
-    m_clipboard.clear();
-    m_clipboard.reserve(m_stage.GetSelection().Size());
-    m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& owp)->bool
-    {
-        m_clipboard.push_back(owp.GetNode());
-        return true;
-    });
-}
-
 void ConnectPinsOP::PasteConnections()
 {
+    auto& cb = ee0::Clipboard::Instance()->GetSceneNodes();
+
     std::vector<n0::SceneNodePtr> new_cb;
-    m_clipboard.reserve(m_stage.GetSelection().Size());
+    new_cb.reserve(m_stage.GetSelection().Size());
     m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& owp)->bool
     {
         new_cb.push_back(owp.GetNode());
@@ -511,27 +499,27 @@ void ConnectPinsOP::PasteConnections()
     });
 
     // check
-    assert(m_clipboard.size() == new_cb.size());
-    for (int i = 0, n = m_clipboard.size(); i < n; ++i)
+    assert(cb.size() == new_cb.size());
+    for (int i = 0, n = cb.size(); i < n; ++i)
     {
-        assert(m_clipboard[i]->HasUniqueComp<CompNode>()
+        assert(cb[i]->HasUniqueComp<CompNode>()
             && new_cb[i]->HasUniqueComp<CompNode>());
-        auto& old_cnode = m_clipboard[i]->GetUniqueComp<CompNode>();
+        auto& old_cnode = cb[i]->GetUniqueComp<CompNode>();
         auto& new_cnode = new_cb[i]->GetUniqueComp<CompNode>();
         assert(old_cnode.GetNode()->get_type() == new_cnode.GetNode()->get_type());
     }
 
     // prepare lut
     std::map<const Node*, int> map_node2idx;
-    for (int i = 0, n = m_clipboard.size(); i < n; ++i) {
-        auto& cnode = m_clipboard[i]->GetUniqueComp<CompNode>();
+    for (int i = 0, n = cb.size(); i < n; ++i) {
+        auto& cnode = cb[i]->GetUniqueComp<CompNode>();
         map_node2idx.insert({ cnode.GetNode().get(), i });
     }
 
     // connect
-    for (int i = 0, n = m_clipboard.size(); i < n; ++i)
+    for (int i = 0, n = cb.size(); i < n; ++i)
     {
-        auto& out_pins = m_clipboard[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput();
+        auto& out_pins = cb[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput();
         for (int j = 0, m = out_pins.size(); j < m; ++j)
         {
             auto& conns = out_pins[j]->GetConnecting();

@@ -45,7 +45,6 @@ private:
 
     void ClearSelectedConns();
 
-    void CopyConnections();
     void PasteConnections();
 
     void MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to);
@@ -74,9 +73,6 @@ private:
 	sm::vec2 m_last_pos;
 
 	gs::Bezier m_curve;
-
-    // for paste connections
-    std::vector<n0::SceneNodePtr> m_clipboard;
 
     std::vector<std::shared_ptr<ee0::AtomicOP>> m_records;
 
