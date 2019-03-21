@@ -18,7 +18,7 @@ const float PINS_RADIUS = bp::NodeLayout::PINS_RADIUS;
 const float TEXT_TITLE_SCALE = 0.7f;
 const float TEXT_PINS_SCALE  = 0.5f;
 
-const float PINS_TEXT_OFFSET = 80;
+const float PINS_TEXT_OFFSET = 130;
 
 }
 
@@ -41,12 +41,12 @@ RenderSystem::RenderSystem()
 
 	m_input_tb.font_size = 24;
 	m_input_tb.align_hori = pt2::Textbox::HA_LEFT;
-	m_input_tb.width = 300;
+	m_input_tb.width = 500;
 	m_input_tb.height = NodeLayout::DEFAULT_HEIGHT;
 
 	m_output_tb.font_size = 24;
 	m_output_tb.align_hori = pt2::Textbox::HA_RIGHT;
-	m_output_tb.width = 300;
+	m_output_tb.width = 500;
 	m_output_tb.height = NodeLayout::DEFAULT_HEIGHT;
 }
 
