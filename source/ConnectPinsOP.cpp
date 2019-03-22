@@ -78,7 +78,10 @@ bool ConnectPinsOP::OnKeyDown(int key_code)
 #endif // BP_CONNECT_PINS_OP_SELECT_CONNS
 
     // copy/paste connections
-    if (wxGetKeyState(WXK_CONTROL) && key_code == 'V') {
+    //if (wxGetKeyState(WXK_CONTROL) && key_code == 'V') {
+    //    PasteConnections();
+    //}
+    if (key_code == 'V') {
         PasteConnections();
     }
 
