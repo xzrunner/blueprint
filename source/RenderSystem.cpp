@@ -60,7 +60,7 @@ float RenderSystem::GetTextPinsScale() const
 	return TEXT_PINS_SCALE;
 }
 
-void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh)
+void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh, bool draw_text)
 {
 	// background
 	tess::Painter pt;
@@ -68,12 +68,15 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 	pt2::RenderSystem::DrawPainter(pt);
 
 	// title
-	sm::Matrix2D mat;
-	mat.Scale(TEXT_TITLE_SCALE, TEXT_TITLE_SCALE);
-	mat.Translate(pos.x, pos.y + hh - NodeLayout::TITLE_HEIGHT * 0.5f);
-	auto& tb = node.IsStyleSmallTitleFont() ? m_small_title_tb : m_title_tb;
-    auto str = cpputil::StringHelper::GBKToUTF8(node.GetTitle().c_str());
-	pt2::RenderSystem::DrawText(str, tb, mat, COL_TEXT, COL_ZERO);
+    if (draw_text)
+    {
+        sm::Matrix2D mat;
+        mat.Scale(TEXT_TITLE_SCALE, TEXT_TITLE_SCALE);
+        mat.Translate(pos.x, pos.y + hh - NodeLayout::TITLE_HEIGHT * 0.5f);
+        auto& tb = node.IsStyleSmallTitleFont() ? m_small_title_tb : m_title_tb;
+        auto str = cpputil::StringHelper::GBKToUTF8(node.GetTitle().c_str());
+        pt2::RenderSystem::DrawText(str, tb, mat, COL_TEXT, COL_ZERO);
+    }
 }
 
 void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)

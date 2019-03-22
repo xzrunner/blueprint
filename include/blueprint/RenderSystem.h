@@ -21,7 +21,7 @@ public:
 	float GetTextTitleScale() const;
 	float GetTextPinsScale() const;
 
-	void DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh);
+	void DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh, bool draw_text);
 	void DrawPins(const Pins& pins, const sm::vec2& pos);
 	void DrawConnecting(const Node& node, const sm::Matrix2D& mat);
 

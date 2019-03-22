@@ -24,7 +24,7 @@ Node::Node(const std::string& title)
 	m_pos.MakeInvalid();
 }
 
-void Node::Draw(const sm::Matrix2D& mt) const
+void Node::Draw(const sm::Matrix2D& mt, int lod_level) const
 {
 	auto render = RenderSystem::Instance();
 
@@ -32,10 +32,10 @@ void Node::Draw(const sm::Matrix2D& mt) const
 	float hw = m_style.width  * 0.5f;
 	float hh = m_style.height * 0.5f;
 	auto pos = mt * sm::vec2(0, 0);
-	render->DrawPanel(*this, pos, hw, hh);
+	render->DrawPanel(*this, pos, hw, hh, lod_level >= 2);
 
 	// pins
-	if (!IsStyleOnlyTitle())
+	if (lod_level >= 2 && !IsStyleOnlyTitle())
 	{
 		// input
 		for (auto& in : GetAllInput()) {
@@ -49,7 +49,9 @@ void Node::Draw(const sm::Matrix2D& mt) const
 	}
 
 	// connecting
-	render->DrawConnecting(*this, mt);
+    if (lod_level >= 1) {
+        render->DrawConnecting(*this, mt);
+    }
 }
 
 bool Node::UpdateExtInputPorts(bool is_connecting)

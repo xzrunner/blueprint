@@ -51,9 +51,19 @@ void Blueprint::Init()
 	n2::RenderSystem::Instance()->AddDrawCompFunc(
 		[](const n0::SceneNode& node, const n2::RenderParams& rp)
 	{
-		if (node.HasUniqueComp<CompNode>()) {
+		if (node.HasUniqueComp<CompNode>()) 
+        {
 			auto& cnode = node.GetUniqueComp<CompNode>();
-			cnode.GetNode()->Draw(rp.GetMatrix());
+            int lod = 0;
+            float scale = rp.GetCamScale();
+            if (scale < 2.0f) {
+                lod = 2;
+            } else if (scale < 5.0f) {
+                lod = 1;
+            } else {
+                lod = 0;
+            }
+			cnode.GetNode()->Draw(rp.GetMatrix(), lod);
 		}
 	});
 	n2::UpdateSystem::Instance()->AddUpdateCompFunc([](const n0::SceneNode& node)->bool

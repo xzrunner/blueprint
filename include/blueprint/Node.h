@@ -39,7 +39,7 @@ public:
 	Node(const std::string& title);
 	virtual ~Node() {}
 
-	virtual void Draw(const sm::Matrix2D& mt) const;
+	virtual void Draw(const sm::Matrix2D& mt, int lod_level) const;
 	virtual bool Update(const UpdateParams& params) { return false; }
 
 	virtual void Refresh() {}
