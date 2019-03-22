@@ -48,6 +48,7 @@ public:
     void SetPosIdx(int idx) { m_pos = idx; }
 
 	int  GetOldType() const { return m_old_type; }
+    void SetOldType(int type) { m_old_type = type; }
 	int  GetType() const { return m_new_type; }
 	void SetType(int type);
 
@@ -80,7 +81,7 @@ private:
 	bool m_is_input;
 	int  m_pos;
 
-	const int m_old_type;
+	int m_old_type;
 	int m_new_type;
 
 	std::string m_name;
