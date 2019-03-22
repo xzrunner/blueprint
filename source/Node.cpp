@@ -85,7 +85,7 @@ bool Node::UpdateExtInputPorts(bool is_connecting)
 
 void Node::PrepareExtInputPorts(int count)
 {
-    if (count <= m_all_input.size()) {
+    if (count <= static_cast<int>(m_all_input.size())) {
         return;
     }
 
