@@ -17,6 +17,7 @@
 namespace mm { class LinearAllocator; }
 namespace pt2 { class WindowContext; }
 namespace pt3 { class WindowContext; }
+namespace n2 { class RenderParams; }
 
 namespace bp
 {
@@ -39,7 +40,7 @@ public:
 	Node(const std::string& title);
 	virtual ~Node() {}
 
-	virtual void Draw(const sm::Matrix2D& mt, int lod_level) const;
+	virtual void Draw(const n2::RenderParams& rp) const;
 	virtual bool Update(const UpdateParams& params) { return false; }
 
 	virtual void Refresh() {}

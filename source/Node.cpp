@@ -4,6 +4,8 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/RenderSystem.h"
 
+#include <node2/RenderSystem.h>
+
 RTTR_REGISTRATION
 {
 	rttr::registration::class_<bp::Node::Flags>("bp_node_flags")
@@ -24,18 +26,29 @@ Node::Node(const std::string& title)
 	m_pos.MakeInvalid();
 }
 
-void Node::Draw(const sm::Matrix2D& mt, int lod_level) const
+void Node::Draw(const n2::RenderParams& rp) const
 {
 	auto render = RenderSystem::Instance();
+
+    // LOD
+    int lod = 0;
+    float scale = rp.GetCamScale();
+    if (scale < 2.0f) {
+        lod = 2;
+    } else if (scale < 5.0f) {
+        lod = 1;
+    } else {
+        lod = 0;
+    }
 
 	// panel
 	float hw = m_style.width  * 0.5f;
 	float hh = m_style.height * 0.5f;
-	auto pos = mt * sm::vec2(0, 0);
-	render->DrawPanel(*this, pos, hw, hh, lod_level >= 2);
+	auto pos = rp.GetMatrix() * sm::vec2(0, 0);
+	render->DrawPanel(*this, pos, hw, hh, lod >= 2);
 
 	// pins
-	if (lod_level >= 2 && !IsStyleOnlyTitle())
+	if (lod >= 2 && !IsStyleOnlyTitle())
 	{
 		// input
 		for (auto& in : GetAllInput()) {
@@ -49,8 +62,8 @@ void Node::Draw(const sm::Matrix2D& mt, int lod_level) const
 	}
 
 	// connecting
-    if (lod_level >= 1) {
-        render->DrawConnecting(*this, mt);
+    if (lod >= 1) {
+        render->DrawConnecting(*this, rp.GetMatrix(), rp.GetScreenRegion());
     }
 }
 

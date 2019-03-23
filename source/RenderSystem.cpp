@@ -5,7 +5,7 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/NodeStyle.h"
 
-#include <SM_Rect.h>
+#include <SM_Calc.h>
 #include <painting2/RenderSystem.h>
 #include <tessellation/Painter.h>
 #include <cpputil/StringHelper.h>
@@ -130,38 +130,57 @@ void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 	}
 }
 
-void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat)
+void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat, const sm::rect& screen_region)
 {
 	tess::Painter pt;
-	for (auto& src : node.GetAllOutput())
-	{
-		for (auto& c : src->GetConnecting())
-		{
-			auto& curve = c->GetCurve();
-			if (curve.shape.GetVertices().empty()) {
-				continue;
-			}
-			auto& dst = c->GetTo();
-			assert(dst);
-            if (!c->IsActive())
-            {
-                auto& vertices = curve.shape.GetVertices();
-                pt.AddPolylineDash(vertices.data(), vertices.size(), BG_COLOR_DEFAULT.ToABGR(), tess::DEFAULT_LINE_WIDTH, 5);
-            }
-            else
-            {
-			    if (src->GetType() == dst->GetType()) {
-				    auto& vertices = curve.shape.GetVertices();
-				    pt.AddPolyline(vertices.data(), vertices.size(), src->GetColor().ToABGR());
-			    } else {
-				    assert(!curve.color.empty());
-				    auto& vertices = curve.shape.GetVertices();
-				    pt.AddPolylineMultiColor(vertices.data(), curve.color.data(), vertices.size());
-			    }
-            }
+
+    // output
+	for (auto& o : node.GetAllOutput()) {
+		for (auto& c : o->GetConnecting()) {
+            DrawConnecting(pt, *c);
 		}
 	}
+
+    // input
+    for (auto& i : node.GetAllInput()) {
+        for (auto& c : i->GetConnecting()) {
+            auto& from_pos = c->GetFrom()->GetParent().GetPos();
+            if (!sm::is_point_in_rect(from_pos, screen_region)) {
+                DrawConnecting(pt, *c);
+            }
+        }
+    }
+
 	pt2::RenderSystem::DrawPainter(pt);
+}
+
+bool RenderSystem::DrawConnecting(tess::Painter& pt, const Connecting& conn) const
+{
+	auto& curve = conn.GetCurve();
+	if (curve.shape.GetVertices().empty()) {
+        return false;
+	}
+
+    if (!conn.IsActive())
+    {
+        auto& vertices = curve.shape.GetVertices();
+        pt.AddPolylineDash(vertices.data(), vertices.size(), BG_COLOR_DEFAULT.ToABGR(), tess::DEFAULT_LINE_WIDTH, 5);
+    }
+    else
+    {
+        auto& src = conn.GetFrom();
+        auto& dst = conn.GetTo();
+        assert(src && dst);
+		if (src->GetType() == dst->GetType()) {
+			auto& vertices = curve.shape.GetVertices();
+			pt.AddPolyline(vertices.data(), vertices.size(), src->GetColor().ToABGR());
+		} else {
+			assert(!curve.color.empty());
+			auto& vertices = curve.shape.GetVertices();
+			pt.AddPolylineMultiColor(vertices.data(), curve.color.data(), vertices.size());
+		}
+    }
+    return true;
 }
 
 }
