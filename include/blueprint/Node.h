@@ -102,6 +102,7 @@ public:
 
 	static const uint32_t LIFE_DELETE_LATER      = 0x00000010;
 	static const uint32_t SIZE_CHANGED           = 0x00000020;
+	static const uint32_t GET_VAR_NAME_CHANGED   = 0x00000040;
 
     static const uint32_t EXTENSIBLE_INPUT_PORTS = 0x00000100;
 
@@ -109,6 +110,7 @@ public:
 	CU_FLAG_METHOD(StyleOnlyTitle,       STYLE_ONLY_TITLE);
 	CU_FLAG_METHOD(LifeDeleteLater,      LIFE_DELETE_LATER);
 	CU_FLAG_METHOD(SizeChanged,          SIZE_CHANGED);
+    CU_FLAG_METHOD(GetVarNameChanged,    GET_VAR_NAME_CHANGED);
     CU_FLAG_METHOD(ExtensibleInputPorts, EXTENSIBLE_INPUT_PORTS);
 
 private:
