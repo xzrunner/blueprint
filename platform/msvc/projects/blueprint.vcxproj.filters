@@ -232,6 +232,12 @@
     <ClInclude Include="..\..\..\include\blueprint\node\Abs.h">
       <Filter>node\math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\SwitchMulti.h">
+      <Filter>node\logical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\CompareNotEqual.h">
+      <Filter>node\logical</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">

@@ -29,6 +29,7 @@
     <ClInclude Include="..\..\..\include\blueprint\NodeStyle.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Abs.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Boolean.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\CompareNotEqual.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Hub.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\CompareEqual.h" />
@@ -43,6 +44,7 @@
     <ClInclude Include="..\..\..\include\blueprint\node\SetReference.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Switch.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\SetValue.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\SwitchMulti.h" />
     <ClInclude Include="..\..\..\include\blueprint\NSCompNode.h" />
     <ClInclude Include="..\..\..\include\blueprint\Pins.h" />
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h" />

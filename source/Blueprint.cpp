@@ -13,6 +13,7 @@
 #include "blueprint/node/CompareLess.h"
 #include "blueprint/node/CompareGreater.h"
 #include "blueprint/node/CompareEqual.h"
+#include "blueprint/node/CompareNotEqual.h"
 #include "blueprint/node/Boolean.h"
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
@@ -105,6 +106,7 @@ void Blueprint::InitNodes()
     m_nodes.push_back(std::make_shared<node::CompareLess>());
     m_nodes.push_back(std::make_shared<node::CompareGreater>());
     m_nodes.push_back(std::make_shared<node::CompareEqual>());
+    m_nodes.push_back(std::make_shared<node::CompareNotEqual>());
     m_nodes.push_back(std::make_shared<node::Boolean>());
     m_nodes.push_back(std::make_shared<node::Function>());
     m_nodes.push_back(std::make_shared<node::Input>());
