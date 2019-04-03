@@ -44,6 +44,10 @@ RTTR_REGISTRATION
 	;
 
 REGIST_NODE_RTTI(Commentary,                                                                       \
+.property("title", &bp::node::Commentary::GetCommentTitle, &bp::node::Commentary::SetCommentTitle) \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Title"))                                 \
+)                                                                                                  \
 .property("comment", &bp::node::Commentary::GetCommentText, &bp::node::Commentary::SetCommentText) \
 (                                                                                                  \
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Comment"))                               \

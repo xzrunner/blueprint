@@ -12,6 +12,11 @@ class Commentary : public Node
 public:
     Commentary();
 
+    virtual void Draw(const n2::RenderParams& rp) const override;
+
+    auto& GetCommentTitle() const { return m_comment_title; }
+    void  SetCommentTitle(const std::string& str) { m_comment_title = str; }
+
     auto& GetCommentText() const { return m_comment_text; }
     void  SetCommentText(const std::string& str);
 
@@ -27,7 +32,10 @@ public:
 private:
     void RemoveExpiredChild();
 
+    void DrawCommentTitle(const n2::RenderParams& rp) const;
+
 private:
+    std::string m_comment_title;
     std::string m_comment_text;
 
     std::vector<std::weak_ptr<Node>> m_children;

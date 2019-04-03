@@ -1,4 +1,10 @@
 #include "blueprint/node/Commentary.h"
+#include "blueprint/NodeLayout.h"
+#include "blueprint/RenderSystem.h"
+
+#include <node2/RenderSystem.h>
+#include <painting2/RenderSystem.h>
+#include <cpputil/StringHelper.h>
 
 namespace bp
 {
@@ -6,12 +12,21 @@ namespace node
 {
 
 Commentary::Commentary()
-    : Node("Commentary")
+    : Node("")
 {
     m_style.width  = 512;
     m_style.height = 512;
 
     m_style.panel_bg_col = BG_COLOR_COMMENTARY;
+}
+
+void Commentary::Draw(const n2::RenderParams& rp) const
+{
+    Node::Draw(rp);
+
+    if (!m_comment_title.empty()) {
+        DrawCommentTitle(rp);
+    }
 }
 
 void Commentary::SetCommentText(const std::string& str) 
@@ -60,6 +75,21 @@ void Commentary::RemoveExpiredChild()
             ++itr;
         }
     }
+}
+
+void Commentary::DrawCommentTitle(const n2::RenderParams& rp) const
+{
+    sm::Matrix2D mat;
+
+    const float scale = std::max(1.0f, rp.GetCamScale());
+    mat.Scale(scale, scale);
+
+    const float x = GetPos().x;
+    const float y = GetPos().y + m_style.height * 0.5f + NodeLayout::TITLE_HEIGHT * 0.5f * scale;
+    mat.Translate(x, y);
+
+    auto& tb = RenderSystem::Instance()->GetTitleTB();
+    pt2::RenderSystem::DrawText(m_comment_title, tb, mat, RenderSystem::COL_TEXT, RenderSystem::COL_ZERO);
 }
 
 }
