@@ -144,7 +144,7 @@ bool ArrangeNodeOP::QueryCommNodeCornerByPos(const sm::vec2& pos, Selected& sele
 {
     bool ret = false;
 
-    float radius = 10.0f;
+    float radius = 5.0f;
     if (m_camera->TypeID() == pt0::GetCamTypeID<pt2::OrthoCamera>()) {
         radius *= std::dynamic_pointer_cast<pt2::OrthoCamera>(m_camera)->GetScale();
     }
