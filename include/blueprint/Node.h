@@ -8,7 +8,6 @@
 #include <SM_Matrix2D.h>
 #include <painting0/Color.h>
 
-#include <rapidjson/document.h>
 #include <rttr/registration>
 
 #include <vector>
