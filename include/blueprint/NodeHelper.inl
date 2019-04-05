@@ -2,7 +2,7 @@
 
 #include "blueprint/NodeHelper.h"
 #include "blueprint/Connecting.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 #include <queue>
 
@@ -13,7 +13,7 @@ template <typename T>
 bool NodeHelper::HasInputNode(const Node& node)
 {
 	auto& src_inputs = node.GetAllInput();
-	std::queue<std::shared_ptr<Pins>> inputs;
+	std::queue<std::shared_ptr<Pin>> inputs;
 	for (auto& src : src_inputs) {
 		inputs.push(src);
 	}

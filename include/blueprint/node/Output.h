@@ -1,7 +1,7 @@
 #pragma once
 
 #include "blueprint/Node.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 namespace bp
 {

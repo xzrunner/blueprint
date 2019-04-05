@@ -1,7 +1,7 @@
 #pragma once
 
 #include "blueprint/Node.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 namespace bp
 {
@@ -14,7 +14,7 @@ public:
     Boolean()
         : Node("Boolean")
     {
-        AddPins(std::make_shared<Pins>(false, 0, PINS_BOOLEAN, "Out", *this));
+        AddPin(std::make_shared<Pin>(false, 0, PIN_BOOLEAN, "Out", *this));
 
         Layout();
     }

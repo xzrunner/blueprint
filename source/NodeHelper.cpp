@@ -1,6 +1,6 @@
 #include "blueprint/NodeHelper.h"
 #include "blueprint/Connecting.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 #include "blueprint/Node.h"
 #include "blueprint/NSCompNode.h"
 #include "blueprint/node/Function.h"
@@ -16,7 +16,7 @@
 namespace bp
 {
 
-void NodeHelper::RemoveDefaultNode(const bp::Pins& p)
+void NodeHelper::RemoveDefaultNode(const bp::Pin& p)
 {
 	auto& conns = p.GetConnecting();
 	if (conns.empty()) {

@@ -11,7 +11,7 @@ const char* Output::STR_TYPE = "Type";
 Output::Output()
     : Node("Output")
 {
-    AddPins(std::make_shared<Pins>(true, 0, PINS_ANY_VAR, "Out", *this));
+    AddPin(std::make_shared<Pin>(true, 0, PIN_ANY_VAR, "Out", *this));
 
     Layout();
 }

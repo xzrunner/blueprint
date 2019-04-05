@@ -1,6 +1,6 @@
 #include "blueprint/NSCompNode.h"
 #include "blueprint/CompNode.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 #include "blueprint/Connecting.h"
 #include "blueprint/Node.h"
 #include "blueprint/NodeBuilder.h"
@@ -169,7 +169,7 @@ void NSCompNode::LoadConnection(const std::vector<n0::SceneNodePtr>& nodes,
 		for (auto& output_val : outputs_val.GetArray())
 		{
 			auto src_name = output_val["from"].GetString();
-			auto src = QueryPinsByName(*nodes[src_node_idx]->GetUniqueComp<CompNode>().GetNode(), false, src_name);
+			auto src = QueryPinByName(*nodes[src_node_idx]->GetUniqueComp<CompNode>().GetNode(), false, src_name);
             if (!src) {
                 continue;
             }
@@ -179,7 +179,7 @@ void NSCompNode::LoadConnection(const std::vector<n0::SceneNodePtr>& nodes,
 			{
 				int node_idx = conn_val["node_idx"].GetInt();
 				auto dst_name = conn_val["pin"].GetString();
-				auto dst = QueryPinsByName(*nodes[node_idx]->GetUniqueComp<CompNode>().GetNode(), true, dst_name);
+				auto dst = QueryPinByName(*nodes[node_idx]->GetUniqueComp<CompNode>().GetNode(), true, dst_name);
                 if (!dst) {
                     continue;
                 }
@@ -191,12 +191,12 @@ void NSCompNode::LoadConnection(const std::vector<n0::SceneNodePtr>& nodes,
 	}
 }
 
-std::shared_ptr<Pins> NSCompNode::QueryPinsByName(const Node& node, bool is_input, const std::string& name)
+std::shared_ptr<Pin> NSCompNode::QueryPinByName(const Node& node, bool is_input, const std::string& name)
 {
 	auto& array = is_input ? node.GetAllInput() : node.GetAllOutput();
-	for (auto& pins : array) {
-		if (pins->GetName() == name) {
-			return pins;
+	for (auto& pin : array) {
+		if (pin->GetName() == name) {
+			return pin;
 		}
 	}
 	return nullptr;

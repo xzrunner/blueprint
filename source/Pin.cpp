@@ -1,4 +1,4 @@
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 #include "blueprint/Connecting.h"
 
 namespace
@@ -22,9 +22,9 @@ const pt0::Color COL_OBJECT    = pt0::Color(56, 165, 241);
 namespace bp
 {
 
-Pins::ExtendFuncs Pins::m_funcs;
+Pin::ExtendFuncs Pin::m_funcs;
 
-Pins::Pins(bool is_input, int pos, int type, const std::string& name, const Node& parent)
+Pin::Pin(bool is_input, int pos, int type, const std::string& name, const Node& parent)
 	: m_is_input(is_input)
 	, m_pos(pos)
 	, m_old_type(type)
@@ -34,7 +34,7 @@ Pins::Pins(bool is_input, int pos, int type, const std::string& name, const Node
 {
 }
 
-Pins::~Pins()
+Pin::~Pin()
 {
 	for (auto& conn : m_connecting)
 	{
@@ -47,7 +47,7 @@ Pins::~Pins()
 	}
 }
 
-std::string Pins::GetDesc() const
+std::string Pin::GetDesc() const
 {
     if (m_funcs.get_desc_func) {
         return m_funcs.get_desc_func(GetName(), GetType());
@@ -56,7 +56,7 @@ std::string Pins::GetDesc() const
     return m_name;
 }
 
-const pt0::Color& Pins::GetColor() const
+const pt0::Color& Pin::GetColor() const
 {
     if (m_funcs.get_color_func) {
         return m_funcs.get_color_func(GetType());
@@ -64,32 +64,32 @@ const pt0::Color& Pins::GetColor() const
 
 	switch (m_new_type)
 	{
-	case PINS_PORT:
+	case PIN_PORT:
 		return COL_PORT;
-	case PINS_BOOLEAN:
+	case PIN_BOOLEAN:
 		return COL_BOOLEAN;
-	case PINS_INTEGER:
+	case PIN_INTEGER:
 		return COL_INTEGER;
-	case PINS_FLOAT:
+	case PIN_FLOAT:
 		return COL_FLOAT;
-	case PINS_STRING:
+	case PIN_STRING:
 		return COL_STRING;
-	case PINS_TEXT:
+	case PIN_TEXT:
 		return COL_TEXT;
-	case PINS_VECTOR:
+	case PIN_VECTOR:
 		return COL_VECTOR;
-	case PINS_ROTATOR:
+	case PIN_ROTATOR:
 		return COL_ROTATOR;
-	case PINS_TRANSFORM:
+	case PIN_TRANSFORM:
 		return COL_TRANSFORM;
-	case PINS_OBJECT:
+	case PIN_OBJECT:
 		return COL_OBJECT;
 	default:
 		return COL_DEFAULT;
 	}
 }
 
-bool Pins::CanTypeCast(const Pins& p) const
+bool Pin::CanTypeCast(const Pin& p) const
 {
     if (m_funcs.can_type_cast_func) {
         return m_funcs.can_type_cast_func(GetType(), p.GetType());
@@ -99,38 +99,38 @@ bool Pins::CanTypeCast(const Pins& p) const
 	if (m_new_type == type) {
 		return true;
 	}
-    if (type == PINS_ANY_VAR || m_new_type == PINS_ANY_VAR) {
+    if (type == PIN_ANY_VAR || m_new_type == PIN_ANY_VAR) {
         return true;
     }
 
 	switch (m_new_type)
 	{
-	case PINS_PORT:
+	case PIN_PORT:
 		return false;
-	case PINS_BOOLEAN:
+	case PIN_BOOLEAN:
 		return false;
-	case PINS_INTEGER:
-		return type == PINS_BOOLEAN || type == PINS_FLOAT;
-	case PINS_FLOAT:
-		return type == PINS_BOOLEAN || type == PINS_INTEGER || type == PINS_VECTOR;
-	case PINS_STRING:
+	case PIN_INTEGER:
+		return type == PIN_BOOLEAN || type == PIN_FLOAT;
+	case PIN_FLOAT:
+		return type == PIN_BOOLEAN || type == PIN_INTEGER || type == PIN_VECTOR;
+	case PIN_STRING:
 		return false;
-	case PINS_TEXT:
+	case PIN_TEXT:
 		return false;
-	case PINS_VECTOR:
-		return type == PINS_INTEGER || type == PINS_FLOAT;
-	case PINS_ROTATOR:
+	case PIN_VECTOR:
+		return type == PIN_INTEGER || type == PIN_FLOAT;
+	case PIN_ROTATOR:
 		return false;
-	case PINS_TRANSFORM:
+	case PIN_TRANSFORM:
 		return false;
-	case PINS_OBJECT:
+	case PIN_OBJECT:
 		return false;
 	}
 
 	return false;
 }
 
-void Pins::SetType(int type)
+void Pin::SetType(int type)
 {
 	if (m_new_type == type) {
 		return;
@@ -144,12 +144,12 @@ void Pins::SetType(int type)
 	}
 }
 
-void Pins::AddConnecting(const std::shared_ptr<Connecting>& conn)
+void Pin::AddConnecting(const std::shared_ptr<Connecting>& conn)
 {
 	m_connecting.push_back(conn);
 }
 
-void Pins::RemoveConnecting(const std::shared_ptr<Connecting>& conn)
+void Pin::RemoveConnecting(const std::shared_ptr<Connecting>& conn)
 {
 	for (auto& itr = m_connecting.begin(); itr != m_connecting.end(); ++itr) {
 		if (*itr == conn) {
@@ -159,7 +159,7 @@ void Pins::RemoveConnecting(const std::shared_ptr<Connecting>& conn)
 	}
 }
 
-void Pins::ClearConnecting()
+void Pin::ClearConnecting()
 {
 	m_connecting.clear();
 }

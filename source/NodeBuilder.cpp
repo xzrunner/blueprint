@@ -24,21 +24,21 @@ void NodeBuilder::OnCreated(Node& node, const ee0::SubjectMgrPtr& sub_mgr)
 	}
 }
 
-void NodeBuilder::OnConnecting(Pins& from, Pins& to)
+void NodeBuilder::OnConnecting(Pin& from, Pin& to)
 {
 	if (m_cb.on_connecting) {
 		m_cb.on_connecting(from, to);
 	}
 }
 
-void NodeBuilder::OnConnected(Pins& from, Pins& to)
+void NodeBuilder::OnConnected(Pin& from, Pin& to)
 {
 	if (m_cb.on_connected) {
 		m_cb.on_connected(from, to);
 	}
 }
 
-void NodeBuilder::OnDisconnected(Pins& from, Pins& to)
+void NodeBuilder::OnDisconnected(Pin& from, Pin& to)
 {
     if (m_cb.on_disconnected) {
         m_cb.on_disconnected(from, to);

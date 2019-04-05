@@ -1,4 +1,4 @@
-#include "blueprint/ConnectPinsOP.h"
+#include "blueprint/ConnectPinOP.h"
 #include "blueprint/CompNode.h"
 #include "blueprint/NodeLayout.h"
 #include "blueprint/RenderSystem.h"
@@ -6,7 +6,7 @@
 #include "blueprint/WxCreateNodeDlg.h"
 #include "blueprint/MessageID.h"
 #include "blueprint/NodeBuilder.h"
-#include "blueprint/ConnectPinsAO.h"
+#include "blueprint/ConnectPinAO.h"
 #include "blueprint/DisconnectConnAO.h"
 #include "blueprint/NodeStyle.h"
 
@@ -40,7 +40,7 @@ const float QUERY_REGION = 5;
 namespace bp
 {
 
-ConnectPinsOP::ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
+ConnectPinOP::ConnectPinOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
 	                         const std::vector<NodePtr>& nodes)
 	: ee0::EditOP(cam)
 	, m_stage(stage)
@@ -50,7 +50,7 @@ ConnectPinsOP::ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxSta
 	m_last_pos.MakeInvalid();
 }
 
-bool ConnectPinsOP::OnKeyDown(int key_code)
+bool ConnectPinOP::OnKeyDown(int key_code)
 {
     // create new node
     if (key_code == WXK_SPACE) {
@@ -67,7 +67,7 @@ bool ConnectPinsOP::OnKeyDown(int key_code)
         return true;
     }
 
-#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
+#ifdef BP_CONNECT_PIN_OP_SELECT_CONNS
     if (key_code == WXK_DELETE)
     {
         for (auto& conn : m_selected_conns) {
@@ -75,7 +75,7 @@ bool ConnectPinsOP::OnKeyDown(int key_code)
         }
         m_selected_conns.clear();
     }
-#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
+#endif // BP_CONNECT_PIN_OP_SELECT_CONNS
 
     // copy/paste connections
     //if (wxGetKeyState(WXK_CONTROL) && key_code == 'V') {
@@ -88,7 +88,7 @@ bool ConnectPinsOP::OnKeyDown(int key_code)
 	return false;
 }
 
-bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
+bool ConnectPinOP::OnMouseLeftDown(int x, int y)
 {
 	if (ee0::EditOP::OnMouseLeftDown(x, y)) {
 		return true;
@@ -98,11 +98,11 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
     m_first_pos = pos;
 	m_last_pos = m_first_pos;
 
-#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
+#ifdef BP_CONNECT_PIN_OP_SELECT_CONNS
 	// query conn
 	m_selected_conns.clear();
 	QueryConnsByRect(sm::rect(pos, QUERY_REGION, QUERY_REGION), m_selected_conns);
-#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
+#endif // BP_CONNECT_PIN_OP_SELECT_CONNS
 
 	// query pin
 	if (m_stage.GetSelection().Size() == 1)
@@ -113,7 +113,7 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
 			return false;
 		});
 
-		m_selected_pin = QueryPinsByPos(node, pos, m_first_pos);
+		m_selected_pin = QueryPinByPos(node, pos, m_first_pos);
 		m_last_pos = m_first_pos;
 
         m_last_selected_pin = m_selected_pin;
@@ -123,7 +123,7 @@ bool ConnectPinsOP::OnMouseLeftDown(int x, int y)
 	return false;
 }
 
-bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
+bool ConnectPinOP::OnMouseLeftUp(int x, int y)
 {
 	if (ee0::EditOP::OnMouseLeftUp(x, y)) {
 		return true;
@@ -138,9 +138,9 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
         }
         m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
-#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
+#ifdef BP_CONNECT_PIN_OP_SELECT_CONNS
         m_selected_conns.clear();
-#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
+#endif // BP_CONNECT_PIN_OP_SELECT_CONNS
 
         UpdatemExtInputPorts(ConnEvent::Connected);
 
@@ -150,7 +150,7 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 
         ret = true;
 	}
-#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
+#ifdef BP_CONNECT_PIN_OP_SELECT_CONNS
 	else
 	{
 		if (m_first_pos.IsValid())
@@ -166,7 +166,7 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 			QueryConnsByRect(rect, m_selected_conns);
 		}
 	}
-#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
+#endif // BP_CONNECT_PIN_OP_SELECT_CONNS
 
     m_first_pos.MakeInvalid();
     m_last_pos.MakeInvalid();
@@ -178,7 +178,7 @@ bool ConnectPinsOP::OnMouseLeftUp(int x, int y)
 	return ret;
 }
 
-bool ConnectPinsOP::OnMouseRightDown(int x, int y)
+bool ConnectPinOP::OnMouseRightDown(int x, int y)
 {
     if (ee0::EditOP::OnMouseRightDown(x, y)) {
         return true;
@@ -189,7 +189,7 @@ bool ConnectPinsOP::OnMouseRightDown(int x, int y)
     return false;
 }
 
-bool ConnectPinsOP::OnMouseDrag(int x, int y)
+bool ConnectPinOP::OnMouseDrag(int x, int y)
 {
 	if (m_selected_pin)
 	{
@@ -203,7 +203,7 @@ bool ConnectPinsOP::OnMouseDrag(int x, int y)
                 v0 = m_last_pos;
                 auto& conns = m_selected_pin->GetConnecting();
                 assert(conns.size() == 1);
-                v3 = NodeLayout::GetPinsPos(*conns[0]->GetFrom());
+                v3 = NodeLayout::GetPinPos(*conns[0]->GetFrom());
             }
             else
             {
@@ -234,7 +234,7 @@ bool ConnectPinsOP::OnMouseDrag(int x, int y)
 	return false;
 }
 
-bool ConnectPinsOP::OnDraw() const
+bool ConnectPinOP::OnDraw() const
 {
 	if (m_selected_pin)
 	{
@@ -251,7 +251,7 @@ bool ConnectPinsOP::OnDraw() const
 			return true;
 		}
 
-#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
+#ifdef BP_CONNECT_PIN_OP_SELECT_CONNS
 		if (!m_selected_conns.empty())
 		{
 			tess::Painter pt;
@@ -261,13 +261,13 @@ bool ConnectPinsOP::OnDraw() const
 			}
 			pt2::RenderSystem::DrawPainter(pt);
 		}
-#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
+#endif // BP_CONNECT_PIN_OP_SELECT_CONNS
 	}
 
 	return false;
 }
 
-std::shared_ptr<Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr& node,
+std::shared_ptr<Pin> ConnectPinOP::QueryPinByPos(const n0::SceneNodePtr& node,
 	                                                const sm::vec2& pos, sm::vec2& p_center)
 {
 	if (!node->HasUniqueComp<CompNode>()) {
@@ -283,8 +283,8 @@ std::shared_ptr<Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr& node
 	auto& input = bp_node->GetAllInput();
 	for (auto& p : input)
 	{
-		auto center = NodeLayout::GetPinsPos(*p);
-		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PINS_RADIUS * 1.5f)
+		auto center = NodeLayout::GetPinPos(*p);
+		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PIN_RADIUS * 1.5f)
 		{
 			p_center = center;
 			return p;
@@ -294,8 +294,8 @@ std::shared_ptr<Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr& node
 	auto& output = bp_node->GetAllOutput();
 	for (auto& p : output)
 	{
-		auto center = NodeLayout::GetPinsPos(*p);
-		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PINS_RADIUS * 1.5f) {
+		auto center = NodeLayout::GetPinPos(*p);
+		if (sm::dis_pos_to_pos(pos, center) < NodeLayout::PIN_RADIUS * 1.5f) {
 			p_center = center;
 			return p;
 		}
@@ -304,7 +304,7 @@ std::shared_ptr<Pins> ConnectPinsOP::QueryPinsByPos(const n0::SceneNodePtr& node
 	return nullptr;
 }
 
-void ConnectPinsOP::QueryConnsByRect(const sm::rect& rect, std::vector<std::shared_ptr<Connecting>>& conns)
+void ConnectPinOP::QueryConnsByRect(const sm::rect& rect, std::vector<std::shared_ptr<Connecting>>& conns)
 {
  	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
 	{
@@ -317,8 +317,8 @@ void ConnectPinsOP::QueryConnsByRect(const sm::rect& rect, std::vector<std::shar
 			return true;
 		}
 
-		for (auto& pins : bp_node->GetAllOutput()) {
-			for (auto& conn : pins->GetConnecting()) {
+		for (auto& pin : bp_node->GetAllOutput()) {
+			for (auto& conn : pin->GetConnecting()) {
 				auto& curve = conn->GetCurve();
 				if (sm::is_rect_intersect_polyline(rect, curve.shape.GetVertices(), false)) {
 					conns.push_back(conn);
@@ -330,11 +330,11 @@ void ConnectPinsOP::QueryConnsByRect(const sm::rect& rect, std::vector<std::shar
 	});
 }
 
-bool ConnectPinsOP::QueryOrCreateNode(int x, int y, bool change_to)
+bool ConnectPinOP::QueryOrCreateNode(int x, int y, bool change_to)
 {
 	bool dirty = false;
 
-	std::shared_ptr<Pins> target = nullptr;
+	std::shared_ptr<Pin> target = nullptr;
 	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
 	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
 	{
@@ -344,7 +344,7 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y, bool change_to)
 		}
 
 		sm::vec2 center;
-		target = QueryPinsByPos(obj, pos, center);
+		target = QueryPinByPos(obj, pos, center);
 		return !target;
 	});
     if (change_to)
@@ -389,7 +389,7 @@ bool ConnectPinsOP::QueryOrCreateNode(int x, int y, bool change_to)
 	return dirty;
 }
 
-bool ConnectPinsOP::CreateNodeWithMousePos()
+bool ConnectPinOP::CreateNodeWithMousePos()
 {
     wxPoint pos = wxGetMousePosition();
     const wxPoint pt = wxGetMousePosition();
@@ -398,7 +398,7 @@ bool ConnectPinsOP::CreateNodeWithMousePos()
     return CreateNode(mouse_x, mouse_y);
 }
 
-bool ConnectPinsOP::CreateNode(int x, int y)
+bool ConnectPinOP::CreateNode(int x, int y)
 {
 	auto base = m_stage.GetScreenPosition();
 	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y), m_selected_pin, m_nodes);
@@ -444,9 +444,9 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	    if (m_selected_pin->IsInput())
 	    {
 		    auto& output = bp_node->GetAllOutput();
-		    for (auto& pins : output) {
-			    if (pins->CanTypeCast(*m_selected_pin)) {
-				    MakeConnecting(pins, m_selected_pin);
+		    for (auto& pin : output) {
+			    if (pin->CanTypeCast(*m_selected_pin)) {
+				    MakeConnecting(pin, m_selected_pin);
 				    break;
 			    }
 		    }
@@ -454,9 +454,9 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	    else
 	    {
 		    auto& input = bp_node->GetAllInput();
-		    for (auto& pins : input) {
-			    if (pins->CanTypeCast(*m_selected_pin)) {
-				    MakeConnecting(m_selected_pin, pins);
+		    for (auto& pin : input) {
+			    if (pin->CanTypeCast(*m_selected_pin)) {
+				    MakeConnecting(m_selected_pin, pin);
 				    break;
 			    }
 		    }
@@ -470,7 +470,7 @@ bool ConnectPinsOP::CreateNode(int x, int y)
 	return true;
 }
 
-void ConnectPinsOP::ClearSelectedConns()
+void ConnectPinOP::ClearSelectedConns()
 {
     m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& nwp)->bool
     {
@@ -489,7 +489,7 @@ void ConnectPinsOP::ClearSelectedConns()
     });
 }
 
-void ConnectPinsOP::PasteConnections()
+void ConnectPinOP::PasteConnections()
 {
     auto& cb = ee0::Clipboard::Instance()->GetSceneNodes();
 
@@ -528,32 +528,32 @@ void ConnectPinsOP::PasteConnections()
             auto& conns = out_pins[j]->GetConnecting();
             for (int k = 0, l = conns.size(); k < l; ++k)
             {
-                auto to_pins = conns[k]->GetTo();
-                auto itr = map_node2idx.find(&to_pins->GetParent());
+                auto to_pin = conns[k]->GetTo();
+                auto itr = map_node2idx.find(&to_pin->GetParent());
                 if (itr == map_node2idx.end()) {
                     continue;
                 }
 
-                auto pins_idx = to_pins->GetPosIdx();
+                auto pin_idx = to_pin->GetPosIdx();
                 auto node_idx = itr->second;
                 auto from = new_cb[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput()[j];
-                auto to = new_cb[node_idx]->GetUniqueComp<CompNode>().GetNode()->GetAllInput()[pins_idx];
+                auto to = new_cb[node_idx]->GetUniqueComp<CompNode>().GetNode()->GetAllInput()[pin_idx];
                 MakeConnecting(from, to);
             }
         }
     }
 }
 
-void ConnectPinsOP::MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to)
+void ConnectPinOP::MakeConnecting(const std::shared_ptr<Pin>& from, const std::shared_ptr<Pin>& to)
 {
     //auto sub_mgr = m_stage.GetSubjectMgr();
-    //auto aop = std::make_shared<ConnectPinsAO>(sub_mgr, from, to);
+    //auto aop = std::make_shared<ConnectPinAO>(sub_mgr, from, to);
     //m_records.push_back(aop);
 
     make_connecting(from, to);
 }
 
-void ConnectPinsOP::Disconnect(const std::shared_ptr<Connecting>& conn)
+void ConnectPinOP::Disconnect(const std::shared_ptr<Connecting>& conn)
 {
     //auto sub_mgr = m_stage.GetSubjectMgr();
     //auto aop = std::make_shared<DisconnectConnAO>(sub_mgr, conn->GetFrom(), conn->GetTo());
@@ -562,7 +562,7 @@ void ConnectPinsOP::Disconnect(const std::shared_ptr<Connecting>& conn)
     disconnect(conn);
 }
 
-void ConnectPinsOP::FlushRecords()
+void ConnectPinOP::FlushRecords()
 {
     if (m_records.empty()) {
         return;
@@ -584,7 +584,7 @@ void ConnectPinsOP::FlushRecords()
     m_records.clear();
 }
 
-void ConnectPinsOP::UpdatemExtInputPorts(ConnEvent event)
+void ConnectPinOP::UpdatemExtInputPorts(ConnEvent event)
 {
     if (!m_last_selected_pin) {
         return;

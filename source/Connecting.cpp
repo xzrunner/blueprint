@@ -1,5 +1,5 @@
 #include "blueprint/Connecting.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 #include "blueprint/NodeLayout.h"
 #include "blueprint/NodeBuilder.h"
 
@@ -8,8 +8,8 @@
 namespace bp
 {
 
-Connecting::Connecting(const std::shared_ptr<Pins>& from,
-	                   const std::shared_ptr<Pins>& to)
+Connecting::Connecting(const std::shared_ptr<Pin>& from,
+	                   const std::shared_ptr<Pin>& to)
 	: m_from(from)
 	, m_to(to)
 {
@@ -22,12 +22,12 @@ void Connecting::UpdateCurve()
 	UpdateCurveColor();
 }
 
-std::shared_ptr<Pins> Connecting::GetFrom() const
+std::shared_ptr<Pin> Connecting::GetFrom() const
 {
 	return m_from.lock();
 }
 
-std::shared_ptr<Pins> Connecting::GetTo() const
+std::shared_ptr<Pin> Connecting::GetTo() const
 {
 	return m_to.lock();
 }
@@ -38,8 +38,8 @@ void Connecting::UpdateCurveShape()
 	auto to = m_to.lock();
 	assert(from && to);
 
-	sm::vec2 v0 = NodeLayout::GetPinsPos(*from);
-	sm::vec2 v3 = NodeLayout::GetPinsPos(*to);
+	sm::vec2 v0 = NodeLayout::GetPinPos(*from);
+	sm::vec2 v3 = NodeLayout::GetPinPos(*to);
 	float d = fabs((v3.x - v0.x) * NodeLayout::CONNECTING_BEZIER_DIST);
 	auto v1 = v0 + sm::vec2(d, 0);
 	auto v2 = v3 - sm::vec2(d, 0);
@@ -95,8 +95,8 @@ void Connecting::UpdateCurveColor()
 	}
 }
 
-std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pins>& from,
-	                                        const std::shared_ptr<Pins>& to)
+std::shared_ptr<Connecting> make_connecting(const std::shared_ptr<Pin>& from,
+	                                        const std::shared_ptr<Pin>& to)
 {
 	auto builder = NodeBuilder::Instance();
 	builder->OnConnecting(*from, *to);

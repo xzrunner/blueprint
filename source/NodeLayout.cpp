@@ -1,7 +1,7 @@
 #include "blueprint/NodeLayout.h"
 #include "blueprint/Node.h"
 #include "blueprint/RenderSystem.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 #include <painting2/Callback.h>
 #include <node0/SceneNode.h>
@@ -15,7 +15,7 @@ namespace bp
 const uint32_t NodeLayout::DEFAULT_WIDTH  = 100;
 const uint32_t NodeLayout::DEFAULT_HEIGHT = 20;
 const uint32_t NodeLayout::TITLE_HEIGHT   = 20;
-const float    NodeLayout::PINS_RADIUS    = 5;
+const float    NodeLayout::PIN_RADIUS    = 5;
 const float    NodeLayout::CONNECTING_BEZIER_DIST = 0.3f;
 
 void NodeLayout::UpdateNodeStyle(Node& node)
@@ -50,7 +50,7 @@ void NodeLayout::UpdateNodeStyle(Node& node)
 			max_w = w;
 		}
 	}
-	s.width = max_w * rs->GetTextPinsScale() + 60;
+	s.width = max_w * rs->GetTextPinScale() + 60;
 
 	// title
 	{
@@ -64,9 +64,9 @@ void NodeLayout::UpdateNodeStyle(Node& node)
 	node.SetStyle(s);
 }
 
-sm::vec2 NodeLayout::GetPinsPos(const Pins& pins)
+sm::vec2 NodeLayout::GetPinPos(const Pin& pin)
 {
-	auto& node = pins.GetParent();
+	auto& node = pin.GetParent();
 
 	auto& style = node.GetStyle();
 	float hw = style.width  * 0.5f;
@@ -74,15 +74,15 @@ sm::vec2 NodeLayout::GetPinsPos(const Pins& pins)
 
 	sm::vec2 pos;
 
-	bool left = pins.IsInput();
+	bool left = pin.IsInput();
 	if (left) {
-		pos.x = -hw + PINS_RADIUS * 2;
+		pos.x = -hw + PIN_RADIUS * 2;
 	} else {
-		pos.x = hw - PINS_RADIUS * 2;
+		pos.x = hw - PIN_RADIUS * 2;
 	}
 
 	if (!node.IsStyleOnlyTitle()) {
-		int pos_idx = pins.GetPosIdx();
+		int pos_idx = pin.GetPosIdx();
 		pos.y = hh - NodeLayout::DEFAULT_HEIGHT - (pos_idx + 0.5f) * NodeLayout::DEFAULT_HEIGHT;
 	} else {
 		pos.y = hh - NodeLayout::DEFAULT_HEIGHT * 0.5f;
@@ -91,7 +91,7 @@ sm::vec2 NodeLayout::GetPinsPos(const Pins& pins)
 	return node.GetPos() + pos;
 }
 
-sm::vec2 NodeLayout::GetPinsPos(const Node& node, bool left, size_t idx)
+sm::vec2 NodeLayout::GetPinPos(const Node& node, bool left, size_t idx)
 {
 	sm::vec2 pos;
 
@@ -100,9 +100,9 @@ sm::vec2 NodeLayout::GetPinsPos(const Node& node, bool left, size_t idx)
 	float hh = style.height * 0.5f;
 
 	if (left) {
-		pos.x = -hw + PINS_RADIUS * 2;
+		pos.x = -hw + PIN_RADIUS * 2;
 	} else {
-		pos.x = hw - PINS_RADIUS * 2;
+		pos.x = hw - PIN_RADIUS * 2;
 	}
 
 	if (!node.IsStyleOnlyTitle()) {

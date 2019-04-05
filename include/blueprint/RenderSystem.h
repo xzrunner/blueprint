@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pins.h"
+#include "Pin.h"
 
 #include <cu/cu_macro.h>
 #include <SM_Matrix2D.h>
@@ -13,7 +13,7 @@ namespace bp
 {
 
 class Node;
-class Pins;
+class Pin;
 class Connecting;
 
 class RenderSystem
@@ -23,10 +23,10 @@ public:
 	auto& GetInputTB() const { return m_input_tb; }
 
 	float GetTextTitleScale() const;
-	float GetTextPinsScale() const;
+	float GetTextPinScale() const;
 
 	void DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh, bool draw_text);
-	void DrawPins(const Pins& pins, const sm::vec2& pos);
+	void DrawPin(const Pin& pin, const sm::vec2& pos);
 	void DrawConnecting(const Node& node, const sm::Matrix2D& mat, const sm::rect& screen_region);
 
 public:

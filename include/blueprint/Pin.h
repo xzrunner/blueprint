@@ -13,35 +13,35 @@ namespace bp
 class Node;
 class Connecting;
 
-enum PinsType
+enum PinType
 {
-	PINS_PORT = 0,
+	PIN_PORT = 0,
 
-    PINS_ANY_VAR,
+    PIN_ANY_VAR,
 
 	// variable
-	PINS_BOOLEAN,
-	PINS_INTEGER,
-	PINS_FLOAT,
-	PINS_STRING,
-	PINS_TEXT,
-	PINS_VECTOR,
-	PINS_ROTATOR,
-	PINS_TRANSFORM,
-	PINS_OBJECT,
+	PIN_BOOLEAN,
+	PIN_INTEGER,
+	PIN_FLOAT,
+	PIN_STRING,
+	PIN_TEXT,
+	PIN_VECTOR,
+	PIN_ROTATOR,
+	PIN_TRANSFORM,
+	PIN_OBJECT,
 };
 
-class Pins
+class Pin
 {
 public:
-	Pins(bool is_input, int pos, int type, const std::string& name, const Node& parent);
-	~Pins();
+	Pin(bool is_input, int pos, int type, const std::string& name, const Node& parent);
+	~Pin();
 
 	// for draw
     std::string GetDesc() const;
 	const pt0::Color& GetColor() const;
 
-	bool CanTypeCast(const Pins& p) const;
+	bool CanTypeCast(const Pin& p) const;
 
 	bool IsInput() const { return m_is_input; }
 	int  GetPosIdx() const { return m_pos; }
@@ -92,6 +92,6 @@ private:
 
     static ExtendFuncs m_funcs;
 
-}; // Pins
+}; // Pin
 
 }

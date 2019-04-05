@@ -64,14 +64,8 @@
     <ClCompile Include="..\..\..\source\RenderSystem.cpp">
       <Filter>view</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\Pins.cpp">
-      <Filter>dataset</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\NodeLayout.cpp">
       <Filter>view</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\ConnectPinsOP.cpp">
-      <Filter>editor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\Connecting.cpp">
       <Filter>dataset</Filter>
@@ -89,9 +83,6 @@
       <Filter>dataset\node</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
-    <ClCompile Include="..\..\..\source\ConnectPinsAO.cpp">
-      <Filter>editor\aop</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\DisconnectConnAO.cpp">
       <Filter>editor\aop</Filter>
     </ClCompile>
@@ -122,6 +113,15 @@
     <ClCompile Include="..\..\..\source\NodeHelper.cpp">
       <Filter>dataset\node</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\Pin.cpp">
+      <Filter>dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\ConnectPinOP.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\ConnectPinAO.cpp">
+      <Filter>editor\aop</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
@@ -131,14 +131,8 @@
     <ClInclude Include="..\..\..\include\blueprint\RenderSystem.h">
       <Filter>view</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\Pins.h">
-      <Filter>dataset</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h">
       <Filter>view</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\ConnectPinsOP.h">
-      <Filter>editor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\Connecting.h">
       <Filter>dataset</Filter>
@@ -165,9 +159,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\FlowCtrlBranch.h">
       <Filter>node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\ConnectPinsAO.h">
-      <Filter>editor\aop</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\DisconnectConnAO.h">
       <Filter>editor\aop</Filter>
@@ -240,6 +231,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\CompareNotEqual.h">
       <Filter>node\logical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\Pin.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\ConnectPinOP.h">
+      <Filter>editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\ConnectPinAO.h">
+      <Filter>editor\aop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

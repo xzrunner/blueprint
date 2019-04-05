@@ -1,7 +1,7 @@
 #pragma once
 
 #include "blueprint/Node.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 namespace bp
 {
@@ -14,11 +14,11 @@ public:
 	FlowCtrlBranch()
 		: Node("Branch")
 	{
-		AddPins(std::make_shared<Pins>(true, 0, PINS_PORT, "", *this));
-		AddPins(std::make_shared<Pins>(true, 1, PINS_BOOLEAN, "Condition", *this));
+		AddPin(std::make_shared<Pin>(true, 0, PIN_PORT, "", *this));
+		AddPin(std::make_shared<Pin>(true, 1, PIN_BOOLEAN, "Condition", *this));
 
-		AddPins(std::make_shared<Pins>(false, 0, PINS_PORT, "True", *this));
-		AddPins(std::make_shared<Pins>(false, 1, PINS_PORT, "False", *this));
+		AddPin(std::make_shared<Pin>(false, 0, PIN_PORT, "True", *this));
+		AddPin(std::make_shared<Pin>(false, 1, PIN_PORT, "False", *this));
 
 		Layout();
 	}

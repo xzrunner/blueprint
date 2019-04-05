@@ -1,6 +1,6 @@
 #include "blueprint/WxCreateNodeDlg.h"
 #include "blueprint/Node.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 #include <wx/treectrl.h>
 #include <wx/sizer.h>
@@ -9,7 +9,7 @@ namespace bp
 {
 
 WxCreateNodeDlg::WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos,
-                                 const std::shared_ptr<Pins>& pair,
+                                 const std::shared_ptr<Pin>& pair,
 	                             const std::vector<NodePtr>& nodes)
 	: wxDialog(parent, wxID_ANY, "Create Node", pos, wxSize(200, 400))
 	, m_pair(pair)
@@ -69,15 +69,15 @@ bool WxCreateNodeDlg::IsNodeMatched(const Node& node) const
 	if (m_pair->IsInput())
 	{
 		auto& output = node.GetAllOutput();
-		for (auto& pins : output) {
-			if (pins->CanTypeCast(*m_pair)) {
+		for (auto& pin : output) {
+			if (pin->CanTypeCast(*m_pair)) {
 				return true;
 			}
 		}
 	} else {
 		auto& input = node.GetAllInput();
-		for (auto& pins : input) {
-			if (pins->CanTypeCast(*m_pair)) {
+		for (auto& pin : input) {
+			if (pin->CanTypeCast(*m_pair)) {
 				return true;
 			}
 		}

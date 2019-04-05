@@ -1,7 +1,7 @@
 #pragma once
 
 #include "blueprint/Node.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 #include <node0/typedef.h>
 
@@ -40,12 +40,12 @@ public:
 
 private:
     template<typename NodeType>
-    void AddNode(std::vector<std::shared_ptr<NodeType>>& node_list, std::vector<std::shared_ptr<Pins>>& pins_list,
+    void AddNode(std::vector<std::shared_ptr<NodeType>>& node_list, std::vector<std::shared_ptr<Pin>>& pin_list,
         const std::shared_ptr<NodeType>& node, bool is_input, bool need_layout);
 
     template<typename NodeType>
     void RemoveNode(std::vector<std::shared_ptr<NodeType>>& node_list,
-        std::vector<std::shared_ptr<Pins>>& pins_list, const std::shared_ptr<NodeType>& node);
+        std::vector<std::shared_ptr<Pin>>& pin_list, const std::shared_ptr<NodeType>& node);
 
 private:
     std::string m_name;

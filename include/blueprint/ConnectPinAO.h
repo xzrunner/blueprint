@@ -8,10 +8,10 @@ namespace bp
 
 class Pin;
 
-class DisconnectConnAO : public ee0::AtomicOP
+class ConnectPinAO : public ee0::AtomicOP
 {
 public:
-    DisconnectConnAO(const ee0::SubjectMgrPtr& sub_mgr, 
+    ConnectPinAO(const ee0::SubjectMgrPtr& sub_mgr, 
         const std::shared_ptr<Pin>& from, const std::shared_ptr<Pin>& to);
 
     virtual void Undo() override;
@@ -22,6 +22,6 @@ private:
 
     std::shared_ptr<Pin> m_from, m_to;
 
-}; // DisconnectConnAO
+}; // ConnectPinAO
 
 }

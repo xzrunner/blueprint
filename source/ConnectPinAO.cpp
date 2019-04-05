@@ -1,6 +1,6 @@
-#include "blueprint/ConnectPinsAO.h"
+#include "blueprint/ConnectPinAO.h"
 #include "blueprint/Connecting.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 #include <ee0/SubjectMgr.h>
 #include <ee0/MessageID.h>
@@ -8,16 +8,16 @@
 namespace bp
 {
 
-ConnectPinsAO::ConnectPinsAO(const ee0::SubjectMgrPtr& sub_mgr,
-                             const std::shared_ptr<Pins>& from, 
-                             const std::shared_ptr<Pins>& to)
+ConnectPinAO::ConnectPinAO(const ee0::SubjectMgrPtr& sub_mgr,
+                             const std::shared_ptr<Pin>& from, 
+                             const std::shared_ptr<Pin>& to)
     : m_sub_mgr(sub_mgr)
     , m_from(from)
     , m_to(to)
 {
 }
 
-void ConnectPinsAO::Undo()
+void ConnectPinAO::Undo()
 {
     std::shared_ptr<Connecting> conn = nullptr;
     for (auto& c : m_from->GetConnecting()) {
@@ -33,7 +33,7 @@ void ConnectPinsAO::Undo()
     m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 }
 
-void ConnectPinsAO::Redo()
+void ConnectPinAO::Redo()
 {
     make_connecting(m_from, m_to);
 

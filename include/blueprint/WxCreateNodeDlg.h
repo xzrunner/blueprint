@@ -10,14 +10,14 @@
 namespace bp
 {
 
-class Pins;
+class Pin;
 class Node;
 
 class WxCreateNodeDlg : public wxDialog
 {
 public:
 	WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos,
-        const std::shared_ptr<Pins>& pair, const std::vector<NodePtr>& nodes);
+        const std::shared_ptr<Pin>& pair, const std::vector<NodePtr>& nodes);
 
 	std::string GetSelectedType() const;
 
@@ -30,7 +30,7 @@ private:
 	bool IsNodeMatched(const Node& node) const;
 
 private:
-	std::shared_ptr<Pins> m_pair = nullptr;
+	std::shared_ptr<Pin> m_pair = nullptr;
 	const std::vector<NodePtr>& m_nodes;
 
 	wxTreeCtrl* m_tree;

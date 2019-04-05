@@ -1,6 +1,6 @@
 #include "blueprint/Node.h"
 #include "blueprint/NodeLayout.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 #include "blueprint/Connecting.h"
 #include "blueprint/RenderSystem.h"
 
@@ -47,17 +47,17 @@ void Node::Draw(const n2::RenderParams& rp) const
 	auto pos = rp.GetMatrix() * sm::vec2(0, 0);
 	render->DrawPanel(*this, pos, hw, hh, lod >= 2);
 
-	// pins
+	// pin
 	if (lod >= 2 && !IsStyleOnlyTitle())
 	{
 		// input
 		for (auto& in : GetAllInput()) {
-			render->DrawPins(*in, NodeLayout::GetPinsPos(*in));
+			render->DrawPin(*in, NodeLayout::GetPinPos(*in));
 		}
 
 		// output
 		for (auto& out : GetAllOutput()) {
-			render->DrawPins(*out, NodeLayout::GetPinsPos(*out));
+			render->DrawPin(*out, NodeLayout::GetPinPos(*out));
 		}
 	}
 
@@ -80,7 +80,7 @@ bool Node::UpdateExtInputPorts(bool is_connecting)
         const int n = m_all_input.size();
         std::string name;
         name.push_back(static_cast<char>('A' + n));
-        AddPins(std::make_shared<Pins>(true, n, PINS_ANY_VAR, name, *this));
+        AddPin(std::make_shared<Pin>(true, n, PIN_ANY_VAR, name, *this));
         dirty = true;
     }
     else
@@ -106,7 +106,7 @@ void Node::PrepareExtInputPorts(int count)
     {
         std::string name;
         name.push_back(static_cast<char>('A' + i));
-        AddPins(std::make_shared<Pins>(true, i, PINS_ANY_VAR, name, *this));
+        AddPin(std::make_shared<Pin>(true, i, PIN_ANY_VAR, name, *this));
     }
 
     Layout();
@@ -147,19 +147,19 @@ void Node::SetFlags(Flags flags)
 	Layout();
 }
 
-void Node::AddPins(const std::shared_ptr<Pins>& pins)
+void Node::AddPin(const std::shared_ptr<Pin>& pin)
 {
-	auto& array = pins->IsInput() ? m_all_input : m_all_output;
-	if (!CheckPinsName(*pins, array)) {
+	auto& array = pin->IsInput() ? m_all_input : m_all_output;
+	if (!CheckPinName(*pin, array)) {
 		assert(0);
 		return;
 	}
-	array.push_back(pins);
+	array.push_back(pin);
 }
 
-bool Node::CheckPinsName(const Pins& src, const std::vector<std::shared_ptr<Pins>>& dst)
+bool Node::CheckPinName(const Pin& src, const std::vector<std::shared_ptr<Pin>>& dst)
 {
-	if (src.GetType() == PINS_PORT) {
+	if (src.GetType() == PIN_PORT) {
 		return true;
 	}
 

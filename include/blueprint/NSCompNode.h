@@ -10,7 +10,7 @@
 namespace bp
 {
 
-class Pins;
+class Pin;
 class CompNode;
 
 class NSCompNode : public ns::NodeComponent
@@ -43,7 +43,7 @@ public:
 		const rapidjson::Value& nodes_val);
 
 private:
-	static std::shared_ptr<Pins> QueryPinsByName(const Node& node, bool is_input, const std::string& name);
+	static std::shared_ptr<Pin> QueryPinByName(const Node& node, bool is_input, const std::string& name);
 
 private:
 	NodePtr m_node = nullptr;

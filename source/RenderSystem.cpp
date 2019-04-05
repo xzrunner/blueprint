@@ -1,6 +1,6 @@
 #include "blueprint/RenderSystem.h"
 #include "blueprint/Node.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 #include "blueprint/NodeLayout.h"
 #include "blueprint/Connecting.h"
 #include "blueprint/NodeStyle.h"
@@ -13,12 +13,12 @@
 namespace
 {
 
-const float PINS_RADIUS = bp::NodeLayout::PINS_RADIUS;
+const float PIN_RADIUS = bp::NodeLayout::PIN_RADIUS;
 
 const float TEXT_TITLE_SCALE = 0.7f;
-const float TEXT_PINS_SCALE  = 0.5f;
+const float TEXT_PIN_SCALE  = 0.5f;
 
-const float PINS_TEXT_OFFSET = 130;
+const float PIN_TEXT_OFFSET = 130;
 
 }
 
@@ -55,9 +55,9 @@ float RenderSystem::GetTextTitleScale() const
 	return TEXT_TITLE_SCALE;
 }
 
-float RenderSystem::GetTextPinsScale() const
+float RenderSystem::GetTextPinScale() const
 {
-	return TEXT_PINS_SCALE;
+	return TEXT_PIN_SCALE;
 }
 
 void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh, bool draw_text)
@@ -78,27 +78,27 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
     }
 }
 
-void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
+void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
 {
 	sm::Matrix2D mat;
-	mat.Scale(TEXT_PINS_SCALE, TEXT_PINS_SCALE);
+	mat.Scale(TEXT_PIN_SCALE, TEXT_PIN_SCALE);
 	mat.Translate(pos.x, pos.y);
 
-	bool connected = !pins.GetConnecting().empty();
+	bool connected = !pin.GetConnecting().empty();
 
 	tess::Painter pt;
-	auto type = pins.GetType();
-	if (type == PINS_PORT)
+	auto type = pin.GetType();
+	if (type == PIN_PORT)
 	{
 		std::vector<sm::vec2> vertices = {
-			sm::vec2(-PINS_RADIUS, PINS_RADIUS),
-			sm::vec2(-PINS_RADIUS, -PINS_RADIUS),
-			sm::vec2(PINS_RADIUS, 0),
+			sm::vec2(-PIN_RADIUS, PIN_RADIUS),
+			sm::vec2(-PIN_RADIUS, -PIN_RADIUS),
+			sm::vec2(PIN_RADIUS, 0),
 		};
 		for (auto& v : vertices) {
 			v += pos;
 		}
-		uint32_t col = pins.GetColor().ToABGR();
+		uint32_t col = pin.GetColor().ToABGR();
 		assert(vertices.size() % 3 == 0);
 		if (connected) {
 			for (int i = 0, n = vertices.size(); i < n; ) {
@@ -113,19 +113,19 @@ void RenderSystem::DrawPins(const Pins& pins, const sm::vec2& pos)
 	else
 	{
 		if (connected) {
-			pt.AddCircleFilled(pos, PINS_RADIUS, pins.GetColor().ToABGR());
+			pt.AddCircleFilled(pos, PIN_RADIUS, pin.GetColor().ToABGR());
 		} else {
-			pt.AddCircle(pos, PINS_RADIUS, pins.GetColor().ToABGR());
+			pt.AddCircle(pos, PIN_RADIUS, pin.GetColor().ToABGR());
 		}
 	}
 	pt2::RenderSystem::DrawPainter(pt);
 
-	if (pins.IsInput()) {
-		mat.Translate(PINS_TEXT_OFFSET, 0);
-		pt2::RenderSystem::DrawText(pins.GetDesc(), m_input_tb, mat, COL_TEXT, COL_ZERO);
+	if (pin.IsInput()) {
+		mat.Translate(PIN_TEXT_OFFSET, 0);
+		pt2::RenderSystem::DrawText(pin.GetDesc(), m_input_tb, mat, COL_TEXT, COL_ZERO);
 	} else {
-		mat.Translate(-PINS_TEXT_OFFSET, 0);
-		pt2::RenderSystem::DrawText(pins.GetDesc(), m_output_tb, mat, COL_TEXT, COL_ZERO);
+		mat.Translate(-PIN_TEXT_OFFSET, 0);
+		pt2::RenderSystem::DrawText(pin.GetDesc(), m_output_tb, mat, COL_TEXT, COL_ZERO);
 	}
 }
 

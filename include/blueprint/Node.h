@@ -21,7 +21,7 @@ namespace n2 { class RenderParams; }
 namespace bp
 {
 
-class Pins;
+class Pin;
 
 struct UpdateParams
 {
@@ -79,11 +79,11 @@ public:
 	void SetStyle(const Style& style) { m_style = style; }
 
 protected:
-	void AddPins(const std::shared_ptr<Pins>& pins);
+	void AddPin(const std::shared_ptr<Pin>& pin);
 
 protected:
-	static bool CheckPinsName(const Pins& src,
-		const std::vector<std::shared_ptr<Pins>>& dst);
+	static bool CheckPinName(const Pin& src,
+		const std::vector<std::shared_ptr<Pin>>& dst);
 
 	void Layout();
 
@@ -92,8 +92,8 @@ protected:
 
 	Style m_style;
 
-	std::vector<std::shared_ptr<Pins>> m_all_input;
-	std::vector<std::shared_ptr<Pins>> m_all_output;
+	std::vector<std::shared_ptr<Pin>> m_all_input;
+	std::vector<std::shared_ptr<Pin>> m_all_output;
 
 public:
 	static const uint32_t STYLE_SMALL_TITLE_FONT = 0x00000001;

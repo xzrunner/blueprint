@@ -1,7 +1,7 @@
 #pragma once
 
 #include "blueprint/Node.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 namespace bp
 {
@@ -14,16 +14,16 @@ public:
     SwitchMulti()
         : Node("SwitchMulti")
     {
-        AddPins(std::make_shared<Pins>(true, 0, PINS_ANY_VAR, "A", *this));
-        AddPins(std::make_shared<Pins>(true, 1, PINS_ANY_VAR, "B", *this));
-        AddPins(std::make_shared<Pins>(true, 2, PINS_ANY_VAR, "C", *this));
-        AddPins(std::make_shared<Pins>(true, 3, PINS_ANY_VAR, "D", *this));
-        AddPins(std::make_shared<Pins>(true, 4, PINS_ANY_VAR, "E", *this));
-        AddPins(std::make_shared<Pins>(true, 5, PINS_ANY_VAR, "F", *this));
-        AddPins(std::make_shared<Pins>(true, 6, PINS_ANY_VAR, "G", *this));
-        AddPins(std::make_shared<Pins>(true, 7, PINS_ANY_VAR, "H", *this));
+        AddPin(std::make_shared<Pin>(true, 0, PIN_ANY_VAR, "A", *this));
+        AddPin(std::make_shared<Pin>(true, 1, PIN_ANY_VAR, "B", *this));
+        AddPin(std::make_shared<Pin>(true, 2, PIN_ANY_VAR, "C", *this));
+        AddPin(std::make_shared<Pin>(true, 3, PIN_ANY_VAR, "D", *this));
+        AddPin(std::make_shared<Pin>(true, 4, PIN_ANY_VAR, "E", *this));
+        AddPin(std::make_shared<Pin>(true, 5, PIN_ANY_VAR, "F", *this));
+        AddPin(std::make_shared<Pin>(true, 6, PIN_ANY_VAR, "G", *this));
+        AddPin(std::make_shared<Pin>(true, 7, PIN_ANY_VAR, "H", *this));
 
-        AddPins(std::make_shared<Pins>(false, 0, PINS_ANY_VAR, "Out", *this));
+        AddPin(std::make_shared<Pin>(false, 0, PIN_ANY_VAR, "Out", *this));
 
         Layout();
     }

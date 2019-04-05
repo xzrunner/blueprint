@@ -1,7 +1,7 @@
 #pragma once
 
 #include "blueprint/Node.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 namespace bp
 {
@@ -14,10 +14,10 @@ public:
     Hub()
         : Node("Hub")
     {
-        AddPins(std::make_shared<Pins>(true, 0, PINS_ANY_VAR, "A", *this));
-        AddPins(std::make_shared<Pins>(true, 1, PINS_ANY_VAR, "B", *this));
+        AddPin(std::make_shared<Pin>(true, 0, PIN_ANY_VAR, "A", *this));
+        AddPin(std::make_shared<Pin>(true, 1, PIN_ANY_VAR, "B", *this));
 
-        AddPins(std::make_shared<Pins>(false, 0, PINS_ANY_VAR, "Out", *this));
+        AddPin(std::make_shared<Pin>(false, 0, PIN_ANY_VAR, "Out", *this));
 
         SetExtensibleInputPorts(true);
 

@@ -9,20 +9,20 @@
 #include <node0/typedef.h>
 #include <geoshape/Bezier.h>
 
-//#define BP_CONNECT_PINS_OP_SELECT_CONNS
+//#define BP_CONNECT_PIN_OP_SELECT_CONNS
 
 namespace ee0 { class WxStagePage; class AtomicOP; }
 
 namespace bp
 {
 
-class Pins;
+class Pin;
 class Connecting;
 
-class ConnectPinsOP : public ee0::EditOP
+class ConnectPinOP : public ee0::EditOP
 {
 public:
-	ConnectPinsOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
+	ConnectPinOP(const std::shared_ptr<pt0::Camera>& cam, ee0::WxStagePage& stage,
 		const std::vector<NodePtr>& nodes);
 
 	virtual bool OnKeyDown(int key_code);
@@ -35,7 +35,7 @@ public:
 	virtual bool OnDraw() const;
 
 private:
-	std::shared_ptr<Pins> QueryPinsByPos(const n0::SceneNodePtr& node,
+	std::shared_ptr<Pin> QueryPinByPos(const n0::SceneNodePtr& node,
 		const sm::vec2& pos, sm::vec2& p_center);
 	void QueryConnsByRect(const sm::rect& rect, std::vector<std::shared_ptr<Connecting>>& conns);
 
@@ -47,7 +47,7 @@ private:
 
     void PasteConnections();
 
-    void MakeConnecting(const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to);
+    void MakeConnecting(const std::shared_ptr<Pin>& from, const std::shared_ptr<Pin>& to);
     void Disconnect(const std::shared_ptr<Connecting>& conn);
 
     void FlushRecords();
@@ -64,10 +64,10 @@ private:
 
 	std::vector<NodePtr> m_nodes;
 
-	std::shared_ptr<Pins> m_selected_pin = nullptr;
-#ifdef BP_CONNECT_PINS_OP_SELECT_CONNS
+	std::shared_ptr<Pin> m_selected_pin = nullptr;
+#ifdef BP_CONNECT_PIN_OP_SELECT_CONNS
 	std::vector<std::shared_ptr<Connecting>> m_selected_conns;
-#endif // BP_CONNECT_PINS_OP_SELECT_CONNS
+#endif // BP_CONNECT_PIN_OP_SELECT_CONNS
 
 	sm::vec2 m_first_pos;
 	sm::vec2 m_last_pos;
@@ -76,8 +76,8 @@ private:
 
     std::vector<std::shared_ptr<ee0::AtomicOP>> m_records;
 
-    std::shared_ptr<Pins> m_last_selected_pin = nullptr;
+    std::shared_ptr<Pin> m_last_selected_pin = nullptr;
 
-}; // ConnectPinsOP
+}; // ConnectPinOP
 
 }

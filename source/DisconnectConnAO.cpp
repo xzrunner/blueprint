@@ -1,6 +1,6 @@
 #include "blueprint/DisconnectConnAO.h"
 #include "blueprint/Connecting.h"
-#include "blueprint/Pins.h"
+#include "blueprint/Pin.h"
 
 #include <ee0/SubjectMgr.h>
 #include <ee0/MessageID.h>
@@ -9,8 +9,8 @@ namespace bp
 {
 
 DisconnectConnAO::DisconnectConnAO(const ee0::SubjectMgrPtr& sub_mgr, 
-                                   const std::shared_ptr<Pins>& from, 
-                                   const std::shared_ptr<Pins>& to)
+                                   const std::shared_ptr<Pin>& from, 
+                                   const std::shared_ptr<Pin>& to)
     : m_sub_mgr(sub_mgr)
     , m_from(from)
     , m_to(to)

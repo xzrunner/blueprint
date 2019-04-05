@@ -12,7 +12,7 @@ namespace bp
 {
 
 class Node;
-class Pins;
+class Pin;
 
 class NodeBuilder
 {
@@ -20,9 +20,9 @@ public:
 	struct Callback
 	{
 		std::function<void(Node&, std::vector<n0::SceneNodePtr>&)> on_created = nullptr;
-		std::function<void(Pins&, Pins&)> on_connecting = nullptr;
-		std::function<void(Pins&, Pins&)> on_connected = nullptr;
-        std::function<void(Pins&, Pins&)> on_disconnected = nullptr;
+		std::function<void(Pin&, Pin&)> on_connecting = nullptr;
+		std::function<void(Pin&, Pin&)> on_connected = nullptr;
+        std::function<void(Pin&, Pin&)> on_disconnected = nullptr;
 	};
 
 	void RegistCB(const NodeBuilder::Callback& cb) { m_cb = cb; }
@@ -30,10 +30,10 @@ public:
 public:
 	void OnCreated(Node& node, const ee0::SubjectMgrPtr& sub_mgr);
 
-	void OnConnecting(Pins& from, Pins& to);
-	void OnConnected(Pins& from, Pins& to);
+	void OnConnecting(Pin& from, Pin& to);
+	void OnConnected(Pin& from, Pin& to);
 
-    void OnDisconnected(Pins& from, Pins& to);
+    void OnDisconnected(Pin& from, Pin& to);
 
 private:
 	Callback m_cb;

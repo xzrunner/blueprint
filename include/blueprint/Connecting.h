@@ -7,18 +7,18 @@
 namespace bp
 {
 
-class Pins;
+class Pin;
 
 class Connecting
 {
 public:
-	Connecting(const std::shared_ptr<Pins>& from,
-		const std::shared_ptr<Pins>& to);
+	Connecting(const std::shared_ptr<Pin>& from,
+		const std::shared_ptr<Pin>& to);
 
 	void UpdateCurve();
 
-	std::shared_ptr<Pins> GetFrom() const;
-	std::shared_ptr<Pins> GetTo() const;
+	std::shared_ptr<Pin> GetFrom() const;
+	std::shared_ptr<Pin> GetTo() const;
 
 	auto& GetCurve() const { return m_curve; }
 
@@ -37,8 +37,8 @@ private:
 	void UpdateCurveColor();
 
 private:
-	std::weak_ptr<Pins> m_from;
-	std::weak_ptr<Pins> m_to;
+	std::weak_ptr<Pin> m_from;
+	std::weak_ptr<Pin> m_to;
 
 	Curve m_curve;
 
@@ -47,7 +47,7 @@ private:
 }; // Connecting
 
 std::shared_ptr<Connecting> make_connecting(
-	const std::shared_ptr<Pins>& from, const std::shared_ptr<Pins>& to
+	const std::shared_ptr<Pin>& from, const std::shared_ptr<Pin>& to
 );
 
 void disconnect(const std::shared_ptr<Connecting>& conn);
