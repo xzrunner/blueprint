@@ -119,6 +119,9 @@
     <ClCompile Include="..\..\..\source\node\Function.cpp">
       <Filter>node\function</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\NodeHelper.cpp">
+      <Filter>dataset\node</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">

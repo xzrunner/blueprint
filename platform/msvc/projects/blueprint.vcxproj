@@ -63,6 +63,7 @@
     <ClCompile Include="..\..\..\source\DisconnectConnAO.cpp" />
     <ClCompile Include="..\..\..\source\Node.cpp" />
     <ClCompile Include="..\..\..\source\NodeBuilder.cpp" />
+    <ClCompile Include="..\..\..\source\NodeHelper.cpp" />
     <ClCompile Include="..\..\..\source\NodeLayout.cpp" />
     <ClCompile Include="..\..\..\source\NodeSelectOP.cpp" />
     <ClCompile Include="..\..\..\source\node\Commentary.cpp" />
