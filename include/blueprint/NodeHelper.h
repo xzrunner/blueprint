@@ -27,6 +27,8 @@ public:
     static void LoadConnections(const std::vector<n0::SceneNodePtr>& nodes,
         const std::string& filepath);
 
+    static sm::Matrix2D CalcPreviewMat(const Node& node, const sm::Matrix2D& mt);
+
 }; // NodeHelper
 
 }

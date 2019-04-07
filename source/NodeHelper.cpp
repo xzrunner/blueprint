@@ -71,4 +71,20 @@ void NodeHelper::LoadConnections(const std::vector<n0::SceneNodePtr>& nodes,
 	bp::NSCompNode::LoadConnection(nodes, doc["nodes"]);
 }
 
+sm::Matrix2D NodeHelper::CalcPreviewMat(const Node& node, const sm::Matrix2D& mt)
+{
+	auto& style = node.GetStyle();
+	const float LEN = style.width;
+	sm::rect r;
+	r.xmin = -style.width * 0.5f;  r.xmax = r.xmin + LEN;
+	r.ymax = -style.height * 0.5f; r.ymin = r.ymax - LEN;
+
+	sm::Matrix2D ret = mt;
+	ret.x[0] *= r.Width();
+	ret.x[3] *= r.Height();
+	ret.x[4] += r.Center().x;
+	ret.x[5] += r.Center().y;
+	return ret;
+}
+
 }
