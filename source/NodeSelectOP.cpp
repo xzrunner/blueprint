@@ -6,11 +6,14 @@
 #include "blueprint/node/SetValue.h"
 #include "blueprint/node/GetValue.h"
 #include "blueprint/node/Function.h"
+#include "blueprint/node/Commentary.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/MsgHelper.h>
+#include <ee0/CameraHelper.h>
 
 #include <node0/SceneNode.h>
+#include <node2/CompTransform.h>
 
 #include <queue>
 
@@ -58,6 +61,62 @@ bool NodeSelectOP::OnMouseLeftDClick(int x, int y)
     }
 
     return false;
+}
+
+ee0::GameObj NodeSelectOP::QueryByPos(int screen_x, int screen_y) const
+{
+    auto node = ee2::NodeSelectOP::QueryByPos(screen_x, screen_y);
+    if (!node || !node->HasUniqueComp<CompNode>()) {
+        return node;
+    }
+
+    auto& cnode = node->GetUniqueComp<CompNode>();
+    auto bp_node = cnode.GetNode();
+    if (bp_node->get_type() != rttr::type::get<node::Commentary>()) {
+        return node;
+    }
+
+    // query again
+    ee0::GameObj child = nullptr;
+
+    auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, screen_x, screen_y);
+
+    ee0::VariantSet vars;
+    ee0::Variant var;
+    var.m_type = ee0::VT_LONG;
+    var.m_val.l = ee0::WxStagePage::TRAV_QUERY;
+    vars.SetVariant("type", var);
+
+    m_stage.Traverse([&](const ee0::GameObj& obj)->bool
+	{
+		auto query = ee2::NodeSelectOP::QueryByPos(obj, pos);
+		if (GAME_OBJ_VALID(query))
+		{
+            if (query->HasUniqueComp<CompNode>()) {
+                auto& cnode = query->GetUniqueComp<CompNode>();
+                auto bp_node = cnode.GetNode();
+                if (bp_node->get_type() == rttr::type::get<node::Commentary>())
+                {
+                    return true;
+                }
+                else
+                {
+                    child = query;
+                    return false;
+                }
+            }
+            else {
+                return true;
+            }
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}, vars, true);
+
+    return child ? child : node;
 }
 
 void NodeSelectOP::AfterInsertSelected(const n0::SceneNodePtr& node) const

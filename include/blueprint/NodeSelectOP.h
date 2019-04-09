@@ -19,6 +19,8 @@ public:
     virtual bool OnMouseLeftDClick(int x, int y) override;
 
 private:
+    virtual ee0::GameObj QueryByPos(int screen_x, int screen_y) const override;
+
     virtual void AfterInsertSelected(const n0::SceneNodePtr& node) const override;
     virtual void AfterDeleteSelected(const n0::SceneNodePtr& node) const override;
     virtual void AfterClearSelection() const override;
