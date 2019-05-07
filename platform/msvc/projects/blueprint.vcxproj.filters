@@ -190,9 +190,6 @@
     <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h">
       <Filter>node\tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\node\Boolean.h">
-      <Filter>node</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\Switch.h">
       <Filter>node\logical</Filter>
     </ClInclude>
@@ -240,6 +237,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinAO.h">
       <Filter>editor\aop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Vector1.h">
+      <Filter>node\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Boolean.h">
+      <Filter>node\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

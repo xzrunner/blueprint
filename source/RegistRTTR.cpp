@@ -13,6 +13,7 @@
 #include "blueprint/node/CompareEqual.h"
 #include "blueprint/node/CompareNotEqual.h"
 #include "blueprint/node/Boolean.h"
+#include "blueprint/node/Vector1.h"
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
@@ -96,6 +97,12 @@ REGIST_NODE_RTTI(Boolean,                                                       
 .property("value", &bp::node::Boolean::GetValue, &bp::node::Boolean::SetValue)                     \
 (                                                                                                  \
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Bool"))                                  \
+)
+)
+REGIST_NODE_RTTI(Vector1,                                                                          \
+.property("value", &bp::node::Vector1::GetValue, &bp::node::Vector1::SetValue)                     \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("float"))                                  \
 )
 )
 REGIST_NODE_RTTI(Function,                                                                         \
