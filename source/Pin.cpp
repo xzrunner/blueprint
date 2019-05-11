@@ -1,5 +1,8 @@
 #include "blueprint/Pin.h"
 #include "blueprint/Connecting.h"
+#include "blueprint/Node.h"
+#include "blueprint/Pin.h"
+#include "blueprint/node/Hub.h"
 
 namespace
 {
@@ -91,6 +94,15 @@ const pt0::Color& Pin::GetColor() const
 
 bool Pin::CanTypeCast(const Pin& p) const
 {
+    if (p.GetParent().get_type() == rttr::type::get<node::Hub>() &&
+        p.IsInput())
+    {
+        auto& conns = p.GetParent().GetAllOutput()[0]->GetConnecting();
+        if (!conns.empty()) {
+            return CanTypeCast(*conns[0]->GetTo());
+        }
+    }
+
     if (m_funcs.can_type_cast_func) {
         return m_funcs.can_type_cast_func(GetType(), p.GetType());
     }
