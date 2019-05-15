@@ -244,6 +244,15 @@
     <ClInclude Include="..\..\..\include\blueprint\node\Boolean.h">
       <Filter>node\math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Vector2.h">
+      <Filter>node\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Vector3.h">
+      <Filter>node\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Vector4.h">
+      <Filter>node\math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">

@@ -16,6 +16,9 @@
 #include "blueprint/node/CompareNotEqual.h"
 #include "blueprint/node/Boolean.h"
 #include "blueprint/node/Vector1.h"
+#include "blueprint/node/Vector2.h"
+#include "blueprint/node/Vector3.h"
+#include "blueprint/node/Vector4.h"
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
@@ -110,6 +113,9 @@ void Blueprint::InitNodes()
     m_nodes.push_back(std::make_shared<node::CompareNotEqual>());
     m_nodes.push_back(std::make_shared<node::Boolean>());
     m_nodes.push_back(std::make_shared<node::Vector1>());
+    m_nodes.push_back(std::make_shared<node::Vector2>());
+    m_nodes.push_back(std::make_shared<node::Vector3>());
+    m_nodes.push_back(std::make_shared<node::Vector4>());
     m_nodes.push_back(std::make_shared<node::Function>());
     m_nodes.push_back(std::make_shared<node::Input>());
     m_nodes.push_back(std::make_shared<node::Output>());

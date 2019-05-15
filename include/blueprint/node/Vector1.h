@@ -14,7 +14,7 @@ public:
     Vector1()
         : Node("Vector1")
     {
-        AddPin(std::make_shared<Pin>(false, 0, PIN_FLOAT, "Out", *this));
+        AddPin(std::make_shared<Pin>(false, 0, PIN_FLOAT1, "Out", *this));
         Layout();
     }
 

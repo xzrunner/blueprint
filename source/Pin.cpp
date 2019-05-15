@@ -73,7 +73,10 @@ const pt0::Color& Pin::GetColor() const
 		return COL_BOOLEAN;
 	case PIN_INTEGER:
 		return COL_INTEGER;
-	case PIN_FLOAT:
+	case PIN_FLOAT1:
+    case PIN_FLOAT2:
+    case PIN_FLOAT3:
+    case PIN_FLOAT4:
 		return COL_FLOAT;
 	case PIN_STRING:
 		return COL_STRING;
@@ -122,15 +125,19 @@ bool Pin::CanTypeCast(const Pin& p) const
 	case PIN_BOOLEAN:
 		return false;
 	case PIN_INTEGER:
-		return type == PIN_BOOLEAN || type == PIN_FLOAT;
-	case PIN_FLOAT:
+		return type == PIN_BOOLEAN || type == PIN_FLOAT1;
+	case PIN_FLOAT1:
 		return type == PIN_BOOLEAN || type == PIN_INTEGER || type == PIN_VECTOR;
+    case PIN_FLOAT2:
+    case PIN_FLOAT3:
+    case PIN_FLOAT4:
+        return type == PIN_VECTOR;
 	case PIN_STRING:
 		return false;
 	case PIN_TEXT:
 		return false;
 	case PIN_VECTOR:
-		return type == PIN_INTEGER || type == PIN_FLOAT;
+		return type == PIN_INTEGER || type == PIN_FLOAT1 || type == PIN_FLOAT2 || type == PIN_FLOAT3 || type == PIN_FLOAT4;
 	case PIN_ROTATOR:
 		return false;
 	case PIN_TRANSFORM:

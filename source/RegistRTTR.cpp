@@ -14,6 +14,9 @@
 #include "blueprint/node/CompareNotEqual.h"
 #include "blueprint/node/Boolean.h"
 #include "blueprint/node/Vector1.h"
+#include "blueprint/node/Vector2.h"
+#include "blueprint/node/Vector3.h"
+#include "blueprint/node/Vector4.h"
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
@@ -102,7 +105,25 @@ REGIST_NODE_RTTI(Boolean,                                                       
 REGIST_NODE_RTTI(Vector1,                                                                          \
 .property("value", &bp::node::Vector1::GetValue, &bp::node::Vector1::SetValue)                     \
 (                                                                                                  \
-	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("float"))                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("float"))                                 \
+)
+)
+REGIST_NODE_RTTI(Vector2,                                                                          \
+.property("value", &bp::node::Vector2::GetValue, &bp::node::Vector2::SetValue)                     \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("vec2"))                                  \
+)
+)
+REGIST_NODE_RTTI(Vector3,                                                                          \
+.property("value", &bp::node::Vector3::GetValue, &bp::node::Vector3::SetValue)                     \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("vec3"))                                  \
+)
+)
+REGIST_NODE_RTTI(Vector4,                                                                          \
+.property("value", &bp::node::Vector4::GetValue, &bp::node::Vector4::SetValue)                     \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("vec4"))                                  \
 )
 )
 REGIST_NODE_RTTI(Function,                                                                         \

@@ -46,6 +46,9 @@
     <ClInclude Include="..\..\..\include\blueprint\node\SetValue.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\SwitchMulti.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Vector1.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Vector2.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Vector3.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\Vector4.h" />
     <ClInclude Include="..\..\..\include\blueprint\NSCompNode.h" />
     <ClInclude Include="..\..\..\include\blueprint\Pin.h" />
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinOP.h" />
