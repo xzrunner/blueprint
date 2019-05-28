@@ -52,23 +52,16 @@ void NodeHelper::LoadFunctionNode(const n0::SceneNodePtr& obj, const bp::NodePtr
     auto& children = ccomplex->GetAllChildren();
     bp::node::Function::SetChildren(func_node, children);
 
-    LoadConnections(children, filepath);
+    // load conns
+    rapidjson::Document doc;
+    js::RapidJsonHelper::ReadFromFile(filepath.c_str(), doc);
+    bp::NSCompNode::LoadConnection(children, doc["nodes"]);
 
     // update aabb
     auto& st = node->GetStyle();
     obj->GetUniqueComp<n2::CompBoundingBox>().SetSize(
         *obj, sm::rect(st.width, st.height)
     );
-}
-
-void NodeHelper::LoadConnections(const std::vector<n0::SceneNodePtr>& nodes,
-                                 const std::string& filepath)
-{
-	auto dir = boost::filesystem::path(filepath).parent_path().string();
-	rapidjson::Document doc;
-	js::RapidJsonHelper::ReadFromFile(filepath.c_str(), doc);
-
-	bp::NSCompNode::LoadConnection(nodes, doc["nodes"]);
 }
 
 sm::Matrix2D NodeHelper::CalcPreviewMat(const Node& node, const sm::Matrix2D& mt)
