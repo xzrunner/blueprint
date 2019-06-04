@@ -52,6 +52,12 @@
     <Filter Include="node\math">
       <UniqueIdentifier>{4b13299b-98a5-4402-a135-7109d6d30f6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="node\math\channel">
+      <UniqueIdentifier>{9751c0fd-e4be-4151-8419-5217fe8bbbd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="node\math\op">
+      <UniqueIdentifier>{8c459f57-8f7a-48c7-96fb-8106ab2ba985}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -121,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\ConnectPinAO.cpp">
       <Filter>editor\aop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Evaluator.cpp">
+      <Filter>tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,9 +229,6 @@
     <ClInclude Include="..\..\..\include\blueprint\node\Hub.h">
       <Filter>node\tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\node\Abs.h">
-      <Filter>node\math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\SwitchMulti.h">
       <Filter>node\logical</Filter>
     </ClInclude>
@@ -252,6 +258,33 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\Vector4.h">
       <Filter>node\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Combine.h">
+      <Filter>node\math\channel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Split.h">
+      <Filter>node\math\channel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Abs.h">
+      <Filter>node\math\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Add.h">
+      <Filter>node\math\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Divide.h">
+      <Filter>node\math\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Multiply.h">
+      <Filter>node\math\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Subtract.h">
+      <Filter>node\math\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\Evaluator.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Negate.h">
+      <Filter>node\math\op</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

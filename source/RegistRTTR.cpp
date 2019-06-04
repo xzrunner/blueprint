@@ -17,6 +17,13 @@
 #include "blueprint/node/Vector2.h"
 #include "blueprint/node/Vector3.h"
 #include "blueprint/node/Vector4.h"
+#include "blueprint/node/Negate.h"
+#include "blueprint/node/Add.h"
+#include "blueprint/node/Subtract.h"
+#include "blueprint/node/Multiply.h"
+#include "blueprint/node/Divide.h"
+#include "blueprint/node/Combine.h"
+#include "blueprint/node/Split.h"
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
@@ -126,6 +133,13 @@ REGIST_NODE_RTTI(Vector4,                                                       
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("vec4"))                                  \
 )
 )
+REGIST_NODE_RTTI_DEFAULT(Negate)
+REGIST_NODE_RTTI_DEFAULT(Add)
+REGIST_NODE_RTTI_DEFAULT(Subtract)
+REGIST_NODE_RTTI_DEFAULT(Multiply)
+REGIST_NODE_RTTI_DEFAULT(Divide)
+REGIST_NODE_RTTI_DEFAULT(Combine)
+REGIST_NODE_RTTI_DEFAULT(Split)
 REGIST_NODE_RTTI(Function,                                                                         \
 .property("name", &bp::node::Function::GetName, &bp::node::Function::SetName)                      \
 (                                                                                                  \
