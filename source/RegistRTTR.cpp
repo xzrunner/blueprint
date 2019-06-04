@@ -7,6 +7,7 @@
 #include "blueprint/node/GetValue.h"
 #include "blueprint/node/Proxy.h"
 #include "blueprint/node/Hub.h"
+#include "blueprint/node/For.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
 #include "blueprint/node/CompareGreater.h"
@@ -98,6 +99,20 @@ REGIST_NODE_RTTI(GetValue,                                                      
 )
 REGIST_NODE_RTTI_DEFAULT(Proxy)
 REGIST_NODE_RTTI_DEFAULT(Hub)
+REGIST_NODE_RTTI(For,                                                                              \
+.property("index_begin", &bp::node::For::index_begin)                                              \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Begin"))                                 \
+)                                                                                                  \
+.property("index_end", &bp::node::For::index_end)                                                  \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("End"))                                   \
+)                                                                                                  \
+.property("index_step", &bp::node::For::index_step)                                                \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Step"))                                  \
+)
+)
 REGIST_NODE_RTTI_DEFAULT(Switch)
 REGIST_NODE_RTTI_DEFAULT(CompareLess)
 REGIST_NODE_RTTI_DEFAULT(CompareGreater)

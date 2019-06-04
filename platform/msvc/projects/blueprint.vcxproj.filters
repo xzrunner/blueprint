@@ -259,6 +259,9 @@
     <ClInclude Include="..\..\..\include\blueprint\node\Vector4.h">
       <Filter>node\math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\For.h">
+      <Filter>node\tools</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\Combine.h">
       <Filter>node\math\channel</Filter>
     </ClInclude>
