@@ -59,6 +59,8 @@ private:
     };
     void UpdatemExtInputPorts(ConnEvent event);
 
+    void GetAllSelected(std::vector<n0::SceneNodePtr>& selected);
+
 private:
 	ee0::WxStagePage& m_stage;
 

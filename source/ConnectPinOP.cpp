@@ -9,6 +9,7 @@
 #include "blueprint/ConnectPinAO.h"
 #include "blueprint/DisconnectConnAO.h"
 #include "blueprint/NodeStyle.h"
+#include "blueprint/NSCompNode.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
@@ -25,6 +26,8 @@
 #include <node2/CompBoundingBox.h>
 #include <painting2/RenderSystem.h>
 #include <tessellation/Painter.h>
+#include <js/RapidJsonHelper.h>
+#include <ns/NodeSerializer.h>
 
 #include <queue>
 
@@ -81,8 +84,32 @@ bool ConnectPinOP::OnKeyDown(int key_code)
     //if (wxGetKeyState(WXK_CONTROL) && key_code == 'V') {
     //    PasteConnections();
     //}
-    if (key_code == 'V') {
-        PasteConnections();
+    // fixme: WXK_CONTROL
+    if (key_code == 'C')
+    {
+        std::vector<n0::SceneNodePtr> selected;
+        GetAllSelected(selected);
+
+        auto clipboard = ee0::Clipboard::Instance();
+        rapidjson::Document doc;
+        if (!doc.Parse<0>(clipboard->ToString().c_str()).HasParseError())
+        {
+            NSCompNode::StoreConnection(selected, doc, doc.GetAllocator());
+            clipboard->FromString(js::RapidJsonHelper::ValueToString(doc));
+        }
+    }
+    else if (key_code == 'V')
+    {
+//        PasteConnections();
+
+        std::vector<n0::SceneNodePtr> selected;
+        GetAllSelected(selected);
+
+        auto str = ee0::Clipboard::Instance()->ToString();
+        rapidjson::Document doc;
+        if (!doc.Parse<0>(str.c_str()).HasParseError()) {
+            bp::NSCompNode::LoadConnection(selected, doc);
+        }
     }
 
 	return false;
@@ -491,57 +518,57 @@ void ConnectPinOP::ClearSelectedConns()
 
 void ConnectPinOP::PasteConnections()
 {
-    auto& cb = ee0::Clipboard::Instance()->GetSceneNodes();
+    //auto& cb = ee0::Clipboard::Instance()->GetSceneNodes();
 
-    std::vector<n0::SceneNodePtr> new_cb;
-    new_cb.reserve(m_stage.GetSelection().Size());
-    m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& owp)->bool
-    {
-        new_cb.push_back(owp.GetNode());
-        return true;
-    });
+    //std::vector<n0::SceneNodePtr> new_cb;
+    //new_cb.reserve(m_stage.GetSelection().Size());
+    //m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& owp)->bool
+    //{
+    //    new_cb.push_back(owp.GetNode());
+    //    return true;
+    //});
 
-    // check
-    assert(cb.size() == new_cb.size());
-    for (int i = 0, n = cb.size(); i < n; ++i)
-    {
-        assert(cb[i]->HasUniqueComp<CompNode>()
-            && new_cb[i]->HasUniqueComp<CompNode>());
-        auto& old_cnode = cb[i]->GetUniqueComp<CompNode>();
-        auto& new_cnode = new_cb[i]->GetUniqueComp<CompNode>();
-        assert(old_cnode.GetNode()->get_type() == new_cnode.GetNode()->get_type());
-    }
+    //// check
+    //assert(cb.size() == new_cb.size());
+    //for (int i = 0, n = cb.size(); i < n; ++i)
+    //{
+    //    assert(cb[i]->HasUniqueComp<CompNode>()
+    //        && new_cb[i]->HasUniqueComp<CompNode>());
+    //    auto& old_cnode = cb[i]->GetUniqueComp<CompNode>();
+    //    auto& new_cnode = new_cb[i]->GetUniqueComp<CompNode>();
+    //    assert(old_cnode.GetNode()->get_type() == new_cnode.GetNode()->get_type());
+    //}
 
-    // prepare lut
-    std::map<const Node*, int> map_node2idx;
-    for (int i = 0, n = cb.size(); i < n; ++i) {
-        auto& cnode = cb[i]->GetUniqueComp<CompNode>();
-        map_node2idx.insert({ cnode.GetNode().get(), i });
-    }
+    //// prepare lut
+    //std::map<const Node*, int> map_node2idx;
+    //for (int i = 0, n = cb.size(); i < n; ++i) {
+    //    auto& cnode = cb[i]->GetUniqueComp<CompNode>();
+    //    map_node2idx.insert({ cnode.GetNode().get(), i });
+    //}
 
-    // connect
-    for (int i = 0, n = cb.size(); i < n; ++i)
-    {
-        auto& out_pins = cb[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput();
-        for (int j = 0, m = out_pins.size(); j < m; ++j)
-        {
-            auto& conns = out_pins[j]->GetConnecting();
-            for (int k = 0, l = conns.size(); k < l; ++k)
-            {
-                auto to_pin = conns[k]->GetTo();
-                auto itr = map_node2idx.find(&to_pin->GetParent());
-                if (itr == map_node2idx.end()) {
-                    continue;
-                }
+    //// connect
+    //for (int i = 0, n = cb.size(); i < n; ++i)
+    //{
+    //    auto& out_pins = cb[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput();
+    //    for (int j = 0, m = out_pins.size(); j < m; ++j)
+    //    {
+    //        auto& conns = out_pins[j]->GetConnecting();
+    //        for (int k = 0, l = conns.size(); k < l; ++k)
+    //        {
+    //            auto to_pin = conns[k]->GetTo();
+    //            auto itr = map_node2idx.find(&to_pin->GetParent());
+    //            if (itr == map_node2idx.end()) {
+    //                continue;
+    //            }
 
-                auto pin_idx = to_pin->GetPosIdx();
-                auto node_idx = itr->second;
-                auto from = new_cb[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput()[j];
-                auto to = new_cb[node_idx]->GetUniqueComp<CompNode>().GetNode()->GetAllInput()[pin_idx];
-                MakeConnecting(from, to);
-            }
-        }
-    }
+    //            auto pin_idx = to_pin->GetPosIdx();
+    //            auto node_idx = itr->second;
+    //            auto from = new_cb[i]->GetUniqueComp<CompNode>().GetNode()->GetAllOutput()[j];
+    //            auto to = new_cb[node_idx]->GetUniqueComp<CompNode>().GetNode()->GetAllInput()[pin_idx];
+    //            MakeConnecting(from, to);
+    //        }
+    //    }
+    //}
 }
 
 void ConnectPinOP::MakeConnecting(const std::shared_ptr<Pin>& from, const std::shared_ptr<Pin>& to)
@@ -625,6 +652,16 @@ void ConnectPinOP::UpdatemExtInputPorts(ConnEvent event)
 
 		return true;
 	});
+}
+
+void ConnectPinOP::GetAllSelected(std::vector<n0::SceneNodePtr>& selected)
+{
+    selected.reserve(m_stage.GetSelection().Size());
+    m_stage.GetSelection().Traverse([&](const ee0::GameObjWithPos& owp)->bool
+    {
+        selected.push_back(owp.GetNode());
+        return true;
+    });
 }
 
 }
