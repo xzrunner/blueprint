@@ -10,9 +10,6 @@
     <Filter Include="script">
       <UniqueIdentifier>{38cdd3aa-1a75-48a7-bc45-e53ab1be8ac1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="view">
-      <UniqueIdentifier>{810705db-a6f2-4b64-b4ae-58b258fb5312}</UniqueIdentifier>
-    </Filter>
     <Filter Include="editor">
       <UniqueIdentifier>{d1e6efea-ec30-4e2a-b5e0-3684be2213c2}</UniqueIdentifier>
     </Filter>
@@ -58,6 +55,15 @@
     <Filter Include="node\math\op">
       <UniqueIdentifier>{8c459f57-8f7a-48c7-96fb-8106ab2ba985}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools\rtti">
+      <UniqueIdentifier>{960ee718-eaf1-40e1-9a98-9b9daffdde0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="draw">
+      <UniqueIdentifier>{810705db-a6f2-4b64-b4ae-58b258fb5312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view">
+      <UniqueIdentifier>{57e3123b-671e-49e4-908c-8d9b73cb3f50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -68,10 +74,10 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\Blueprint.cpp" />
     <ClCompile Include="..\..\..\source\RenderSystem.cpp">
-      <Filter>view</Filter>
+      <Filter>draw</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\NodeLayout.cpp">
-      <Filter>view</Filter>
+      <Filter>draw</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\Connecting.cpp">
       <Filter>dataset</Filter>
@@ -88,7 +94,6 @@
     <ClCompile Include="..\..\..\source\NodeBuilder.cpp">
       <Filter>dataset\node</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
     <ClCompile Include="..\..\..\source\DisconnectConnAO.cpp">
       <Filter>editor\aop</Filter>
     </ClCompile>
@@ -131,6 +136,15 @@
     <ClCompile Include="..\..\..\source\Evaluator.cpp">
       <Filter>tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\RegistRTTR.cpp">
+      <Filter>tools\rtti</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\ReflectPropTypes.cpp">
+      <Filter>tools\rtti</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\WxNodeProperty.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
@@ -138,10 +152,10 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\Blueprint.h" />
     <ClInclude Include="..\..\..\include\blueprint\RenderSystem.h">
-      <Filter>view</Filter>
+      <Filter>draw</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\NodeLayout.h">
-      <Filter>view</Filter>
+      <Filter>draw</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\Connecting.h">
       <Filter>dataset</Filter>
@@ -288,6 +302,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\Negate.h">
       <Filter>node\math\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\Script.h">
+      <Filter>node\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\ReflectPropTypes.h">
+      <Filter>tools\rtti</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\WxNodeProperty.h">
+      <Filter>view</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

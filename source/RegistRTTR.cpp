@@ -8,6 +8,7 @@
 #include "blueprint/node/Proxy.h"
 #include "blueprint/node/Hub.h"
 #include "blueprint/node/For.h"
+#include "blueprint/node/Script.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
 #include "blueprint/node/CompareGreater.h"
@@ -29,6 +30,8 @@
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
 #include "blueprint/node/Abs.h"
+
+#include "blueprint/ReflectPropTypes.h"
 
 #include <ee0/ReflectPropTypes.h>
 
@@ -111,6 +114,17 @@ REGIST_NODE_RTTI(For,                                                           
 .property("index_step", &bp::node::For::index_step)                                                \
 (                                                                                                  \
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Step"))                                  \
+)
+)
+REGIST_NODE_RTTI(Script,                                                                           \
+.property("text", &bp::node::Script::GetText, &bp::node::Script::SetText)                          \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Text")),                                 \
+    rttr::metadata(ee0::PropLongStringTag(), true)                                                 \
+)                                                                                                  \
+.property("ret_type", &bp::node::Script::GetRetType, &bp::node::Script::SetRetType)                \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Reture Type"))                           \
 )
 )
 REGIST_NODE_RTTI_DEFAULT(Switch)
@@ -196,6 +210,7 @@ namespace bp
 
 void regist_rttr()
 {
+    prop_types_regist_rttr();
 }
 
 }

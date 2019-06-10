@@ -10,6 +10,7 @@
 #include "blueprint/node/Proxy.h"
 #include "blueprint/node/Hub.h"
 #include "blueprint/node/For.h"
+#include "blueprint/node/Script.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
 #include "blueprint/node/CompareGreater.h"
@@ -108,6 +109,7 @@ void Blueprint::InitNodes()
     m_nodes.push_back(std::make_shared<node::Proxy>());
     m_nodes.push_back(std::make_shared<node::Hub>());
     m_nodes.push_back(std::make_shared<node::For>());
+    m_nodes.push_back(std::make_shared<node::Script>());
     m_nodes.push_back(std::make_shared<node::Switch>());
     m_nodes.push_back(std::make_shared<node::CompareLess>());
     m_nodes.push_back(std::make_shared<node::CompareGreater>());

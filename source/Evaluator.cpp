@@ -12,6 +12,9 @@
 #include "blueprint/node/Combine.h"
 #include "blueprint/node/Split.h"
 #include "blueprint/node/For.h"
+#include "blueprint/node/Script.h"
+
+#include <chaiscript/chaiscript.hpp>
 
 namespace bp
 {
@@ -75,6 +78,16 @@ float Evaluator::CalcFloat(const Connecting& conn, int for_idx)
     {
         ret = static_cast<float>(for_idx);
     }
+    else if (node_type == rttr::type::get<node::Script>())
+    {
+        chaiscript::ChaiScript chai;
+        chai.add(chaiscript::var(for_idx), "i");
+        try {
+            ret = chai.eval<float>(static_cast<const node::Script&>(node).GetText());
+        } catch (const chaiscript::exception::eval_error &e) {
+            std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
+        }
+    }
     else
     {
         auto type = node_type.get_name().to_string();
@@ -132,6 +145,18 @@ sm::vec3 Evaluator::CalcFloat3(const Connecting& conn, int for_idx)
         sm::vec3 b = conns_b.empty() ? sm::vec3(0, 0, 0) : CalcFloat3(*conns_b[0], for_idx);
 
         ret = a - b;
+    }
+    else if (node_type == rttr::type::get<node::Script>())
+    {
+        chaiscript::ChaiScript chai;
+        chai.add(chaiscript::var(for_idx), "i");
+        chai.add(chaiscript::user_type<sm::vec3>(), "vec3");
+        chai.add(chaiscript::constructor<sm::vec3(float x, float y, float z)>(), "vec3");
+        try {
+            ret = chai.eval<sm::vec3>(static_cast<const node::Script&>(node).GetText());
+        } catch (const chaiscript::exception::eval_error &e) {
+            std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
+        }
     }
     else
     {
