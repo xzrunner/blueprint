@@ -1,5 +1,7 @@
 #include "blueprint/Evaluator.h"
 #include "blueprint/Connecting.h"
+#include "blueprint/ScriptEnv.h"
+
 #include "blueprint/node/Vector1.h"
 #include "blueprint/node/Vector2.h"
 #include "blueprint/node/Vector3.h"
@@ -15,7 +17,33 @@
 #include "blueprint/node/For2.h"
 #include "blueprint/node/Script.h"
 
+#include <cpputil/StringHelper.h>
+
 #include <chaiscript/chaiscript.hpp>
+
+namespace
+{
+
+void prepare_script_vars(const bp::Node& node)
+{
+    auto& chai = bp::ScriptEnv::Instance()->GetChai();
+
+    auto& conns_i = node.GetAllInput()[bp::node::Script::ID_VAR_I]->GetConnecting();
+    if (!conns_i.empty()) 
+    {
+        int i = static_cast<int>(bp::Evaluator::CalcFloat(*conns_i[0]));
+        chai->add(chaiscript::var(i), "i");
+    }
+
+    auto& conns_j = node.GetAllInput()[bp::node::Script::ID_VAR_J]->GetConnecting();
+    if (!conns_j.empty())
+    {
+        int j = static_cast<int>(bp::Evaluator::CalcFloat(*conns_j[0]));
+        chai->add(chaiscript::var(j), "j");
+    }
+}
+
+}
 
 namespace bp
 {
@@ -96,10 +124,13 @@ float Evaluator::CalcFloat(const Connecting& conn)
     }
     else if (node_type == rttr::type::get<node::Script>())
     {
-        chaiscript::ChaiScript chai;
-        chai.add(chaiscript::var(for_idx), "i");
+        auto text = static_cast<const node::Script&>(node).GetText();
+        cpputil::StringHelper::ReplaceAll(text, "\\n", "\n");
+        cpputil::StringHelper::ReplaceAll(text, "\\t", "\t");
+
+        prepare_script_vars(node);
         try {
-            ret = chai.eval<float>(static_cast<const node::Script&>(node).GetText());
+            ret = ScriptEnv::Instance()->GetChai()->eval<float>(text);
         } catch (const chaiscript::exception::eval_error &e) {
             std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
         }
@@ -164,12 +195,13 @@ sm::vec3 Evaluator::CalcFloat3(const Connecting& conn)
     }
     else if (node_type == rttr::type::get<node::Script>())
     {
-        chaiscript::ChaiScript chai;
-        chai.add(chaiscript::var(for_idx), "i");
-        chai.add(chaiscript::user_type<sm::vec3>(), "vec3");
-        chai.add(chaiscript::constructor<sm::vec3(float x, float y, float z)>(), "vec3");
+        auto text = static_cast<const node::Script&>(node).GetText();
+        cpputil::StringHelper::ReplaceAll(text, "\\n", "\n");
+        cpputil::StringHelper::ReplaceAll(text, "\\t", "\t");
+
+        prepare_script_vars(node);
         try {
-            ret = chai.eval<sm::vec3>(static_cast<const node::Script&>(node).GetText());
+            ret = ScriptEnv::Instance()->GetChai()->eval<sm::vec3>(text);
         } catch (const chaiscript::exception::eval_error &e) {
             std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
         }

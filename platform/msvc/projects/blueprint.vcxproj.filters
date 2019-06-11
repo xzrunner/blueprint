@@ -145,6 +145,9 @@
     <ClCompile Include="..\..\..\source\WxNodeProperty.cpp">
       <Filter>view</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\ScriptEnv.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
@@ -311,6 +314,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\WxNodeProperty.h">
       <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\ScriptEnv.h">
+      <Filter>tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\For2.h">
       <Filter>node\tools</Filter>

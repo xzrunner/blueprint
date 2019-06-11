@@ -15,7 +15,8 @@ public:
     Script()
         : Node("Script")
     {
-        AddPin(std::make_shared<Pin>(true, 0, PIN_INTEGER, "For Index", *this));
+        AddPin(std::make_shared<Pin>(true, ID_VAR_I, PIN_INTEGER, "i", *this));
+        AddPin(std::make_shared<Pin>(true, ID_VAR_J, PIN_INTEGER, "j", *this));
 
         AddPin(std::make_shared<Pin>(false, 0, PIN_ANY_VAR, "Out", *this));
 
@@ -27,6 +28,12 @@ public:
 
     auto GetRetType() const { return m_ret_type; }
     void SetRetType(VariantType type) { m_ret_type = type; }
+
+    enum InputID
+    {
+        ID_VAR_I = 0,
+        ID_VAR_J
+    };
 
 private:
     std::string m_text;
