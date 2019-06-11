@@ -312,6 +312,9 @@
     <ClInclude Include="..\..\..\include\blueprint\WxNodeProperty.h">
       <Filter>view</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\For2.h">
+      <Filter>node\tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">

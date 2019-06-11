@@ -27,6 +27,8 @@ public:
 
     int index_step = 0;
 
+    int index_curr = 0;
+
     enum OutputID
     {
         ID_OUT = 0,

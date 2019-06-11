@@ -35,6 +35,7 @@
     <ClInclude Include="..\..\..\include\blueprint\node\CompareNotEqual.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Divide.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\For.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\For2.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Hub.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Commentary.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\CompareEqual.h" />

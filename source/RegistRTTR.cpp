@@ -8,6 +8,7 @@
 #include "blueprint/node/Proxy.h"
 #include "blueprint/node/Hub.h"
 #include "blueprint/node/For.h"
+#include "blueprint/node/For2.h"
 #include "blueprint/node/Script.h"
 #include "blueprint/node/Switch.h"
 #include "blueprint/node/CompareLess.h"
@@ -115,6 +116,32 @@ REGIST_NODE_RTTI(For,                                                           
 (                                                                                                  \
 	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Step"))                                  \
 )
+)
+REGIST_NODE_RTTI(For2,                                                                             \
+.property("i_begin", &bp::node::For2::i_begin)                                                     \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Begin I"))                               \
+)                                                                                                  \
+.property("i_end", &bp::node::For2::i_end)                                                         \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("End I"))                                 \
+)                                                                                                  \
+.property("i_step", &bp::node::For2::i_step)                                                       \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Step I"))                                \
+)                                                                                                  \
+.property("j_begin", &bp::node::For2::j_begin)                                                     \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Begin J"))                               \
+)                                                                                                  \
+.property("j_end", &bp::node::For2::j_end)                                                         \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("End J"))                                 \
+)                                                                                                  \
+.property("j_step", &bp::node::For2::j_step)                                                       \
+(                                                                                                  \
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Step J"))                                \
+)                                                                                                  \
 )
 REGIST_NODE_RTTI(Script,                                                                           \
 .property("text", &bp::node::Script::GetText, &bp::node::Script::SetText)                          \
