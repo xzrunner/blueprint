@@ -93,7 +93,9 @@
     <ClCompile Include="..\..\..\source\Pin.cpp" />
     <ClCompile Include="..\..\..\source\ConnectPinOP.cpp" />
     <ClCompile Include="..\..\..\source\ReflectPropTypes.cpp" />
+    <ClCompile Include="..\..\..\source\RegistPt0RTTR.cpp" />
     <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
+    <ClCompile Include="..\..\..\source\RegistSmRTTR.cpp" />
     <ClCompile Include="..\..\..\source\RenderSystem.cpp" />
     <ClCompile Include="..\..\..\source\ScriptEnv.cpp" />
     <ClCompile Include="..\..\..\source\TranslateNodeState.cpp" />
