@@ -122,11 +122,14 @@ void NSCompNode::StoreConnection(const std::vector<n0::SceneNodePtr>& nodes,
 				auto& to_pin = conn->GetTo();
 				assert(to_pin);
 
+                auto itr = node2idx.find(&to_pin->GetParent());
+                if (itr == node2idx.end()) {
+                    continue;
+                }
+
 				rapidjson::Value conn_val;
 				conn_val.SetObject();
 
-				auto itr = node2idx.find(&to_pin->GetParent());
-				assert(itr != node2idx.end());
 				conn_val.AddMember("node_idx", itr->second, alloc);
 
 				conn_val.AddMember("pin", rapidjson::Value(to_pin->GetName().c_str(), alloc), alloc);
