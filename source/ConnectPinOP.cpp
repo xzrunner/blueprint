@@ -381,11 +381,21 @@ bool ConnectPinOP::QueryOrCreateNode(int x, int y, bool change_to)
             auto& conns = m_selected_pin->GetConnecting();
             assert(conns.size() == 1);
             auto from = conns[0]->GetFrom();
-            Disconnect(conns[0]);
-            if (target && target->IsInput()) {
-                MakeConnecting(from, target);
+            if (target && target->IsInput()) 
+            {
+                assert(!from->IsInput());
+                if (from->CanTypeCast(*target))
+                {
+                    Disconnect(conns[0]);
+                    MakeConnecting(from, target);
+                    dirty = true;
+                }
             }
-            dirty = true;
+            else
+            {
+                Disconnect(conns[0]);
+                dirty = true;
+            }
         }
     }
     else
