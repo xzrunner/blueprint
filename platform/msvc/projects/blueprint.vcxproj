@@ -70,6 +70,7 @@
     <ClInclude Include="..\..\..\include\blueprint\typedef.h" />
     <ClInclude Include="..\..\..\include\blueprint\WxCreateNodeDlg.h" />
     <ClInclude Include="..\..\..\include\blueprint\WxNodeProperty.h" />
+    <ClInclude Include="..\..\..\include\blueprint\StageFuncNode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\ArrangeNodeOP.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="..\..\..\source\wrap_Blueprint.cpp" />
     <ClCompile Include="..\..\..\source\WxCreateNodeDlg.cpp" />
     <ClCompile Include="..\..\..\source\WxNodeProperty.cpp" />
+    <ClCompile Include="..\..\..\source\StageFuncNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl" />

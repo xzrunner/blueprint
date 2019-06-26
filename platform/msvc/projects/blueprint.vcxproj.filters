@@ -154,6 +154,9 @@
     <ClCompile Include="..\..\..\source\RegistPt0RTTR.cpp">
       <Filter>tools\rtti</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\StageFuncNode.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
@@ -326,6 +329,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\For2.h">
       <Filter>node\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\StageFuncNode.h">
+      <Filter>view</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
