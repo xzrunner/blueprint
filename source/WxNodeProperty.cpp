@@ -6,6 +6,8 @@
 #include <ee0/WxPropHelper.h>
 #include <ee0/MessageID.h>
 #include <blueprint/MessageID.h>
+#include <blueprint/NodeHelper.h>
+#include <blueprint/node/Function.h>
 
 #include <node0/SceneNode.h>
 #include <node2/CompBoundingBox.h>
@@ -60,6 +62,9 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
         {
             ee0::WxPropHelper::CreateProp(m_pg, ui_info, node, prop, [&](const std::string& filepath)
             {
+                if (m_node->get_type() == rttr::type::get<bp::node::Function>()) {
+                    bp::NodeHelper::LoadFunctionNode(m_obj, m_node);
+                }
                 m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
                 m_sub_mgr->NotifyObservers(bp::MSG_BLUE_PRINT_CHANGED);
             });
