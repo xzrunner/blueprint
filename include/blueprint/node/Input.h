@@ -24,6 +24,7 @@ public:
     void SetParent(const std::shared_ptr<Function>& func) {
         m_parent = func;
     }
+    auto GetParent() const { return m_parent.lock(); }
 
     static const char* STR_TYPE;
 
