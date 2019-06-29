@@ -3,6 +3,7 @@
 #include "blueprint/Pin.h"
 #include "blueprint/Node.h"
 #include "blueprint/NSCompNode.h"
+#include "blueprint/CompNode.h"
 #include "blueprint/node/Function.h"
 
 #include <ns/CompFactory.h>
@@ -54,6 +55,16 @@ void NodeHelper::LoadFunctionNode(const n0::SceneNodePtr& obj, const bp::NodePtr
     auto& ccomplex = std::static_pointer_cast<n0::CompComplex>(casset);
     auto& children = ccomplex->GetAllChildren();
     bp::node::Function::SetChildren(func_node, children);
+
+    // load children function node
+    for (auto& c : children)
+    {
+        auto& cnode = c->GetUniqueComp<CompNode>();
+        auto bp_node = cnode.GetNode();
+        if (bp_node->get_type() == rttr::type::get<node::Function>()) {
+            NodeHelper::LoadFunctionNode(c, bp_node);
+        }
+    }
 
     // load conns
     rapidjson::Document doc;
