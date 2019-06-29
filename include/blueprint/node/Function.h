@@ -38,6 +38,8 @@ public:
 
     bool IsEmpty() const { return m_children.empty(); }
 
+    bool IsNeedLoad() const { return m_need_load; }
+
 private:
     template<typename NodeType>
     void AddNode(std::vector<std::shared_ptr<NodeType>>& node_list, std::vector<std::shared_ptr<Pin>>& pin_list,
@@ -56,6 +58,8 @@ private:
 
     std::vector<std::shared_ptr<Input>>  m_input_nodes;
     std::vector<std::shared_ptr<Output>> m_output_nodes;
+
+    bool m_need_load = true;
 
     RTTR_ENABLE(Node)
 

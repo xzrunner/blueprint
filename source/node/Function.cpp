@@ -86,6 +86,8 @@ bool Function::RemoveChild(std::shared_ptr<Function>& parent, const n0::SceneNod
 
 void Function::SetChildren(std::shared_ptr<Function>& parent, const std::vector<n0::SceneNodePtr>& children)
 {
+    parent->m_need_load = false;
+
     parent->m_children = children;
 
     parent->m_input_nodes.clear();

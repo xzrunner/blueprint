@@ -39,6 +39,9 @@ void NodeHelper::LoadFunctionNode(const n0::SceneNodePtr& obj, const bp::NodePtr
     assert(node->get_type() == rttr::type::get<bp::node::Function>());
 
     auto func_node = std::static_pointer_cast<bp::node::Function>(node);
+    if (!func_node->IsNeedLoad()) {
+        return;
+    }
     auto& filepath = func_node->GetFilepath();
     if (filepath.empty()) {
         return;
