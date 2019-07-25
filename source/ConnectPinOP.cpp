@@ -381,7 +381,7 @@ bool ConnectPinOP::QueryOrCreateNode(int x, int y, bool change_to)
             auto& conns = m_selected_pin->GetConnecting();
             assert(conns.size() == 1);
             auto from = conns[0]->GetFrom();
-            if (target && target->IsInput()) 
+            if (target && target->IsInput())
             {
                 assert(!from->IsInput());
                 if (from->CanTypeCast(*target))
@@ -415,7 +415,8 @@ bool ConnectPinOP::QueryOrCreateNode(int x, int y, bool change_to)
 	    }
 	    else
 	    {
-            dirty = CreateNode(x, y);
+            CreateNode(x, y);
+            dirty = false;      // alreasy updated
 	    }
     }
 

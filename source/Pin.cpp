@@ -155,6 +155,8 @@ void Pin::SetType(int type)
 		return;
 	}
 
+    m_parent.SetEditNotDirty(false);
+
 	m_new_type = type;
 
 	// update curve color
@@ -165,13 +167,17 @@ void Pin::SetType(int type)
 
 void Pin::AddConnecting(const std::shared_ptr<Connecting>& conn)
 {
+    m_parent.SetEditNotDirty(false);
 	m_connecting.push_back(conn);
 }
 
 void Pin::RemoveConnecting(const std::shared_ptr<Connecting>& conn)
 {
-	for (auto& itr = m_connecting.begin(); itr != m_connecting.end(); ++itr) {
-		if (*itr == conn) {
+	for (auto& itr = m_connecting.begin(); itr != m_connecting.end(); ++itr)
+    {
+		if (*itr == conn)
+        {
+            m_parent.SetEditNotDirty(false);
 			m_connecting.erase(itr);
 			break;
 		}
@@ -180,6 +186,7 @@ void Pin::RemoveConnecting(const std::shared_ptr<Connecting>& conn)
 
 void Pin::ClearConnecting()
 {
+    m_parent.SetEditNotDirty(false);
 	m_connecting.clear();
 }
 

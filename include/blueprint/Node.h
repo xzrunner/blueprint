@@ -105,12 +105,15 @@ public:
 
     static const uint32_t EXTENSIBLE_INPUT_PORTS = 0x00000100;
 
+    static const uint32_t EDIT_NOT_DIRTY         = 0x00001000;
+
 	CU_FLAG_METHOD(StyleSmallTitleFont,  STYLE_SMALL_TITLE_FONT);
 	CU_FLAG_METHOD(StyleOnlyTitle,       STYLE_ONLY_TITLE);
 	CU_FLAG_METHOD(LifeDeleteLater,      LIFE_DELETE_LATER);
 	CU_FLAG_METHOD(SizeChanged,          SIZE_CHANGED);
     CU_FLAG_METHOD(GetVarNameChanged,    GET_VAR_NAME_CHANGED);
     CU_FLAG_METHOD(ExtensibleInputPorts, EXTENSIBLE_INPUT_PORTS);
+    CU_FLAG_METHOD(EditNotDirty,         EDIT_NOT_DIRTY);
 
 private:
 	// for draw

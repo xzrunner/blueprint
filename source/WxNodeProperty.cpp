@@ -152,6 +152,8 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
 
 	m_node->Refresh();
 
+    m_node->SetEditNotDirty(false);
+
     // update aabb
     auto& st = m_node->GetStyle();
     m_obj->GetUniqueComp<n2::CompBoundingBox>().SetSize(
