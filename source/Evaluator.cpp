@@ -21,6 +21,8 @@
 
 #include <chaiscript/chaiscript.hpp>
 
+#include <stack>
+
 namespace
 {
 
@@ -29,7 +31,7 @@ void prepare_script_vars(const bp::Node& node)
     auto& chai = bp::ScriptEnv::Instance()->GetChai();
 
     auto& conns_i = node.GetAllInput()[bp::node::Script::ID_VAR_I]->GetConnecting();
-    if (!conns_i.empty()) 
+    if (!conns_i.empty())
     {
         int i = static_cast<int>(bp::Evaluator::CalcFloat(*conns_i[0]));
         chai->add(chaiscript::var(i), "i");
@@ -214,6 +216,58 @@ sm::vec3 Evaluator::CalcFloat3(const Connecting& conn)
     }
 
     return ret;
+}
+
+void Evaluator::TopologicalSorting(std::vector<NodePtr>& nodes)
+{
+    // prepare
+    std::vector<int> in_deg(nodes.size(), 0);
+    std::vector<std::vector<int>> out_nodes(nodes.size());
+    for (int i = 0, n = nodes.size(); i < n; ++i)
+    {
+        auto& node = nodes[i];
+        for (auto& port : node->GetAllInput())
+        {
+            auto& conns = port->GetConnecting();
+            if (conns.empty()) {
+                continue;
+            }
+
+            assert(conns.size() == 1);
+            auto& from = conns[0]->GetFrom()->GetParent();
+            for (int j = 0, m = nodes.size(); j < m; ++j) {
+                if (&from == nodes[j].get()) {
+                    in_deg[i]++;
+                    out_nodes[j].push_back(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    // sort
+    std::stack<int> st;
+    std::vector<NodePtr> sorted;
+    for (int i = 0, n = in_deg.size(); i < n; ++i) {
+        if (in_deg[i] == 0) {
+            st.push(i);
+        }
+    }
+    while (!st.empty())
+    {
+        int v = st.top();
+        st.pop();
+        sorted.push_back(nodes[v]);
+        for (auto& i : out_nodes[v]) {
+            assert(in_deg[i] > 0);
+            in_deg[i]--;
+            if (in_deg[i] == 0) {
+                st.push(i);
+            }
+        }
+    }
+
+    nodes = sorted;
 }
 
 }
