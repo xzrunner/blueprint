@@ -160,9 +160,7 @@ bool ConnectPinOP::OnMouseLeftUp(int x, int y)
 	if (m_selected_pin)
 	{
         bool change_to = m_selected_pin->IsInput() && !m_selected_pin->GetConnecting().empty();
-        if (QueryOrCreateNode(x, y, change_to)) {
-            m_stage.GetSubjectMgr()->NotifyObservers(MSG_BLUE_PRINT_CHANGED);
-        }
+        QueryOrCreateNode(x, y, change_to);
         m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 #ifdef BP_CONNECT_PIN_OP_SELECT_CONNS
@@ -357,10 +355,8 @@ void ConnectPinOP::QueryConnsByRect(const sm::rect& rect, std::vector<std::share
 	});
 }
 
-bool ConnectPinOP::QueryOrCreateNode(int x, int y, bool change_to)
+void ConnectPinOP::QueryOrCreateNode(int x, int y, bool change_to)
 {
-	bool dirty = false;
-
 	std::shared_ptr<Pin> target = nullptr;
 	auto pos = ee0::CameraHelper::TransPosScreenToProject(*m_camera, x, y);
 	m_stage.Traverse([&](const ee0::GameObj& obj)->bool
@@ -388,13 +384,11 @@ bool ConnectPinOP::QueryOrCreateNode(int x, int y, bool change_to)
                 {
                     Disconnect(conns[0]);
                     MakeConnecting(from, target);
-                    dirty = true;
                 }
             }
             else
             {
                 Disconnect(conns[0]);
-                dirty = true;
             }
         }
     }
@@ -410,21 +404,17 @@ bool ConnectPinOP::QueryOrCreateNode(int x, int y, bool change_to)
 			    } else {
 				    MakeConnecting(m_selected_pin, target);
 			    }
-			    dirty = true;
 		    }
 	    }
 	    else
 	    {
             CreateNode(x, y);
-            dirty = false;      // alreasy updated
 	    }
     }
 
     // clear
     m_selected_pin = nullptr;
     m_curve.SetCtrlPos({});
-
-	return dirty;
 }
 
 bool ConnectPinOP::CreateNodeWithMousePos()
@@ -476,6 +466,9 @@ bool ConnectPinOP::CreateNode(int x, int y)
 		sm::rect(style.width, style.height)
 	);
 
+    // insert
+    ee0::MsgHelper::InsertNode(*m_stage.GetSubjectMgr(), node);
+
 	// connect
     if (m_selected_pin)
     {
@@ -500,8 +493,6 @@ bool ConnectPinOP::CreateNode(int x, int y)
 		    }
 	    }
     }
-
-    ee0::MsgHelper::InsertNode(*m_stage.GetSubjectMgr(), node);
 
     m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
 
@@ -588,7 +579,14 @@ void ConnectPinOP::MakeConnecting(const std::shared_ptr<Pin>& from, const std::s
     //auto aop = std::make_shared<ConnectPinAO>(sub_mgr, from, to);
     //m_records.push_back(aop);
 
-    make_connecting(from, to);
+    auto conn = make_connecting(from, to);
+
+    ee0::VariantSet vars;
+    ee0::Variant var;
+    var.m_type = ee0::VT_PVOID;
+    var.m_val.pv = &conn;
+    vars.SetVariant("conn", var);
+    m_stage.GetSubjectMgr()->NotifyObservers(MSG_BP_CONN_INSERT, vars);
 }
 
 void ConnectPinOP::Disconnect(const std::shared_ptr<Connecting>& conn)
@@ -596,6 +594,13 @@ void ConnectPinOP::Disconnect(const std::shared_ptr<Connecting>& conn)
     //auto sub_mgr = m_stage.GetSubjectMgr();
     //auto aop = std::make_shared<DisconnectConnAO>(sub_mgr, conn->GetFrom(), conn->GetTo());
     //m_records.push_back(aop);
+
+    ee0::VariantSet vars;
+    ee0::Variant var;
+    var.m_type = ee0::VT_PVOID;
+    var.m_val.pv = &conn;
+    vars.SetVariant("conn", var);
+    m_stage.GetSubjectMgr()->NotifyObservers(MSG_BP_CONN_DELETE, vars);
 
     disconnect(conn);
 }
