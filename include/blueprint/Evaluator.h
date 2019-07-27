@@ -17,7 +17,7 @@ public:
     static float CalcFloat(const bp::Connecting& conn);
     static sm::vec3 CalcFloat3(const bp::Connecting& conn);
 
-    static void TopologicalSorting(std::vector<NodePtr>& nodes);
+    static void TopologicalSorting(std::vector<const Node*>& nodes);
 
 }; // Evaluator
 

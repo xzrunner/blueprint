@@ -218,7 +218,7 @@ sm::vec3 Evaluator::CalcFloat3(const Connecting& conn)
     return ret;
 }
 
-void Evaluator::TopologicalSorting(std::vector<NodePtr>& nodes)
+void Evaluator::TopologicalSorting(std::vector<const Node*>& nodes)
 {
     // prepare
     std::vector<int> in_deg(nodes.size(), 0);
@@ -236,7 +236,7 @@ void Evaluator::TopologicalSorting(std::vector<NodePtr>& nodes)
             assert(conns.size() == 1);
             auto& from = conns[0]->GetFrom()->GetParent();
             for (int j = 0, m = nodes.size(); j < m; ++j) {
-                if (&from == nodes[j].get()) {
+                if (&from == nodes[j]) {
                     in_deg[i]++;
                     out_nodes[j].push_back(i);
                     break;
@@ -247,7 +247,7 @@ void Evaluator::TopologicalSorting(std::vector<NodePtr>& nodes)
 
     // sort
     std::stack<int> st;
-    std::vector<NodePtr> sorted;
+    std::vector<const Node*> sorted;
     for (int i = 0, n = in_deg.size(); i < n; ++i) {
         if (in_deg[i] == 0) {
             st.push(i);
