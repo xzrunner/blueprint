@@ -157,6 +157,9 @@
     <ClCompile Include="..\..\..\source\StageFuncNode.cpp">
       <Filter>view</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\TreeHelper.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">
@@ -332,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\StageFuncNode.h">
       <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\TreeHelper.h">
+      <Filter>tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

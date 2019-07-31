@@ -1,6 +1,7 @@
 #include "blueprint/NodeSelectOP.h"
 #include "blueprint/CompNode.h"
 #include "blueprint/Connecting.h"
+#include "blueprint/TreeHelper.h"
 #include "blueprint/node/SetReference.h"
 #include "blueprint/node/GetReference.h"
 #include "blueprint/node/SetValue.h"
@@ -136,7 +137,7 @@ void NodeSelectOP::AfterInsertSelected(const n0::SceneNodePtr& node) const
     {
         auto& name = std::static_pointer_cast<node::GetReference>(bp_node)->GetName();
         ChangeReferenceHighlight(true, name, true);
-    } 
+    }
     else if (bp_type == rttr::type::get<node::SetValue>())
     {
         auto& name = std::static_pointer_cast<node::SetValue>(bp_node)->GetName();
@@ -258,38 +259,11 @@ void NodeSelectOP::ClearVarHighlight() const
 void NodeSelectOP::SelectAllTree(const NodePtr& root, bool successor) const
 {
     std::set<const Node*> sel_bp_nodes;
-
-    std::queue<const Node*> buf;
-    buf.push(root.get());
-    if (successor)
-    {
-        while (!buf.empty())
-        {
-            auto n = buf.front(); buf.pop();
-            sel_bp_nodes.insert(n);
-
-            for (auto& c : n->GetAllOutput()) {
-                for (auto& conn : c->GetConnecting()) {
-                    buf.push(&conn->GetTo()->GetParent());
-                }
-            }
-        }
+    if (successor) {
+        TreeHelper::GetSuccessorNodes(*root, sel_bp_nodes);
+    } else {
+        TreeHelper::GetPrecursorNodes(*root, sel_bp_nodes);
     }
-    else
-    {
-        while (!buf.empty())
-        {
-            auto n = buf.front(); buf.pop();
-            sel_bp_nodes.insert(n);
-
-            for (auto& c : n->GetAllInput()) {
-                for (auto& conn : c->GetConnecting()) {
-                    buf.push(&conn->GetFrom()->GetParent());
-                }
-            }
-        }
-    }
-
     if (sel_bp_nodes.empty()) {
         return;
     }
