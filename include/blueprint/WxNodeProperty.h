@@ -37,9 +37,9 @@ protected:
 
     NodePtr m_node = nullptr;
 
-private:
-	ee0::SubjectMgrPtr m_sub_mgr;
+    ee0::SubjectMgrPtr m_sub_mgr;
 
+private:
     n0::SceneNodePtr m_obj  = nullptr;
 
 }; // WxNodeProperty
