@@ -78,8 +78,7 @@ bool Node::UpdateExtInputPorts(bool is_connecting)
     if (is_connecting)
     {
         const int n = m_all_input.size();
-        std::string name;
-        name.push_back(static_cast<char>('A' + n));
+        auto name = GenInputPinName(n);
         AddPin(std::make_shared<Pin>(true, n, PIN_ANY_VAR, name, *this));
         dirty = true;
     }
@@ -102,10 +101,8 @@ void Node::PrepareExtInputPorts(int count)
         return;
     }
 
-    for (int i = m_all_input.size(); i < count; ++i)
-    {
-        std::string name;
-        name.push_back(static_cast<char>('A' + i));
+    for (int i = m_all_input.size(); i < count; ++i) {
+        auto name = GenInputPinName(i);
         AddPin(std::make_shared<Pin>(true, i, PIN_ANY_VAR, name, *this));
     }
 
@@ -180,6 +177,13 @@ bool Node::CheckPinName(const Pin& src, const std::vector<std::shared_ptr<Pin>>&
 void Node::Layout()
 {
 	NodeLayout::UpdateNodeStyle(*this);
+}
+
+std::string Node::GenInputPinName(size_t idx) const
+{
+    std::string name;
+    name += static_cast<char>('A' + idx);
+    return name;
 }
 
 }

@@ -87,6 +87,9 @@ protected:
 
 	void Layout();
 
+private:
+    virtual std::string GenInputPinName(size_t idx) const;
+
 protected:
 	std::string m_title;
 
