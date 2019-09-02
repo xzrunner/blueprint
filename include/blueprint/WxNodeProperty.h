@@ -22,6 +22,7 @@ public:
 
     virtual void LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& node);
 
+    void Clear();
 
 protected:
     virtual bool InitView(const rttr::property& prop, const NodePtr& node) = 0;

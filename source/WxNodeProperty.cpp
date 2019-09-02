@@ -26,6 +26,14 @@ WxNodeProperty::WxNodeProperty(wxWindow* parent, const ee0::SubjectMgrPtr& sub_m
     InitLayout();
 }
 
+void WxNodeProperty::Clear()
+{
+    m_node.reset();
+    m_obj.reset();
+
+    m_pg->Clear();
+}
+
 void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& node)
 {
     m_obj = obj;
