@@ -9,6 +9,7 @@
 #include <painting0/Color.h>
 
 #include <rttr/registration>
+#include <rapidjson/document.h>
 
 #include <vector>
 #include <memory>
@@ -41,6 +42,9 @@ public:
 
 	virtual void Draw(const n2::RenderParams& rp) const;
 	virtual bool Update(const UpdateParams& params) { return false; }
+
+    virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) {}
+    virtual void LoadFromJson(const std::string& dir, const rapidjson::Value& val) {}
 
 	virtual void Refresh() {}
 

@@ -20,7 +20,8 @@ class WxNodeProperty : public wxPanel
 public:
     WxNodeProperty(wxWindow* parent, const ee0::SubjectMgrPtr& sub_mgr);
 
-    void LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& node);
+    virtual void LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& node);
+
 
 protected:
     virtual bool InitView(const rttr::property& prop, const NodePtr& node) = 0;
@@ -29,8 +30,8 @@ protected:
 private:
     void InitLayout();
 
-    void OnPropertyGridChanging(wxPropertyGridEvent& event);
-    void OnPropertyGridChanged(wxPropertyGridEvent& event);
+    virtual void OnPropertyGridChanging(wxPropertyGridEvent& event);
+    virtual void OnPropertyGridChanged(wxPropertyGridEvent& event);
 
 protected:
     wxPropertyGrid* m_pg;
