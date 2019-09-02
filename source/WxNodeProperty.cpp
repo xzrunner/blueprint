@@ -85,14 +85,14 @@ void WxNodeProperty::InitLayout()
 {
 	auto sizer = new wxBoxSizer(wxVERTICAL);
 
-	m_pg = new wxPropertyGrid(this, -1, wxDefaultPosition, wxSize(300, 600),
+	m_pg = new wxPropertyGrid(this, -1, wxDefaultPosition, wxSize(500, -1),
 		wxPG_SPLITTER_AUTO_CENTER | wxPG_BOLD_MODIFIED
 	);
     Connect(m_pg->GetId(), wxEVT_PG_CHANGING, wxPropertyGridEventHandler(
         WxNodeProperty::OnPropertyGridChanging));
 	Connect(m_pg->GetId(), wxEVT_PG_CHANGED, wxPropertyGridEventHandler(
 		WxNodeProperty::OnPropertyGridChanged));
-	sizer->Add(m_pg, 1, wxEXPAND);
+	sizer->Add(m_pg, wxEXPAND);
 
 	SetSizer(sizer);
 }
