@@ -203,16 +203,16 @@ bool ConnectPinOP::OnMouseLeftUp(int x, int y)
 	return ret;
 }
 
-bool ConnectPinOP::OnMouseRightDown(int x, int y)
-{
-    if (ee0::EditOP::OnMouseRightDown(x, y)) {
-        return true;
-    }
-
-    m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
-
-    return false;
-}
+//bool ConnectPinOP::OnMouseRightDown(int x, int y)
+//{
+//    if (ee0::EditOP::OnMouseRightDown(x, y)) {
+//        return true;
+//    }
+//
+//    m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
+//
+//    return false;
+//}
 
 bool ConnectPinOP::OnMouseDrag(int x, int y)
 {
