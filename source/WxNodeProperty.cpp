@@ -125,6 +125,8 @@ void WxNodeProperty::OnPropertyGridChanging(wxPropertyGridEvent& event)
 
 void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
 {
+    UpdateView(event);
+
 	if (!m_node) {
 		return;
 	}

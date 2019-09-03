@@ -27,6 +27,7 @@ public:
 protected:
     virtual bool InitView(const rttr::property& prop, const NodePtr& node) = 0;
     virtual bool UpdateView(const rttr::property& prop, const wxPGProperty& wx_prop) = 0;
+    virtual void UpdateView(wxPropertyGridEvent& event) {}
 
 private:
     void InitLayout();
