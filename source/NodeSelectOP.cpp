@@ -22,8 +22,9 @@ namespace bp
 {
 
 NodeSelectOP::NodeSelectOP(const std::shared_ptr<pt0::Camera>& camera,
-                           ee0::WxStagePage& stage, uint32_t cam_cfg)
+                           ee0::WxStagePage& stage, uint32_t cam_cfg, bool dclick_sel_tree)
     : ee2::NodeSelectOP(camera, ECS_WORLD_VAR stage, cam_cfg)
+    , m_dclick_sel_tree(dclick_sel_tree)
 {
 }
 
@@ -55,7 +56,7 @@ bool NodeSelectOP::OnMouseLeftDClick(int x, int y)
         ee0::MsgHelper::CreateNewPage(*m_stage.GetSubjectMgr(), PAGE_TYPE,
             func->GetFilepath().c_str(), selected);
     }
-    else
+    else if (m_dclick_sel_tree)
     {
         bool successor = !wxGetKeyState(WXK_CONTROL);
         SelectAllTree(selected_bp, successor);

@@ -12,9 +12,8 @@ namespace bp
 class NodeSelectOP : public ee2::NodeSelectOP
 {
 public:
-    NodeSelectOP(const std::shared_ptr<pt0::Camera>& camera,
-        ECS_WORLD_PARAM ee0::WxStagePage& stage,
-        uint32_t cam_cfg = ee2::CamControlOP::DEFAULT_FLAG);
+    NodeSelectOP(const std::shared_ptr<pt0::Camera>& camera, ECS_WORLD_PARAM ee0::WxStagePage& stage,
+        uint32_t cam_cfg = ee2::CamControlOP::DEFAULT_FLAG, bool dclick_sel_tree = true);
 
     virtual bool OnMouseLeftDClick(int x, int y) override;
 
@@ -32,6 +31,9 @@ private:
     void SelectAllTree(const NodePtr& root, bool successor) const;
 
     static void SetNodeBGColor(const NodePtr& node, const pt0::Color& color);
+
+private:
+    bool m_dclick_sel_tree = true;
 
 }; // NodeSelectOP
 
