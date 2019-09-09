@@ -399,11 +399,22 @@ void ConnectPinOP::QueryOrCreateNode(int x, int y, bool change_to)
 		    if (m_selected_pin->CanTypeCast(*target) &&
 			    m_selected_pin->IsInput() != target->IsInput())
 		    {
+                std::shared_ptr<Pin> from, to;
 			    if (m_selected_pin->IsInput()) {
-				    MakeConnecting(target, m_selected_pin);
+                    from = target;
+                    to = m_selected_pin;
 			    } else {
-				    MakeConnecting(m_selected_pin, target);
+                    from = m_selected_pin;
+                    to = target;
 			    }
+
+                auto& conns = to->GetConnecting();
+                if (!conns.empty()) {
+                    assert(conns.size() == 1);
+                    Disconnect(conns[0]);
+                }
+
+                MakeConnecting(from, to);
 		    }
 	    }
 	    else
