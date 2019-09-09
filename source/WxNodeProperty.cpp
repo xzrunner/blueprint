@@ -125,11 +125,11 @@ void WxNodeProperty::OnPropertyGridChanging(wxPropertyGridEvent& event)
 
 void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
 {
-    UpdateView(event);
-
 	if (!m_node) {
 		return;
 	}
+
+    bool dirty = UpdateView(event);
 
 	wxPGProperty* property = event.GetProperty();
 	auto key = property->GetName();
@@ -150,29 +150,33 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
         if (prop_type == rttr::type::get<VariantType>() && key == ui_info.desc)
         {
             prop.set_value(m_node, static_cast<VariantType>(wxANY_AS(val, int)));
+            dirty = true;
         }
         else if (UpdateView(prop, *property))
         {
-            ;
+            dirty = true;
         }
-        else
+        else if (ee0::WxPropHelper::UpdateProp(key, val, ui_info, m_node, prop))
         {
-            ee0::WxPropHelper::UpdateProp(key, val, ui_info, m_node, prop);
+            dirty = true;
         }
 	}
 
-	m_node->Refresh();
+    if (dirty)
+    {
+        m_node->Refresh();
 
-    m_node->SetEditNotDirty(false);
+        m_node->SetEditNotDirty(false);
 
-    // update aabb
-    auto& st = m_node->GetStyle();
-    m_obj->GetUniqueComp<n2::CompBoundingBox>().SetSize(
-        *m_obj, sm::rect(st.width, st.height)
-    );
+        // update aabb
+        auto& st = m_node->GetStyle();
+        m_obj->GetUniqueComp<n2::CompBoundingBox>().SetSize(
+            *m_obj, sm::rect(st.width, st.height)
+        );
 
-	m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
-    ee0::MsgHelper::SendObjMsg(*m_sub_mgr, m_obj, bp::MSG_BP_NODE_PROP_CHANGED);
+        m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
+        ee0::MsgHelper::SendObjMsg(*m_sub_mgr, m_obj, bp::MSG_BP_NODE_PROP_CHANGED);
+    }
 }
 
 }
