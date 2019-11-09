@@ -20,7 +20,7 @@ class RenderSystem
 {
 public:
 	auto& GetTitleTB() const { return m_title_tb; }
-	auto& GetInputTB() const { return m_input_tb; }
+	auto& GetInputTB() const { return m_left_tb; }
 
 	float GetTextTitleScale() const;
 	float GetTextPinScale() const;
@@ -38,7 +38,7 @@ private:
 
 private:
 	pt2::Textbox m_title_tb, m_small_title_tb;
-	pt2::Textbox m_input_tb, m_output_tb;
+	pt2::Textbox m_left_tb, m_right_tb, m_center_tb;
 
 	CU_SINGLETON_DECLARATION(RenderSystem)
 

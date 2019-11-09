@@ -15,7 +15,7 @@ namespace bp
 const uint32_t NodeLayout::DEFAULT_WIDTH  = 100;
 const uint32_t NodeLayout::DEFAULT_HEIGHT = 20;
 const uint32_t NodeLayout::TITLE_HEIGHT   = 20;
-const float    NodeLayout::PIN_RADIUS    = 5;
+const float    NodeLayout::PIN_RADIUS     = 5;
 const float    NodeLayout::CONNECTING_BEZIER_DIST = 0.3f;
 
 void NodeLayout::UpdateNodeStyle(Node& node)
@@ -24,13 +24,20 @@ void NodeLayout::UpdateNodeStyle(Node& node)
 
 	auto& input  = node.GetAllInput();
 	auto& output = node.GetAllOutput();
-	s.line_num = std::max(input.size(), output.size());
+    if (node.GetStyle().hori) {
+        s.line_num = std::max(input.size(), output.size());
+    } else {
+        s.line_num = 1;
+    }
 	s.height = 0;
 	if (node.IsStyleOnlyTitle()) {
 		s.height = static_cast<float>(NodeLayout::TITLE_HEIGHT) - 4;
 	} else {
 		s.height = static_cast<float>(NodeLayout::TITLE_HEIGHT + NodeLayout::DEFAULT_HEIGHT * s.line_num);
 	}
+    if (!node.GetStyle().hori) {
+        s.height += PIN_RADIUS * 4;
+    }
 
 	auto rs = RenderSystem::Instance();
 	auto& tb = rs->GetInputTB();
@@ -66,50 +73,41 @@ void NodeLayout::UpdateNodeStyle(Node& node)
 
 sm::vec2 NodeLayout::GetPinPos(const Pin& pin)
 {
-	auto& node = pin.GetParent();
-
-	auto& style = node.GetStyle();
-	float hw = style.width  * 0.5f;
-	float hh = style.height * 0.5f;
-
-	sm::vec2 pos;
-
-	bool left = pin.IsInput();
-	if (left) {
-		pos.x = -hw + PIN_RADIUS * 2;
-	} else {
-		pos.x = hw - PIN_RADIUS * 2;
-	}
-
-	if (!node.IsStyleOnlyTitle()) {
-		int pos_idx = pin.GetPosIdx();
-		pos.y = hh - NodeLayout::DEFAULT_HEIGHT - (pos_idx + 0.5f) * NodeLayout::DEFAULT_HEIGHT;
-	} else {
-		pos.y = hh - NodeLayout::DEFAULT_HEIGHT * 0.5f;
-	}
-
-	return node.GetPos() + pos;
+    return GetPinPos(pin.GetParent(), pin.IsInput(), pin.GetPosIdx());
 }
 
-sm::vec2 NodeLayout::GetPinPos(const Node& node, bool left, size_t idx)
+sm::vec2 NodeLayout::GetPinPos(const Node& node, bool is_input, size_t idx)
 {
 	sm::vec2 pos;
 
 	auto& style = node.GetStyle();
 	float hw = style.width  * 0.5f;
 	float hh = style.height * 0.5f;
+    if (node.GetStyle().hori)
+    {
+	    if (is_input) {
+		    pos.x = -hw + PIN_RADIUS * 2;
+	    } else {
+		    pos.x = hw - PIN_RADIUS * 2;
+	    }
 
-	if (left) {
-		pos.x = -hw + PIN_RADIUS * 2;
-	} else {
-		pos.x = hw - PIN_RADIUS * 2;
-	}
+	    if (!node.IsStyleOnlyTitle()) {
+		    pos.y = hh - NodeLayout::DEFAULT_HEIGHT - (idx + 0.5f) * NodeLayout::DEFAULT_HEIGHT;
+	    } else {
+		    pos.y = hh - NodeLayout::DEFAULT_HEIGHT * 0.5f;
+	    }
+    }
+    else
+    {
+        if (is_input) {
+		    pos.y = hh - PIN_RADIUS;
+	    } else {
+		    pos.y = -hh + PIN_RADIUS;
+	    }
 
-	if (!node.IsStyleOnlyTitle()) {
-		pos.y = hh - NodeLayout::DEFAULT_HEIGHT - (idx + 0.5f) * NodeLayout::DEFAULT_HEIGHT;
-	} else {
-		pos.y = hh - NodeLayout::DEFAULT_HEIGHT * 0.5f;
-	}
+        const size_t num = is_input ? node.GetAllInput().size() : node.GetAllOutput().size();
+        pos.x = (style.width / num) * (idx + 0.5f) - hw;
+    }
 
 	return node.GetPos() + pos;
 }

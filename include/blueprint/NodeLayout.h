@@ -25,7 +25,7 @@ public:
 	static void UpdateNodeStyle(Node& node);
 
 	static sm::vec2 GetPinPos(const Pin& pin);
-	static sm::vec2 GetPinPos(const Node& node, bool left, size_t idx);
+	static sm::vec2 GetPinPos(const Node& node, bool is_input, size_t idx);
 
 }; // NodeLayout
 

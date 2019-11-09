@@ -39,15 +39,16 @@ RenderSystem::RenderSystem()
 	m_small_title_tb = m_title_tb;
 	m_small_title_tb.font_size = 18;
 
-	m_input_tb.font_size = 24;
-	m_input_tb.align_hori = pt2::Textbox::HA_LEFT;
-	m_input_tb.width = 500;
-	m_input_tb.height = NodeLayout::DEFAULT_HEIGHT;
+	m_left_tb.font_size = 24;
+	m_left_tb.align_hori = pt2::Textbox::HA_LEFT;
+	m_left_tb.width = 500;
+	m_left_tb.height = NodeLayout::DEFAULT_HEIGHT;
 
-	m_output_tb.font_size = 24;
-	m_output_tb.align_hori = pt2::Textbox::HA_RIGHT;
-	m_output_tb.width = 500;
-	m_output_tb.height = NodeLayout::DEFAULT_HEIGHT;
+    m_right_tb = m_left_tb;
+    m_right_tb.align_hori = pt2::Textbox::HA_RIGHT;
+
+    m_center_tb = m_left_tb;
+    m_center_tb.align_hori = pt2::Textbox::HA_CENTER;
 }
 
 float RenderSystem::GetTextTitleScale() const
@@ -64,7 +65,13 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 {
 	// background
 	tess::Painter pt;
-    pt.AddRectFilled(sm::vec2(-hw, -hh) + pos, sm::vec2(hw, hh) + pos, node.GetStyle().panel_bg_col.ToABGR());
+    sm::vec2 r_min(-hw, -hh);
+    sm::vec2 r_max(hw, hh);
+    if (!node.GetStyle().hori) {
+        r_min.y += PIN_RADIUS * 2;
+        r_max.y -= PIN_RADIUS * 2;
+    }
+    pt.AddRectFilled(r_min + pos, r_max + pos, node.GetStyle().panel_bg_col.ToABGR());
 	pt2::RenderSystem::DrawPainter(pt);
 
 	// title
@@ -72,7 +79,11 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
     {
         sm::Matrix2D mat;
         mat.Scale(TEXT_TITLE_SCALE, TEXT_TITLE_SCALE);
-        mat.Translate(pos.x, pos.y + hh - NodeLayout::TITLE_HEIGHT * 0.5f);
+        if (node.GetStyle().hori) {
+            mat.Translate(pos.x, pos.y + hh - NodeLayout::TITLE_HEIGHT * 0.5f);
+        } else {
+            mat.Translate(pos.x, pos.y);
+        }
         auto& tb = node.IsStyleSmallTitleFont() ? m_small_title_tb : m_title_tb;
         pt2::RenderSystem::DrawText(node.GetTitle(), tb, mat, COL_TEXT, COL_ZERO);
     }
@@ -84,7 +95,10 @@ void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
 	mat.Scale(TEXT_PIN_SCALE, TEXT_PIN_SCALE);
 	mat.Translate(pos.x, pos.y);
 
-	bool connected = !pin.GetConnecting().empty();
+    bool filling = true;
+    if (pin.GetParent().GetStyle().hori) {
+        filling = !pin.GetConnecting().empty();
+    }
 
 	tess::Painter pt;
 	auto type = pin.GetType();
@@ -100,7 +114,7 @@ void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
 		}
 		uint32_t col = pin.GetColor().ToABGR();
 		assert(vertices.size() % 3 == 0);
-		if (connected) {
+		if (filling) {
 			for (int i = 0, n = vertices.size(); i < n; ) {
 				pt.AddTriangleFilled(vertices[i++], vertices[i++], vertices[i++], col);
 			}
@@ -112,7 +126,7 @@ void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
 	}
 	else
 	{
-		if (connected) {
+		if (filling) {
 			pt.AddCircleFilled(pos, PIN_RADIUS, pin.GetColor().ToABGR());
 		} else {
 			pt.AddCircle(pos, PIN_RADIUS, pin.GetColor().ToABGR());
@@ -120,13 +134,32 @@ void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
 	}
 	pt2::RenderSystem::DrawPainter(pt);
 
-	if (pin.IsInput()) {
-		mat.Translate(PIN_TEXT_OFFSET, 0);
-		pt2::RenderSystem::DrawText(pin.GetDesc(), m_input_tb, mat, COL_TEXT, COL_ZERO);
-	} else {
-		mat.Translate(-PIN_TEXT_OFFSET, 0);
-		pt2::RenderSystem::DrawText(pin.GetDesc(), m_output_tb, mat, COL_TEXT, COL_ZERO);
-	}
+    pt2::Textbox* tb = nullptr;
+    float dx = 0;
+    float dy = 0;
+    if (pin.GetParent().GetStyle().hori)
+    {
+	    if (pin.IsInput()) {
+            tb = &m_left_tb;
+            dx = PIN_TEXT_OFFSET;
+	    } else {
+            tb = &m_right_tb;
+            dx = -PIN_TEXT_OFFSET;
+	    }
+    }
+    else
+    {
+        tb = &m_center_tb;
+	    if (pin.IsInput()) {
+            dy = -static_cast<float>(NodeLayout::DEFAULT_HEIGHT) + PIN_RADIUS * 2;
+	    } else {
+            dy =  static_cast<float>(NodeLayout::DEFAULT_HEIGHT) - PIN_RADIUS * 2;
+	    }
+    }
+
+    mat.Translate(dx, dy);
+    assert(tb);
+    pt2::RenderSystem::DrawText(pin.GetDesc(), *tb, mat, COL_TEXT, COL_ZERO);
 }
 
 void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat, const sm::rect& screen_region)

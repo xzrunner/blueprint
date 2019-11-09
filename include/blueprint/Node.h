@@ -77,6 +77,8 @@ public:
 		int line_num = 0;
 
         pt0::Color panel_bg_col = BG_COLOR_DEFAULT;
+
+        bool hori = true;
 	};
 
 	const Style& GetStyle() const { return m_style; }
