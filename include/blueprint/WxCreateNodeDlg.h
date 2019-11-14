@@ -7,6 +7,8 @@
 #include <wx/dialog.h>
 #include <wx/treectrl.h>
 
+#include <map>
+
 namespace bp
 {
 
@@ -34,6 +36,8 @@ private:
 	const std::vector<NodePtr>& m_nodes;
 
 	wxTreeCtrl* m_tree;
+
+    std::map<std::string, std::string> m_name2type;
 
 }; // WxCreateNodeDlg
 

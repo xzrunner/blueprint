@@ -20,7 +20,10 @@ WxCreateNodeDlg::WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos,
 
 std::string WxCreateNodeDlg::GetSelectedType() const
 {
-	return m_tree->GetItemText(m_tree->GetSelection()).ToStdString();
+    auto name = m_tree->GetItemText(m_tree->GetSelection()).ToStdString();
+    auto itr = m_name2type.find(name);
+    assert(itr != m_name2type.end());
+    return itr->second;
 }
 
 void WxCreateNodeDlg::InitLayout()
@@ -35,11 +38,29 @@ void WxCreateNodeDlg::InitLayout()
 		auto root = m_tree->AddRoot("ROOT");
 
 		int idx = 0;
-		for (auto& node : m_nodes) {
-			if (IsNodeMatched(*node)) {
-				auto type_name = node->get_type().get_name().to_string();
-				m_tree->InsertItem(root, idx++, type_name);
-			}
+		for (auto& node : m_nodes)
+        {
+            if (!IsNodeMatched(*node)) {
+                continue;
+            }
+
+            auto& title = node->GetTitle();
+            auto type = node->get_type().get_name().to_string();
+            std::string name;
+            if (title.empty()) {
+                name = type;
+            } else {
+                auto pos = type.find_last_of("::");
+                if (pos != std::string::npos) {
+                    std::string prefix = type.substr(0, type.find_first_of("::") + 2);
+                    name = prefix + title;
+                } else {
+                    name = title;
+                }
+            }
+
+            m_name2type.insert({ name, type });
+            m_tree->InsertItem(root, idx++, name);
 		}
 
 		top_sizer->Add(m_tree, 1, wxEXPAND);
