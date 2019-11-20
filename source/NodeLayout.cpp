@@ -24,7 +24,7 @@ void NodeLayout::UpdateNodeStyle(Node& node)
 
 	auto& input  = node.GetAllInput();
 	auto& output = node.GetAllOutput();
-    if (node.GetStyle().hori) {
+    if (s.hori) {
         s.line_num = std::max(input.size(), output.size());
     } else {
         s.line_num = 1;
@@ -35,7 +35,7 @@ void NodeLayout::UpdateNodeStyle(Node& node)
 	} else {
 		s.height = static_cast<float>(NodeLayout::TITLE_HEIGHT + NodeLayout::DEFAULT_HEIGHT * s.line_num);
 	}
-    if (!node.GetStyle().hori) {
+    if (!s.hori && s.draw_pin_label) {
         s.height += PIN_RADIUS * 4;
     }
 

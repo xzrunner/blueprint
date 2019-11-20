@@ -79,6 +79,8 @@ public:
         pt0::Color panel_bg_col = BG_COLOR_DEFAULT;
 
         bool hori = true;
+
+        bool draw_pin_label = true;
 	};
 
 	const Style& GetStyle() const { return m_style; }

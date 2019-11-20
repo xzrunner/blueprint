@@ -91,12 +91,14 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
 
 void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
 {
+    auto& style = pin.GetParent().GetStyle();
+
 	sm::Matrix2D mat;
 	mat.Scale(TEXT_PIN_SCALE, TEXT_PIN_SCALE);
 	mat.Translate(pos.x, pos.y);
 
     bool filling = true;
-    if (pin.GetParent().GetStyle().hori) {
+    if (style.hori) {
         filling = !pin.GetConnecting().empty();
     }
 
@@ -134,32 +136,35 @@ void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
 	}
 	pt2::RenderSystem::DrawPainter(pt);
 
-    pt2::Textbox* tb = nullptr;
-    float dx = 0;
-    float dy = 0;
-    if (pin.GetParent().GetStyle().hori)
+    if (style.draw_pin_label)
     {
-	    if (pin.IsInput()) {
-            tb = &m_left_tb;
-            dx = PIN_TEXT_OFFSET;
-	    } else {
-            tb = &m_right_tb;
-            dx = -PIN_TEXT_OFFSET;
-	    }
-    }
-    else
-    {
-        tb = &m_center_tb;
-	    if (pin.IsInput()) {
-            dy = -static_cast<float>(NodeLayout::DEFAULT_HEIGHT) + PIN_RADIUS * 2;
-	    } else {
-            dy =  static_cast<float>(NodeLayout::DEFAULT_HEIGHT) - PIN_RADIUS * 2;
-	    }
-    }
+        pt2::Textbox* tb = nullptr;
+        float dx = 0;
+        float dy = 0;
+        if (style.hori)
+        {
+	        if (pin.IsInput()) {
+                tb = &m_left_tb;
+                dx = PIN_TEXT_OFFSET;
+	        } else {
+                tb = &m_right_tb;
+                dx = -PIN_TEXT_OFFSET;
+	        }
+        }
+        else
+        {
+            tb = &m_center_tb;
+	        if (pin.IsInput()) {
+                dy = -static_cast<float>(NodeLayout::DEFAULT_HEIGHT) + PIN_RADIUS * 2;
+	        } else {
+                dy =  static_cast<float>(NodeLayout::DEFAULT_HEIGHT) - PIN_RADIUS * 2;
+	        }
+        }
 
-    mat.Translate(dx, dy);
-    assert(tb);
-    pt2::RenderSystem::DrawText(pin.GetDesc(), *tb, mat, COL_TEXT, COL_ZERO);
+        mat.Translate(dx, dy);
+        assert(tb);
+        pt2::RenderSystem::DrawText(pin.GetDesc(), *tb, mat, COL_TEXT, COL_ZERO);
+    }
 }
 
 void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat, const sm::rect& screen_region)

@@ -29,7 +29,7 @@ void Commentary::Draw(const n2::RenderParams& rp) const
     }
 }
 
-void Commentary::SetCommentText(const std::string& str) 
+void Commentary::SetCommentText(const std::string& str)
 {
     if (str.empty()) {
         return;
