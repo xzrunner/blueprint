@@ -38,11 +38,21 @@ void Connecting::UpdateCurveShape()
 	auto to = m_to.lock();
 	assert(from && to);
 
+    const bool hori = from->GetParent().GetStyle().hori &&
+                      to->GetParent().GetStyle().hori;
+
 	sm::vec2 v0 = NodeLayout::GetPinPos(*from);
 	sm::vec2 v3 = NodeLayout::GetPinPos(*to);
+    sm::vec2 v1, v2;
 	float d = fabs((v3.x - v0.x) * NodeLayout::CONNECTING_BEZIER_DIST);
-	auto v1 = v0 + sm::vec2(d, 0);
-	auto v2 = v3 - sm::vec2(d, 0);
+    if (hori) {
+        v1 = v0 + sm::vec2(d, 0);
+        v2 = v3 - sm::vec2(d, 0);
+    } else {
+        v1 = v0 + sm::vec2(0, -d);
+        v2 = v3 - sm::vec2(0, -d);
+    }
+
 	m_curve.shape.SetCtrlPos({ v0, v1, v2, v3 });
 }
 
