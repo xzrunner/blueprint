@@ -11,6 +11,7 @@
 class wxPropertyGrid;
 class wxPropertyGridEvent;
 class wxPGProperty;
+class wxEnumProperty;
 
 namespace bp
 {
@@ -28,6 +29,9 @@ protected:
     virtual bool InitView(const rttr::property& prop, const NodePtr& node) = 0;
     virtual bool UpdateView(const rttr::property& prop, const wxPGProperty& wx_prop) = 0;
     virtual bool UpdateView(wxPropertyGridEvent& event) { return false; }
+
+    static wxEnumProperty* CreateEnumProp(const std::string& label, rttr::type type, int init_val);
+    static rttr::variant QueryEnumPropByLabel(const std::string& label, rttr::type type);
 
 private:
     void InitLayout();
