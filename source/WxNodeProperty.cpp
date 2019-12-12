@@ -26,14 +26,6 @@ WxNodeProperty::WxNodeProperty(wxWindow* parent, const ee0::SubjectMgrPtr& sub_m
     InitLayout();
 }
 
-void WxNodeProperty::Clear()
-{
-    m_node.reset();
-    m_obj.reset();
-
-    m_pg->Clear();
-}
-
 void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& node)
 {
     m_obj = obj;
@@ -63,6 +55,11 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
             type_prop->SetValue(static_cast<int>(type));
             m_pg->Append(type_prop);
         }
+        else if (prop_type.is_enumeration())
+        {
+            auto wx_prop = CreateEnumProp(ui_info.desc, prop_type, prop.get_value(node).get_value<int>());
+            m_pg->Append(wx_prop);
+        }
         else if (InitView(prop, node))
         {
             ;
@@ -79,6 +76,14 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
             });
         }
 	}
+}
+
+void WxNodeProperty::Clear()
+{
+    m_node.reset();
+    m_obj.reset();
+
+    m_pg->Clear();
 }
 
 wxEnumProperty* WxNodeProperty::CreateEnumProp(const std::string& label, rttr::type type, int init_val)
@@ -186,6 +191,25 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
         {
             prop.set_value(m_node, static_cast<VariantType>(wxANY_AS(val, int)));
             dirty = true;
+        }
+        else if (prop_type.is_enumeration() && key == ui_info.desc)
+        {
+            if (val.CheckType<int>())
+            {
+                auto t = val.GetType();
+                auto idx = wxANY_AS(val, int);
+                auto vars = prop_type.get_enumeration().get_values();
+                assert(idx >= 0 && idx < static_cast<int>(vars.size()));
+                bool find = false;
+                for (auto& var : vars) {
+                    if (var.to_int() == idx) {
+                        prop.set_value(m_node, var);
+                        find = true;
+                        break;
+                    }
+                }
+                assert(find);
+            }
         }
         else if (UpdateView(prop, *property))
         {

@@ -26,8 +26,8 @@ public:
     void Clear();
 
 protected:
-    virtual bool InitView(const rttr::property& prop, const NodePtr& node) = 0;
-    virtual bool UpdateView(const rttr::property& prop, const wxPGProperty& wx_prop) = 0;
+    virtual bool InitView(const rttr::property& prop, const NodePtr& node) { return false; }
+    virtual bool UpdateView(const rttr::property& prop, const wxPGProperty& wx_prop) { return false; }
     virtual bool UpdateView(wxPropertyGridEvent& event) { return false; }
 
     static wxEnumProperty* CreateEnumProp(const std::string& label, rttr::type type, int init_val);
