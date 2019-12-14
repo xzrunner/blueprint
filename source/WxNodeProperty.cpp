@@ -201,12 +201,16 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
                 auto vars = prop_type.get_enumeration().get_values();
                 assert(idx >= 0 && idx < static_cast<int>(vars.size()));
                 bool find = false;
-                for (auto& var : vars) {
-                    if (var.to_int() == idx) {
-                        prop.set_value(m_node, var);
-                        find = true;
-                        break;
+                for (auto& var : vars)
+                {
+                    if (var.to_int() != idx) {
+                        continue;
                     }
+
+                    prop.set_value(m_node, var);
+                    find = true;
+                    dirty = true;
+                    break;
                 }
                 assert(find);
             }
