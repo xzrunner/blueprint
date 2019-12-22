@@ -30,9 +30,6 @@ protected:
     virtual bool UpdateView(const rttr::property& prop, const wxPGProperty& wx_prop) { return false; }
     virtual bool UpdateView(wxPropertyGridEvent& event) { return false; }
 
-    static wxEnumProperty* CreateEnumProp(const std::string& label, rttr::type type, int init_val);
-    static rttr::variant QueryEnumPropByLabel(const std::string& label, rttr::type type);
-
 private:
     void InitLayout();
 

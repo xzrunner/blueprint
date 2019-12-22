@@ -55,11 +55,6 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
             type_prop->SetValue(static_cast<int>(type));
             m_pg->Append(type_prop);
         }
-        else if (prop_type.is_enumeration())
-        {
-            auto wx_prop = CreateEnumProp(ui_info.desc, prop_type, prop.get_value(node).get_value<int>());
-            m_pg->Append(wx_prop);
-        }
         else if (InitView(prop, node))
         {
             ;
@@ -84,41 +79,6 @@ void WxNodeProperty::Clear()
     m_obj.reset();
 
     m_pg->Clear();
-}
-
-wxEnumProperty* WxNodeProperty::CreateEnumProp(const std::string& label, rttr::type type, int init_val)
-{
-    wxArrayString choices;
-
-    auto vars = type.get_enumeration().get_values();
-    choices.resize(vars.size());
-    for (auto& var : vars)
-    {
-        auto idx = var.to_int();
-        auto desc = type.get_enumeration().get_metadata(idx);
-        assert(desc.is_valid());
-        choices[idx] = desc.to_string();
-    }
-
-    auto wx_prop = new wxEnumProperty(label, wxPG_LABEL, choices);
-    wx_prop->SetValue(init_val);
-    return wx_prop;
-}
-
-rttr::variant WxNodeProperty::QueryEnumPropByLabel(const std::string& label, rttr::type type)
-{
-    auto vars = type.get_enumeration().get_values();
-    for (auto& var : vars)
-    {
-        auto idx = var.to_int();
-        auto desc = type.get_enumeration().get_metadata(idx);
-        assert(desc.is_valid());
-        if (label == desc.to_string()) {
-            return var;
-        }
-    }
-    assert(0);
-    return rttr::variant();
 }
 
 void WxNodeProperty::InitLayout()
@@ -191,29 +151,6 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
         {
             prop.set_value(m_node, static_cast<VariantType>(wxANY_AS(val, int)));
             dirty = true;
-        }
-        else if (prop_type.is_enumeration() && key == ui_info.desc)
-        {
-            if (val.CheckType<int>())
-            {
-                auto t = val.GetType();
-                auto idx = wxANY_AS(val, int);
-                auto vars = prop_type.get_enumeration().get_values();
-                assert(idx >= 0 && idx < static_cast<int>(vars.size()));
-                bool find = false;
-                for (auto& var : vars)
-                {
-                    if (var.to_int() != idx) {
-                        continue;
-                    }
-
-                    prop.set_value(m_node, var);
-                    find = true;
-                    dirty = true;
-                    break;
-                }
-                assert(find);
-            }
         }
         else if (UpdateView(prop, *property))
         {
