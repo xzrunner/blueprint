@@ -172,6 +172,12 @@ void NSCompNode::LoadConnection(const std::vector<n0::SceneNodePtr>& nodes,
 			}
 		}
 		assert(comp_idx != -1);
+
+        if (!node_val[comp_idx].HasMember("connection")) {
+            ++src_node_idx;
+            continue;
+        }
+
 		auto& outputs_val = node_val[comp_idx]["connection"];
 		for (auto& output_val : outputs_val.GetArray())
 		{
