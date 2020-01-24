@@ -64,6 +64,9 @@
     <Filter Include="view">
       <UniqueIdentifier>{57e3123b-671e-49e4-908c-8d9b73cb3f50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools\serialize">
+      <UniqueIdentifier>{4340eafa-3de5-4e7b-a792-010477187a4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -159,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\TreeHelper.cpp">
       <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Serializer.cpp">
+      <Filter>tools\serialize</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -338,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\TreeHelper.h">
       <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\Serializer.h">
+      <Filter>tools\serialize</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
