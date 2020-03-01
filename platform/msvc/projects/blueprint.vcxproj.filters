@@ -67,6 +67,9 @@
     <Filter Include="tools\serialize">
       <UniqueIdentifier>{4340eafa-3de5-4e7b-a792-010477187a4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools\backend">
+      <UniqueIdentifier>{8b35d9fe-6928-4e57-9fe7-8e09884765dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -348,6 +351,12 @@
     <ClInclude Include="..\..\..\include\blueprint\Serializer.h">
       <Filter>tools\serialize</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\BackendAdapter.h">
+      <Filter>tools\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\BackendGraph.h">
+      <Filter>tools\backend</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">
@@ -355,6 +364,12 @@
     </None>
     <None Include="..\..\..\include\blueprint\node\Function.inl">
       <Filter>node\function</Filter>
+    </None>
+    <None Include="..\..\..\include\blueprint\BackendAdapter.inl">
+      <Filter>tools\backend</Filter>
+    </None>
+    <None Include="..\..\..\include\blueprint\BackendGraph.inl">
+      <Filter>tools\backend</Filter>
     </None>
   </ItemGroup>
 </Project>

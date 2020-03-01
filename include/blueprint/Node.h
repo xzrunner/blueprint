@@ -68,6 +68,9 @@ public:
 	Flags GetFlags() const;
 	void SetFlags(Flags flags);
 
+    auto& GetName() const { return m_name; }
+    void  SetName(const std::string& name) { m_name = name; }
+
 public:
 	struct Style
 	{
@@ -86,12 +89,11 @@ public:
 	const Style& GetStyle() const { return m_style; }
 	void SetStyle(const Style& style) { m_style = style; }
 
-protected:
-	void AddPin(const std::shared_ptr<Pin>& pin);
+    static bool CheckPinName(const Pin& src,
+        const std::vector<std::shared_ptr<Pin>>& dst);
 
 protected:
-	static bool CheckPinName(const Pin& src,
-		const std::vector<std::shared_ptr<Pin>>& dst);
+	void AddPin(const std::shared_ptr<Pin>& pin);
 
 	void Layout();
 
@@ -131,6 +133,8 @@ private:
 	sm::vec2 m_pos;
 
 	mutable uint32_t m_flags = 0;
+
+    std::string m_name;
 
 	RTTR_ENABLE()
 

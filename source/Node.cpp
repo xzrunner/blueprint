@@ -144,16 +144,6 @@ void Node::SetFlags(Flags flags)
 	Layout();
 }
 
-void Node::AddPin(const std::shared_ptr<Pin>& pin)
-{
-	auto& array = pin->IsInput() ? m_all_input : m_all_output;
-	if (!CheckPinName(*pin, array)) {
-		assert(0);
-		return;
-	}
-	array.push_back(pin);
-}
-
 bool Node::CheckPinName(const Pin& src, const std::vector<std::shared_ptr<Pin>>& dst)
 {
 	if (src.GetType() == PIN_PORT) {
@@ -172,6 +162,16 @@ bool Node::CheckPinName(const Pin& src, const std::vector<std::shared_ptr<Pin>>&
 	}
 
 	return true;
+}
+
+void Node::AddPin(const std::shared_ptr<Pin>& pin)
+{
+    auto& array = pin->IsInput() ? m_all_input : m_all_output;
+    if (!CheckPinName(*pin, array)) {
+        assert(0);
+        return;
+    }
+    array.push_back(pin);
 }
 
 void Node::Layout()
