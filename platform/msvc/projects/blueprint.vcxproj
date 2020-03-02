@@ -73,8 +73,10 @@
     <ClInclude Include="..\..\..\include\blueprint\TreeHelper.h" />
     <ClInclude Include="..\..\..\include\blueprint\typedef.h" />
     <ClInclude Include="..\..\..\include\blueprint\WxCreateNodeDlg.h" />
+    <ClInclude Include="..\..\..\include\blueprint\WxGraphPage.h" />
     <ClInclude Include="..\..\..\include\blueprint\WxNodeProperty.h" />
     <ClInclude Include="..\..\..\include\blueprint\StageFuncNode.h" />
+    <ClInclude Include="..\..\..\include\blueprint\WxToolbarPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\ArrangeNodeOP.cpp" />
@@ -110,12 +112,14 @@
     <ClCompile Include="..\..\..\source\WxCreateNodeDlg.cpp" />
     <ClCompile Include="..\..\..\source\WxNodeProperty.cpp" />
     <ClCompile Include="..\..\..\source\StageFuncNode.cpp" />
+    <ClCompile Include="..\..\..\source\WxToolbarPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\BackendAdapter.inl" />
     <None Include="..\..\..\include\blueprint\BackendGraph.inl" />
     <None Include="..\..\..\include\blueprint\NodeHelper.inl" />
     <None Include="..\..\..\include\blueprint\node\Function.inl" />
+    <None Include="..\..\..\include\blueprint\WxGraphPage.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>4.blueprint</ProjectName>

@@ -70,6 +70,15 @@
     <Filter Include="tools\backend">
       <UniqueIdentifier>{8b35d9fe-6928-4e57-9fe7-8e09884765dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="view\editor">
+      <UniqueIdentifier>{b0476833-5a8e-4b73-9da4-64b56f3c1ebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view\preview">
+      <UniqueIdentifier>{3b32f696-48c6-48af-93d7-9329ee964cf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view\toolbar">
+      <UniqueIdentifier>{a3f38d1a-a372-4537-907c-889392568d2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -148,9 +157,6 @@
     <ClCompile Include="..\..\..\source\ReflectPropTypes.cpp">
       <Filter>tools\rtti</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\WxNodeProperty.cpp">
-      <Filter>view</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\ScriptEnv.cpp">
       <Filter>tools</Filter>
     </ClCompile>
@@ -160,14 +166,20 @@
     <ClCompile Include="..\..\..\source\RegistPt0RTTR.cpp">
       <Filter>tools\rtti</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\StageFuncNode.cpp">
-      <Filter>view</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\TreeHelper.cpp">
       <Filter>tools</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\Serializer.cpp">
       <Filter>tools\serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\WxNodeProperty.cpp">
+      <Filter>view\toolbar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\StageFuncNode.cpp">
+      <Filter>view\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\WxToolbarPanel.cpp">
+      <Filter>view\toolbar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -333,17 +345,11 @@
     <ClInclude Include="..\..\..\include\blueprint\ReflectPropTypes.h">
       <Filter>tools\rtti</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\WxNodeProperty.h">
-      <Filter>view</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\ScriptEnv.h">
       <Filter>tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\node\For2.h">
       <Filter>node\tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\StageFuncNode.h">
-      <Filter>view</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\TreeHelper.h">
       <Filter>tools</Filter>
@@ -356,6 +362,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\BackendGraph.h">
       <Filter>tools\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\WxNodeProperty.h">
+      <Filter>view\toolbar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\StageFuncNode.h">
+      <Filter>view\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\WxGraphPage.h">
+      <Filter>view\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\WxToolbarPanel.h">
+      <Filter>view\toolbar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +388,9 @@
     </None>
     <None Include="..\..\..\include\blueprint\BackendGraph.inl">
       <Filter>tools\backend</Filter>
+    </None>
+    <None Include="..\..\..\include\blueprint\WxGraphPage.inl">
+      <Filter>view\editor</Filter>
     </None>
   </ItemGroup>
 </Project>
