@@ -215,7 +215,8 @@ BackendGraph<T>::CreateBackFromFront(const bp::Node& node)
         // fixme: specify node type
 	    if (!t.is_valid())
         {
-            assert(0);
+            //assert(0);
+            return nullptr;
 	    }
         else
         {
