@@ -38,6 +38,8 @@ public:
     std::shared_ptr<dag::Node<T>>
         QueryBackNode(const Node& front_node) const;
 
+    void EnableUpdate(bool up) { m_update_enable = up; }
+
 private:
     void Update();
 
@@ -53,6 +55,8 @@ private:
     dag::Graph<T> m_eval;
 
     std::unordered_map<const Node*, std::shared_ptr<dag::Node<T>>> m_front2back;
+
+    bool m_update_enable = true;
 
 }; // BackendGraph
 

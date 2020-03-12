@@ -24,6 +24,8 @@ const uint32_t MESSAGES[] =
     bp::MSG_BP_CONN_DELETE,
     bp::MSG_BP_CONN_REBUILD,
     bp::MSG_BP_NODE_PROP_CHANGED,
+    bp::MSG_BP_DISABLE_UPDATE_EVAL,
+    bp::MSG_BP_ENABLE_UPDATE_EVAL,
 };
 
 }
@@ -87,6 +89,12 @@ void WxGraphPage<T>::OnNotify(uint32_t msg, const ee0::VariantSet& variants)
         break;
     case MSG_BP_NODE_PROP_CHANGED:
         dirty = UpdateNodeProp(variants);
+        break;
+    case MSG_BP_DISABLE_UPDATE_EVAL:
+        m_eval->EnableUpdate(false);
+        break;
+    case MSG_BP_ENABLE_UPDATE_EVAL:
+        m_eval->EnableUpdate(true);
         break;
 	}
 

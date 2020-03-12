@@ -54,9 +54,11 @@ void Serializer::LoadFromJson(ee0::WxStagePage& stage, const n0::SceneNodePtr& r
         auto& ccomplex = root->GetSharedComp<n0::CompComplex>();
         auto children = ccomplex.GetAllChildren();
         ccomplex.RemoveAllChildren();
+        sub_mgr->NotifyObservers(MSG_BP_DISABLE_UPDATE_EVAL);
         for (auto& c : children) {
             ee0::MsgHelper::InsertNode(*sub_mgr, c, false);
         }
+        sub_mgr->NotifyObservers(MSG_BP_ENABLE_UPDATE_EVAL);
     }
 
     // connection

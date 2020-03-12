@@ -174,7 +174,9 @@ BackendGraph<T>::QueryBackNode(const Node& front_node) const
 template <typename T>
 void BackendGraph<T>::Update()
 {
-    m_eval.Update();
+    if (m_update_enable) {
+        m_eval.Update();
+    }
 }
 
 template <typename T>
