@@ -230,7 +230,7 @@ void WxGraphPage<T>::InsertScenNode(n0::CompComplex& root,
     }
 
     auto& bp_node = node->GetUniqueComp<CompNode>().GetNode();
-    m_eval->OnAddNode(*bp_node, node, false);
+    m_eval->OnAddNode(*bp_node, node);
     UpdateAABB(node);
 }
 
