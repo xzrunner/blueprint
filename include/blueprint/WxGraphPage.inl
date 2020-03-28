@@ -9,6 +9,7 @@
 
 #include <guard/check.h>
 #include <node0/CompComplex.h>
+#include <node0/SceneNode.h>
 #include <node2/CompBoundingBox.h>
 
 namespace
