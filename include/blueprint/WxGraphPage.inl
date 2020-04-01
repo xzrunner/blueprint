@@ -6,6 +6,7 @@
 #include "blueprint/Node.h"
 
 #include <ee0/MessageID.h>
+#include <ee0/SubjectMgr.h>
 
 #include <guard/check.h>
 #include <node0/CompComplex.h>
@@ -99,9 +100,12 @@ void WxGraphPage<T>::OnNotify(uint32_t msg, const ee0::VariantSet& variants)
         break;
 	}
 
-	if (dirty) {
+	if (dirty)
+    {
         m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
         m_preview_sub_mgr->NotifyObservers(m_preview_update_msg);
+
+        OnEvalChangeed();
 	}
 }
 

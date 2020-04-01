@@ -25,6 +25,9 @@ public:
 
     auto& GetEval() const { return m_eval; }
 
+protected:
+    virtual void OnEvalChangeed() {}
+
 private:
     bool ClearAllSceneObjs();
     bool InsertSceneObj(const ee0::VariantSet& variants);
@@ -39,13 +42,14 @@ private:
     void InsertScenNode(n0::CompComplex& root,
         const n0::SceneNodePtr& node);
 
+protected:
+    std::shared_ptr<bp::BackendGraph<T>> m_eval = nullptr;
+
 private:
     ee0::SubjectMgrPtr m_preview_sub_mgr    = nullptr;
     uint32_t           m_preview_update_msg = 0;
 
     n0::SceneNodePtr m_root = nullptr;
-
-    std::shared_ptr<bp::BackendGraph<T>> m_eval = nullptr;
 
 }; // WxGraphPage
 

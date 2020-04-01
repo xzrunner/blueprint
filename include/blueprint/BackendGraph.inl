@@ -175,7 +175,7 @@ template <typename T>
 void BackendGraph<T>::Update()
 {
     if (m_update_enable) {
-        m_eval.Update();
+        m_eval.Update(m_ctx);
     }
 }
 
@@ -194,6 +194,10 @@ void BackendGraph<T>::UpdatePropBackFromFront(const bp::Node& front, dag::Node<T
             dst_prop.set_value(back, src_prop.get_value(front));
         }
     }
+
+    if (m_front2back_cb) {
+        m_front2back_cb(front, back);
+    }
 }
 
 template <typename T>
@@ -207,6 +211,10 @@ BackendGraph<T>::CreateBackFromFront(const bp::Node& node)
     auto find_lib = src_type.find(m_front_name + "::");
     if (find_lib != std::string::npos) {
         dst_type = lib_str + "::" + src_type.substr(find_lib + (m_front_name + "::").size());
+    }
+
+    if (dst_type.empty()) {
+        return nullptr;
     }
 
     std::shared_ptr<dag::Node<T>> dst = nullptr;

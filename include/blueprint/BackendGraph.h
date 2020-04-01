@@ -17,7 +17,8 @@ template <typename T>
 class BackendGraph : boost::noncopyable
 {
 public:
-    BackendGraph(const std::string& back_name, const std::string& front_name);
+    BackendGraph(const std::string& back_name,
+        const std::string& front_name);
 
     // update nodes
     void OnAddNode(const Node& node, const n0::SceneNodePtr& snode,
@@ -40,10 +41,19 @@ public:
 
     void EnableUpdate(bool up) { m_update_enable = up; }
 
+    void SetContext(const std::shared_ptr<dag::Context>& ctx) {
+        m_ctx = ctx;
+    }
+
+    void SetFront2BackCB(const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back) {
+        m_front2back_cb = front2back;
+    }
+
 private:
     void Update();
 
-    void UpdatePropBackFromFront(const bp::Node& front, dag::Node<T>& back);
+    void UpdatePropBackFromFront(const bp::Node& front,
+        dag::Node<T>& back);
 
     std::shared_ptr<dag::Node<T>>
         CreateBackFromFront(const bp::Node& front);
@@ -57,6 +67,10 @@ private:
     std::unordered_map<const Node*, std::shared_ptr<dag::Node<T>>> m_front2back;
 
     bool m_update_enable = true;
+
+    std::shared_ptr<dag::Context> m_ctx = nullptr;
+
+    std::function<void(const bp::Node&, dag::Node<T>&)> m_front2back_cb = nullptr;
 
 }; // BackendGraph
 
