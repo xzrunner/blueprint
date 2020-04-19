@@ -12,7 +12,8 @@ class Commentary : public Node
 public:
     Commentary();
 
-    virtual void Draw(const n2::RenderParams& rp) const override;
+    virtual void Draw(const ur2::Device& dev, ur2::Context& ctx,
+        const n2::RenderParams& rp) const override;
 
     auto& GetCommentTitle() const { return m_comment_title; }
     void  SetCommentTitle(const std::string& str) { m_comment_title = str; }

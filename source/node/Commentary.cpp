@@ -20,9 +20,10 @@ Commentary::Commentary()
     m_style.panel_bg_col = BG_COLOR_COMMENTARY;
 }
 
-void Commentary::Draw(const n2::RenderParams& rp) const
+void Commentary::Draw(const ur2::Device& dev, ur2::Context& ctx,
+                      const n2::RenderParams& rp) const
 {
-    Node::Draw(rp);
+    Node::Draw(dev, ctx, rp);
 
     if (!m_comment_title.empty()) {
         DrawCommentTitle(rp);

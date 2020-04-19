@@ -8,6 +8,8 @@
 
 #include <vector>
 
+namespace ur2 { class Device; }
+
 namespace bp
 {
 
@@ -22,7 +24,8 @@ public:
 
     static void RemoveDefaultNode(const bp::Pin& p);
 
-    static void LoadFunctionNode(const n0::SceneNodePtr& obj, const bp::NodePtr& node);
+    static void LoadFunctionNode(const ur2::Device& dev,
+        const n0::SceneNodePtr& obj, const bp::NodePtr& node);
 
     static sm::Matrix2D CalcPreviewMat(const Node& node, const sm::Matrix2D& mt);
 

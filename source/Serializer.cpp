@@ -25,7 +25,7 @@
 namespace bp
 {
 
-void Serializer::LoadFromJson(ee0::WxStagePage& stage, const n0::SceneNodePtr& root,
+void Serializer::LoadFromJson(const ur2::Device& dev, ee0::WxStagePage& stage, const n0::SceneNodePtr& root,
                               const rapidjson::Value& val, const std::string& dir)
 {
     SetupConnCB();
@@ -35,7 +35,7 @@ void Serializer::LoadFromJson(ee0::WxStagePage& stage, const n0::SceneNodePtr& r
     sub_mgr->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
     sub_mgr->NotifyObservers(ee0::MSG_SCENE_NODE_CLEAR);
 
-    n0::CompAssetPtr casset = ns::CompFactory::Instance()->CreateAsset(val, dir);
+    n0::CompAssetPtr casset = ns::CompFactory::Instance()->CreateAsset(dev, val, dir);
     if (casset)
     {
         if (root->HasSharedComp<n0::CompAsset>()) {
@@ -90,14 +90,14 @@ void Serializer::StoreToJson(const n0::SceneNodePtr& root, const std::string& di
 void Serializer::SetupConnCB()
 {
     ns::CompSerializer::Instance()->AddFromJsonFunc(n0::CompComplex::TYPE_NAME,
-        [](n0::NodeComp& comp, const std::string& dir, const rapidjson::Value& val)
+        [](const ur2::Device& dev, n0::NodeComp& comp, const std::string& dir, const rapidjson::Value& val)
     {
         auto& ccomplex = static_cast<n0::CompComplex&>(comp);
 
         ns::N0CompComplex seri;
         mm::LinearAllocator alloc;
-        seri.LoadFromJson(alloc, dir, val);
-        seri.StoreToMem(ccomplex);
+        seri.LoadFromJson(dev, alloc, dir, val);
+        seri.StoreToMem(dev, ccomplex);
 
         NSCompNode::LoadConnection(ccomplex.GetAllChildren(), val["nodes"]);
     }, true);

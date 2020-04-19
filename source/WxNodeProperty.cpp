@@ -19,8 +19,10 @@
 namespace bp
 {
 
-WxNodeProperty::WxNodeProperty(wxWindow* parent, const ee0::SubjectMgrPtr& sub_mgr)
+WxNodeProperty::WxNodeProperty(const ur2::Device& dev, wxWindow* parent,
+                               const ee0::SubjectMgrPtr& sub_mgr)
     : wxPanel(parent)
+    , m_dev(dev)
     , m_sub_mgr(sub_mgr)
 {
     InitLayout();
@@ -65,7 +67,7 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
             [&](const std::string& filepath)
             {
                 if (m_node->get_type() == rttr::type::get<bp::node::Function>()) {
-                    bp::NodeHelper::LoadFunctionNode(m_obj, m_node);
+                    bp::NodeHelper::LoadFunctionNode(m_dev, m_obj, m_node);
                 }
                 m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
                 ee0::MsgHelper::SendObjMsg(*m_sub_mgr, m_obj, bp::MSG_BP_NODE_PROP_CHANGED);

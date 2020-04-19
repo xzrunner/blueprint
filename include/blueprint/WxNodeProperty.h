@@ -13,13 +13,16 @@ class wxPropertyGridEvent;
 class wxPGProperty;
 class wxEnumProperty;
 
+namespace ur2 { class Device; }
+
 namespace bp
 {
 
 class WxNodeProperty : public wxPanel
 {
 public:
-    WxNodeProperty(wxWindow* parent, const ee0::SubjectMgrPtr& sub_mgr);
+    WxNodeProperty(const ur2::Device& dev,
+        wxWindow* parent, const ee0::SubjectMgrPtr& sub_mgr);
 
     virtual void LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& node);
 
@@ -44,6 +47,8 @@ protected:
     ee0::SubjectMgrPtr m_sub_mgr;
 
 private:
+    const ur2::Device& m_dev;
+
     n0::SceneNodePtr m_obj  = nullptr;
 
 }; // WxNodeProperty

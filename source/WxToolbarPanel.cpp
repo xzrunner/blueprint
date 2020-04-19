@@ -12,11 +12,12 @@
 namespace bp
 {
 
-WxToolbarPanel::WxToolbarPanel(wxWindow* parent, const ee0::SubjectMgrPtr& graph_sub_mgr)
+WxToolbarPanel::WxToolbarPanel(const ur2::Device& dev, wxWindow* parent,
+                               const ee0::SubjectMgrPtr& graph_sub_mgr)
     : wxPanel(parent)
     , m_graph_sub_mgr(graph_sub_mgr)
 {
-    InitLayout(graph_sub_mgr);
+    InitLayout(dev, graph_sub_mgr);
 
     graph_sub_mgr->RegisterObserver(ee0::MSG_NODE_SELECTION_INSERT, this);
     graph_sub_mgr->RegisterObserver(ee0::MSG_NODE_SELECTION_CLEAR, this);
@@ -41,11 +42,11 @@ void WxToolbarPanel::OnNotify(uint32_t msg, const ee0::VariantSet& variants)
 	}
 }
 
-void WxToolbarPanel::InitLayout(const ee0::SubjectMgrPtr& graph_sub_mgr)
+void WxToolbarPanel::InitLayout(const ur2::Device& dev, const ee0::SubjectMgrPtr& graph_sub_mgr)
 {
     auto sizer = new wxBoxSizer(wxVERTICAL);
 
-    sizer->Add(m_node_prop = new WxNodeProperty(this, graph_sub_mgr), wxEXPAND);
+    sizer->Add(m_node_prop = new WxNodeProperty(dev, this, graph_sub_mgr), wxEXPAND);
 
     SetSizer(sizer);
 }

@@ -6,12 +6,14 @@
 
 #include <string>
 
+namespace ur2 { class Device; }
+
 namespace bp
 {
 
 class StageFuncNode
 {
-public:  
+public:
     void SetParentNode(const n0::SceneNodePtr& parent_node) {
         m_parent_node = parent_node;
     }
@@ -19,7 +21,7 @@ public:
 
     void SetFilepath(const std::string& filepath);
 
-    void InsertSceneObj(const n0::SceneNodePtr& node);
+    void InsertSceneObj(const ur2::Device& dev, const n0::SceneNodePtr& node);
     void DeleteSceneObj(const n0::SceneNodePtr& node);
     void ClearSceneObj();
 

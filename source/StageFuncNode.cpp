@@ -32,13 +32,13 @@ void StageFuncNode::UpdateParentAABB(const NodePtr& node)
     );
 }
 
-void StageFuncNode::InsertSceneObj(const n0::SceneNodePtr& node)
+void StageFuncNode::InsertSceneObj(const ur2::Device& dev, const n0::SceneNodePtr& node)
 {
     // load function nodes
     auto& cnode = node->GetUniqueComp<bp::CompNode>();
     auto bp_node = cnode.GetNode();
     if (bp_node->get_type() == rttr::type::get<bp::node::Function>()) {
-        NodeHelper::LoadFunctionNode(node, bp_node);
+        NodeHelper::LoadFunctionNode(dev, node, bp_node);
     }
 
     if (m_insert_enable && m_parent_node)

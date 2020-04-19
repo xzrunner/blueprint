@@ -15,6 +15,7 @@
 #include <memory>
 
 namespace mm { class LinearAllocator; }
+namespace ur2 { class Device; class Context; }
 namespace pt2 { class WindowContext; }
 namespace pt3 { class WindowContext; }
 namespace n2 { class RenderParams; }
@@ -40,7 +41,8 @@ public:
 	Node(const std::string& title);
 	virtual ~Node() {}
 
-	virtual void Draw(const n2::RenderParams& rp) const;
+	virtual void Draw(const ur2::Device& dev, ur2::Context& ctx,
+        const n2::RenderParams& rp) const;
 	virtual bool Update(const UpdateParams& params) { return false; }
 
     virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) {}

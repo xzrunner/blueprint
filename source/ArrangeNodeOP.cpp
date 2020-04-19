@@ -12,6 +12,7 @@
 #include <node2/CompBoundingBox.h>
 #include <node2/CompTransform.h>
 #include <tessellation/Painter.h>
+#include <unirender2/RenderState.h>
 #include <painting2/RenderSystem.h>
 #include <painting2/OrthoCamera.h>
 #include <SM_Calc.h>
@@ -58,7 +59,7 @@ bool ArrangeNodeOP::OnMouseMove(int x, int y)
 
     m_hot.Reset();
     QueryCommNodeCornerByPos(pos, m_hot);
-    
+
     return false;
 }
 
@@ -70,7 +71,7 @@ bool ArrangeNodeOP::OnMouseDrag(int x, int y)
 
     auto st = m_active.comm->GetStyle();
 
-    auto& c = m_active.comm->GetPos();        
+    auto& c = m_active.comm->GetPos();
     const auto hw = st.width * 0.5f;
     const auto hh = st.height * 0.5f;
 
@@ -206,9 +207,9 @@ bool ArrangeNodeOP::QueryCommNodeCornerByPos(const sm::vec2& pos, Selected& sele
     return ret;
 }
 
-bool ArrangeNodeOP::OnDraw() const
+bool ArrangeNodeOP::OnDraw(const ur2::Device& dev, ur2::Context& ctx) const
 {
-    if (ee2::ArrangeNodeOP::OnDraw()) {
+    if (ee2::ArrangeNodeOP::OnDraw(dev, ctx)) {
         return true;
     }
 
@@ -225,7 +226,9 @@ bool ArrangeNodeOP::OnDraw() const
             line_width *= std::dynamic_pointer_cast<pt2::OrthoCamera>(m_camera)->GetScale();
         }
         pt.AddRect(sm::vec2(-hw, -hh) + c, sm::vec2(hw, hh) + c, 0xff000000, line_width);
-        pt2::RenderSystem::DrawPainter(pt);
+
+        ur2::RenderState rs;
+        pt2::RenderSystem::DrawPainter(dev, ctx, rs, pt);
     }
 
     return false;

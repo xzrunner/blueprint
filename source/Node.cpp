@@ -26,7 +26,7 @@ Node::Node(const std::string& title)
 	m_pos.MakeInvalid();
 }
 
-void Node::Draw(const n2::RenderParams& rp) const
+void Node::Draw(const ur2::Device& dev, ur2::Context& ctx, const n2::RenderParams& rp) const
 {
 	auto render = RenderSystem::Instance();
 
@@ -45,25 +45,25 @@ void Node::Draw(const n2::RenderParams& rp) const
 	float hw = m_style.width  * 0.5f;
 	float hh = m_style.height * 0.5f;
 	auto pos = rp.GetMatrix() * sm::vec2(0, 0);
-	render->DrawPanel(*this, pos, hw, hh, lod >= 2);
+	render->DrawPanel(dev, ctx, *this, pos, hw, hh, lod >= 2);
 
 	// pin
 	if (lod >= 2 && !IsStyleOnlyTitle())
 	{
 		// input
 		for (auto& in : GetAllInput()) {
-			render->DrawPin(*in, NodeLayout::GetPinPos(*in));
+			render->DrawPin(dev, ctx, *in, NodeLayout::GetPinPos(*in));
 		}
 
 		// output
 		for (auto& out : GetAllOutput()) {
-			render->DrawPin(*out, NodeLayout::GetPinPos(*out));
+			render->DrawPin(dev, ctx, *out, NodeLayout::GetPinPos(*out));
 		}
 	}
 
 	// connecting
     if (lod >= 1) {
-        render->DrawConnecting(*this, rp.GetMatrix(), rp.GetScreenRegion());
+        render->DrawConnecting(dev, ctx, *this, rp.GetMatrix(), rp.GetScreenRegion());
     }
 }
 

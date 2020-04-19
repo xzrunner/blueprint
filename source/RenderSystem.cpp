@@ -6,6 +6,7 @@
 #include "blueprint/NodeStyle.h"
 
 #include <SM_Calc.h>
+#include <unirender2/RenderState.h>
 #include <painting2/RenderSystem.h>
 #include <tessellation/Painter.h>
 #include <cpputil/StringHelper.h>
@@ -61,7 +62,8 @@ float RenderSystem::GetTextPinScale() const
 	return TEXT_PIN_SCALE;
 }
 
-void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, float hh, bool draw_text)
+void RenderSystem::DrawPanel(const ur2::Device& dev, ur2::Context& ctx, const Node& node,
+                             const sm::vec2& pos, float hw, float hh, bool draw_text)
 {
 	// background
 	tess::Painter pt;
@@ -72,7 +74,9 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
         r_max.y -= PIN_RADIUS * 2;
     }
     pt.AddRectFilled(r_min + pos, r_max + pos, node.GetStyle().panel_bg_col.ToABGR());
-	pt2::RenderSystem::DrawPainter(pt);
+
+    ur2::RenderState rs;
+	pt2::RenderSystem::DrawPainter(dev, ctx, rs, pt);
 
 	// title
     if (draw_text)
@@ -89,7 +93,8 @@ void RenderSystem::DrawPanel(const Node& node, const sm::vec2& pos, float hw, fl
     }
 }
 
-void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
+void RenderSystem::DrawPin(const ur2::Device& dev, ur2::Context& ctx,
+                           const Pin& pin, const sm::vec2& pos)
 {
     auto& style = pin.GetParent().GetStyle();
 
@@ -134,7 +139,9 @@ void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
 			pt.AddCircle(pos, PIN_RADIUS, pin.GetColor().ToABGR());
 		}
 	}
-	pt2::RenderSystem::DrawPainter(pt);
+
+    ur2::RenderState rs;
+	pt2::RenderSystem::DrawPainter(dev, ctx, rs, pt);
 
     if (style.draw_pin_label)
     {
@@ -167,7 +174,8 @@ void RenderSystem::DrawPin(const Pin& pin, const sm::vec2& pos)
     }
 }
 
-void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat, const sm::rect& screen_region)
+void RenderSystem::DrawConnecting(const ur2::Device& dev, ur2::Context& ctx,
+                                  const Node& node, const sm::Matrix2D& mat, const sm::rect& screen_region)
 {
 	tess::Painter pt;
 
@@ -188,7 +196,8 @@ void RenderSystem::DrawConnecting(const Node& node, const sm::Matrix2D& mat, con
         }
     }
 
-	pt2::RenderSystem::DrawPainter(pt);
+    ur2::RenderState rs;
+	pt2::RenderSystem::DrawPainter(dev, ctx, rs, pt);
 }
 
 bool RenderSystem::DrawConnecting(tess::Painter& pt, const Connecting& conn) const

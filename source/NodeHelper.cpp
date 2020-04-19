@@ -35,7 +35,7 @@ void NodeHelper::RemoveDefaultNode(const bp::Pin& p)
     }
 }
 
-void NodeHelper::LoadFunctionNode(const n0::SceneNodePtr& obj, const bp::NodePtr& node)
+void NodeHelper::LoadFunctionNode(const ur2::Device& dev, const n0::SceneNodePtr& obj, const bp::NodePtr& node)
 {
     assert(node->get_type() == rttr::type::get<bp::node::Function>());
 
@@ -47,7 +47,7 @@ void NodeHelper::LoadFunctionNode(const n0::SceneNodePtr& obj, const bp::NodePtr
     if (filepath.empty()) {
         return;
     }
-    n0::CompAssetPtr casset = ns::CompFactory::Instance()->CreateAsset(filepath);
+    n0::CompAssetPtr casset = ns::CompFactory::Instance()->CreateAsset(dev, filepath);
     if (!casset) {
         return;
     }
@@ -62,7 +62,7 @@ void NodeHelper::LoadFunctionNode(const n0::SceneNodePtr& obj, const bp::NodePtr
         auto& cnode = c->GetUniqueComp<CompNode>();
         auto bp_node = cnode.GetNode();
         if (bp_node->get_type() == rttr::type::get<node::Function>()) {
-            NodeHelper::LoadFunctionNode(c, bp_node);
+            NodeHelper::LoadFunctionNode(dev, c, bp_node);
         }
     }
 
