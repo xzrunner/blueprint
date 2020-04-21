@@ -18,6 +18,7 @@
 #include <ee0/MsgHelper.h>
 #include <ee0/CombineAOP.h>
 #include <ee0/Clipboard.h>
+#include <ee2/Utility.h>
 
 #include <SM_Calc.h>
 #include <node0/SceneNode.h>
@@ -269,8 +270,7 @@ bool ConnectPinOP::OnDraw(const ur2::Device& dev, ur2::Context& ctx) const
 			tess::Painter pt;
 			pt2::RenderSystem::DrawShape(pt, m_curve, m_selected_pin->GetColor().ToABGR());
 
-            ur2::RenderState rs;
-			pt2::RenderSystem::DrawPainter(dev, ctx, rs, pt);
+			pt2::RenderSystem::DrawPainter(dev, ctx, ee2::Utility::GetRenderState2D(), pt);
 		}
 	}
 	else

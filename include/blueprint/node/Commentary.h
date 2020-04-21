@@ -33,7 +33,7 @@ public:
 private:
     void RemoveExpiredChild();
 
-    void DrawCommentTitle(const n2::RenderParams& rp) const;
+    void DrawCommentTitle(ur2::Context& ctx, const n2::RenderParams& rp) const;
 
 private:
     std::string m_comment_title;

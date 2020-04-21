@@ -5,8 +5,9 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/NodeStyle.h"
 
+#include <ee2/Utility.h>
+
 #include <SM_Calc.h>
-#include <unirender2/RenderState.h>
 #include <painting2/RenderSystem.h>
 #include <tessellation/Painter.h>
 #include <cpputil/StringHelper.h>
@@ -75,8 +76,7 @@ void RenderSystem::DrawPanel(const ur2::Device& dev, ur2::Context& ctx, const No
     }
     pt.AddRectFilled(r_min + pos, r_max + pos, node.GetStyle().panel_bg_col.ToABGR());
 
-    ur2::RenderState rs;
-	pt2::RenderSystem::DrawPainter(dev, ctx, rs, pt);
+	pt2::RenderSystem::DrawPainter(dev, ctx, ee2::Utility::GetRenderState2D(), pt);
 
 	// title
     if (draw_text)
@@ -89,7 +89,7 @@ void RenderSystem::DrawPanel(const ur2::Device& dev, ur2::Context& ctx, const No
             mat.Translate(pos.x, pos.y);
         }
         auto& tb = node.IsStyleSmallTitleFont() ? m_small_title_tb : m_title_tb;
-        pt2::RenderSystem::DrawText(node.GetTitle(), tb, mat, COL_TEXT, COL_ZERO);
+        pt2::RenderSystem::DrawText(ctx, node.GetTitle(), tb, mat, COL_TEXT, COL_ZERO);
     }
 }
 
@@ -140,8 +140,7 @@ void RenderSystem::DrawPin(const ur2::Device& dev, ur2::Context& ctx,
 		}
 	}
 
-    ur2::RenderState rs;
-	pt2::RenderSystem::DrawPainter(dev, ctx, rs, pt);
+	pt2::RenderSystem::DrawPainter(dev, ctx, ee2::Utility::GetRenderState2D(), pt);
 
     if (style.draw_pin_label)
     {
@@ -170,7 +169,7 @@ void RenderSystem::DrawPin(const ur2::Device& dev, ur2::Context& ctx,
 
         mat.Translate(dx, dy);
         assert(tb);
-        pt2::RenderSystem::DrawText(pin.GetDesc(), *tb, mat, COL_TEXT, COL_ZERO);
+        pt2::RenderSystem::DrawText(ctx, pin.GetDesc(), *tb, mat, COL_TEXT, COL_ZERO);
     }
 }
 
@@ -196,8 +195,7 @@ void RenderSystem::DrawConnecting(const ur2::Device& dev, ur2::Context& ctx,
         }
     }
 
-    ur2::RenderState rs;
-	pt2::RenderSystem::DrawPainter(dev, ctx, rs, pt);
+	pt2::RenderSystem::DrawPainter(dev, ctx, ee2::Utility::GetRenderState2D(), pt);
 }
 
 bool RenderSystem::DrawConnecting(tess::Painter& pt, const Connecting& conn) const

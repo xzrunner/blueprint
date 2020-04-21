@@ -26,7 +26,7 @@ void Commentary::Draw(const ur2::Device& dev, ur2::Context& ctx,
     Node::Draw(dev, ctx, rp);
 
     if (!m_comment_title.empty()) {
-        DrawCommentTitle(rp);
+        DrawCommentTitle(ctx, rp);
     }
 }
 
@@ -78,7 +78,7 @@ void Commentary::RemoveExpiredChild()
     }
 }
 
-void Commentary::DrawCommentTitle(const n2::RenderParams& rp) const
+void Commentary::DrawCommentTitle(ur2::Context& ctx, const n2::RenderParams& rp) const
 {
     sm::Matrix2D mat;
 
@@ -90,7 +90,7 @@ void Commentary::DrawCommentTitle(const n2::RenderParams& rp) const
     mat.Translate(x, y);
 
     auto& tb = RenderSystem::Instance()->GetTitleTB();
-    pt2::RenderSystem::DrawText(m_comment_title, tb, mat, RenderSystem::COL_TEXT, RenderSystem::COL_ZERO);
+    pt2::RenderSystem::DrawText(ctx, m_comment_title, tb, mat, RenderSystem::COL_TEXT, RenderSystem::COL_ZERO);
 }
 
 }
