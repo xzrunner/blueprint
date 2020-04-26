@@ -5,9 +5,8 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/NodeStyle.h"
 
-#include <ee2/Utility.h>
-
 #include <SM_Calc.h>
+#include <unirender2/Factory.h>
 #include <painting2/RenderSystem.h>
 #include <tessellation/Painter.h>
 #include <cpputil/StringHelper.h>
@@ -76,7 +75,7 @@ void RenderSystem::DrawPanel(const ur2::Device& dev, ur2::Context& ctx, const No
     }
     pt.AddRectFilled(r_min + pos, r_max + pos, node.GetStyle().panel_bg_col.ToABGR());
 
-	pt2::RenderSystem::DrawPainter(dev, ctx, ee2::Utility::GetRenderState2D(), pt);
+	pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
 
 	// title
     if (draw_text)
@@ -140,7 +139,7 @@ void RenderSystem::DrawPin(const ur2::Device& dev, ur2::Context& ctx,
 		}
 	}
 
-	pt2::RenderSystem::DrawPainter(dev, ctx, ee2::Utility::GetRenderState2D(), pt);
+	pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
 
     if (style.draw_pin_label)
     {
@@ -195,7 +194,7 @@ void RenderSystem::DrawConnecting(const ur2::Device& dev, ur2::Context& ctx,
         }
     }
 
-	pt2::RenderSystem::DrawPainter(dev, ctx, ee2::Utility::GetRenderState2D(), pt);
+	pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
 }
 
 bool RenderSystem::DrawConnecting(tess::Painter& pt, const Connecting& conn) const

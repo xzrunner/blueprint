@@ -7,11 +7,11 @@
 
 #include <ee0/WxStagePage.h>
 #include <ee0/CameraHelper.h>
-#include <ee2/Utility.h>
 
 #include <node0/SceneNode.h>
 #include <node2/CompBoundingBox.h>
 #include <node2/CompTransform.h>
+#include <unirender2/Factory.h>
 #include <tessellation/Painter.h>
 #include <painting2/RenderSystem.h>
 #include <painting2/OrthoCamera.h>
@@ -227,7 +227,7 @@ bool ArrangeNodeOP::OnDraw(const ur2::Device& dev, ur2::Context& ctx) const
         }
         pt.AddRect(sm::vec2(-hw, -hh) + c, sm::vec2(hw, hh) + c, 0xff000000, line_width);
 
-        pt2::RenderSystem::DrawPainter(dev, ctx, ee2::Utility::GetRenderState2D(), pt);
+        pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
     }
 
     return false;

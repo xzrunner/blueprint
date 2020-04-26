@@ -18,7 +18,6 @@
 #include <ee0/MsgHelper.h>
 #include <ee0/CombineAOP.h>
 #include <ee0/Clipboard.h>
-#include <ee2/Utility.h>
 
 #include <SM_Calc.h>
 #include <node0/SceneNode.h>
@@ -26,6 +25,7 @@
 #include <node2/CompTransform.h>
 #include <node2/CompBoundingBox.h>
 #include <unirender2/RenderState.h>
+#include <unirender2/Factory.h>
 #include <painting2/RenderSystem.h>
 #include <tessellation/Painter.h>
 #include <js/RapidJsonHelper.h>
@@ -270,7 +270,7 @@ bool ConnectPinOP::OnDraw(const ur2::Device& dev, ur2::Context& ctx) const
 			tess::Painter pt;
 			pt2::RenderSystem::DrawShape(pt, m_curve, m_selected_pin->GetColor().ToABGR());
 
-			pt2::RenderSystem::DrawPainter(dev, ctx, ee2::Utility::GetRenderState2D(), pt);
+			pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
 		}
 	}
 	else
