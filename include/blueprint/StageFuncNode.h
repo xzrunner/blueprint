@@ -6,7 +6,7 @@
 
 #include <string>
 
-namespace ur2 { class Device; }
+namespace ur { class Device; }
 
 namespace bp
 {
@@ -21,7 +21,7 @@ public:
 
     void SetFilepath(const std::string& filepath);
 
-    void InsertSceneObj(const ur2::Device& dev, const n0::SceneNodePtr& node);
+    void InsertSceneObj(const ur::Device& dev, const n0::SceneNodePtr& node);
     void DeleteSceneObj(const n0::SceneNodePtr& node);
     void ClearSceneObj();
 

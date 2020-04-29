@@ -26,7 +26,7 @@ Node::Node(const std::string& title)
 	m_pos.MakeInvalid();
 }
 
-void Node::Draw(const ur2::Device& dev, ur2::Context& ctx, const n2::RenderParams& rp) const
+void Node::Draw(const ur::Device& dev, ur::Context& ctx, const n2::RenderParams& rp) const
 {
 	auto render = RenderSystem::Instance();
 

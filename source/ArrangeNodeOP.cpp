@@ -11,7 +11,7 @@
 #include <node0/SceneNode.h>
 #include <node2/CompBoundingBox.h>
 #include <node2/CompTransform.h>
-#include <unirender2/Factory.h>
+#include <unirender/Factory.h>
 #include <tessellation/Painter.h>
 #include <painting2/RenderSystem.h>
 #include <painting2/OrthoCamera.h>
@@ -207,7 +207,7 @@ bool ArrangeNodeOP::QueryCommNodeCornerByPos(const sm::vec2& pos, Selected& sele
     return ret;
 }
 
-bool ArrangeNodeOP::OnDraw(const ur2::Device& dev, ur2::Context& ctx) const
+bool ArrangeNodeOP::OnDraw(const ur::Device& dev, ur::Context& ctx) const
 {
     if (ee2::ArrangeNodeOP::OnDraw(dev, ctx)) {
         return true;
@@ -227,7 +227,7 @@ bool ArrangeNodeOP::OnDraw(const ur2::Device& dev, ur2::Context& ctx) const
         }
         pt.AddRect(sm::vec2(-hw, -hh) + c, sm::vec2(hw, hh) + c, 0xff000000, line_width);
 
-        pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
+        pt2::RenderSystem::DrawPainter(dev, ctx, ur::DefaultRenderState2D(), pt);
     }
 
     return false;

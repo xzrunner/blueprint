@@ -6,7 +6,7 @@
 #include "blueprint/NodeStyle.h"
 
 #include <SM_Calc.h>
-#include <unirender2/Factory.h>
+#include <unirender/Factory.h>
 #include <painting2/RenderSystem.h>
 #include <tessellation/Painter.h>
 #include <cpputil/StringHelper.h>
@@ -62,7 +62,7 @@ float RenderSystem::GetTextPinScale() const
 	return TEXT_PIN_SCALE;
 }
 
-void RenderSystem::DrawPanel(const ur2::Device& dev, ur2::Context& ctx, const Node& node,
+void RenderSystem::DrawPanel(const ur::Device& dev, ur::Context& ctx, const Node& node,
                              const sm::vec2& pos, float hw, float hh, bool draw_text)
 {
 	// background
@@ -75,7 +75,7 @@ void RenderSystem::DrawPanel(const ur2::Device& dev, ur2::Context& ctx, const No
     }
     pt.AddRectFilled(r_min + pos, r_max + pos, node.GetStyle().panel_bg_col.ToABGR());
 
-	pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
+	pt2::RenderSystem::DrawPainter(dev, ctx, ur::DefaultRenderState2D(), pt);
 
 	// title
     if (draw_text)
@@ -92,7 +92,7 @@ void RenderSystem::DrawPanel(const ur2::Device& dev, ur2::Context& ctx, const No
     }
 }
 
-void RenderSystem::DrawPin(const ur2::Device& dev, ur2::Context& ctx,
+void RenderSystem::DrawPin(const ur::Device& dev, ur::Context& ctx,
                            const Pin& pin, const sm::vec2& pos)
 {
     auto& style = pin.GetParent().GetStyle();
@@ -139,7 +139,7 @@ void RenderSystem::DrawPin(const ur2::Device& dev, ur2::Context& ctx,
 		}
 	}
 
-	pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
+	pt2::RenderSystem::DrawPainter(dev, ctx, ur::DefaultRenderState2D(), pt);
 
     if (style.draw_pin_label)
     {
@@ -172,7 +172,7 @@ void RenderSystem::DrawPin(const ur2::Device& dev, ur2::Context& ctx,
     }
 }
 
-void RenderSystem::DrawConnecting(const ur2::Device& dev, ur2::Context& ctx,
+void RenderSystem::DrawConnecting(const ur::Device& dev, ur::Context& ctx,
                                   const Node& node, const sm::Matrix2D& mat, const sm::rect& screen_region)
 {
 	tess::Painter pt;
@@ -194,7 +194,7 @@ void RenderSystem::DrawConnecting(const ur2::Device& dev, ur2::Context& ctx,
         }
     }
 
-	pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
+	pt2::RenderSystem::DrawPainter(dev, ctx, ur::DefaultRenderState2D(), pt);
 }
 
 bool RenderSystem::DrawConnecting(tess::Painter& pt, const Connecting& conn) const

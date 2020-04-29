@@ -4,7 +4,7 @@
 
 #include <rapidjson/document.h>
 
-namespace ur2 { class Device; }
+namespace ur { class Device; }
 namespace ee0 { class WxStagePage; }
 
 namespace bp
@@ -13,7 +13,7 @@ namespace bp
 class Serializer
 {
 public:
-    static void LoadFromJson(const ur2::Device& dev, ee0::WxStagePage& stage, const n0::SceneNodePtr& root,
+    static void LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage, const n0::SceneNodePtr& root,
         const rapidjson::Value& val, const std::string& dir);
     static void StoreToJson(const n0::SceneNodePtr& root, const std::string& dir,
         rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc);

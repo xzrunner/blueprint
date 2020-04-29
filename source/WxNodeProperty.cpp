@@ -19,7 +19,7 @@
 namespace bp
 {
 
-WxNodeProperty::WxNodeProperty(const ur2::Device& dev, wxWindow* parent,
+WxNodeProperty::WxNodeProperty(const ur::Device& dev, wxWindow* parent,
                                const ee0::SubjectMgrPtr& sub_mgr)
     : wxPanel(parent)
     , m_dev(dev)

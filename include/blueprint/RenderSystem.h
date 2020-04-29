@@ -7,7 +7,7 @@
 #include <SM_Rect.h>
 #include <painting2/Textbox.h>
 
-namespace ur2 { class Device; class Context; }
+namespace ur { class Device; class Context; }
 namespace tess { class Painter; }
 
 namespace bp
@@ -26,11 +26,11 @@ public:
 	float GetTextTitleScale() const;
 	float GetTextPinScale() const;
 
-	void DrawPanel(const ur2::Device& dev, ur2::Context& ctx, const Node& node,
+	void DrawPanel(const ur::Device& dev, ur::Context& ctx, const Node& node,
         const sm::vec2& pos, float hw, float hh, bool draw_text);
-	void DrawPin(const ur2::Device& dev, ur2::Context& ctx,
+	void DrawPin(const ur::Device& dev, ur::Context& ctx,
         const Pin& pin, const sm::vec2& pos);
-	void DrawConnecting(const ur2::Device& dev, ur2::Context& ctx,
+	void DrawConnecting(const ur::Device& dev, ur::Context& ctx,
         const Node& node, const sm::Matrix2D& mat, const sm::rect& screen_region);
 
 public:

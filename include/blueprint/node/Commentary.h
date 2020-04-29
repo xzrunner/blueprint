@@ -12,7 +12,7 @@ class Commentary : public Node
 public:
     Commentary();
 
-    virtual void Draw(const ur2::Device& dev, ur2::Context& ctx,
+    virtual void Draw(const ur::Device& dev, ur::Context& ctx,
         const n2::RenderParams& rp) const override;
 
     auto& GetCommentTitle() const { return m_comment_title; }
@@ -33,7 +33,7 @@ public:
 private:
     void RemoveExpiredChild();
 
-    void DrawCommentTitle(ur2::Context& ctx, const n2::RenderParams& rp) const;
+    void DrawCommentTitle(ur::Context& ctx, const n2::RenderParams& rp) const;
 
 private:
     std::string m_comment_title;

@@ -23,7 +23,7 @@ void NSCompNode::StoreToBin(const std::string& dir, bs::ExportStream& es) const
 {
 }
 
-void NSCompNode::LoadFromBin(const ur2::Device& dev, const std::string& dir, bs::ImportStream& is)
+void NSCompNode::LoadFromBin(const ur::Device& dev, const std::string& dir, bs::ImportStream& is)
 {
 }
 
@@ -47,7 +47,7 @@ void NSCompNode::StoreToJson(const std::string& dir, rapidjson::Value& val, rapi
 	val.AddMember("node_val", rapidjson::Value(doc, alloc), alloc);
 }
 
-void NSCompNode::LoadFromJson(const ur2::Device& dev, mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
+void NSCompNode::LoadFromJson(const ur::Device& dev, mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
 {
 	std::string type = val["node_type"].GetString();
 	auto rt_type = rttr::type::get_by_name(type);
@@ -71,7 +71,7 @@ void NSCompNode::LoadFromJson(const ur2::Device& dev, mm::LinearAllocator& alloc
     }
 }
 
-void NSCompNode::StoreToMem(const ur2::Device& dev, CompNode& comp) const
+void NSCompNode::StoreToMem(const ur::Device& dev, CompNode& comp) const
 {
 	comp.SetNode(m_node);
 }

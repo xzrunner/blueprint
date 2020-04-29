@@ -24,8 +24,8 @@
 #include <node0/CompIdentity.h>
 #include <node2/CompTransform.h>
 #include <node2/CompBoundingBox.h>
-#include <unirender2/RenderState.h>
-#include <unirender2/Factory.h>
+#include <unirender/RenderState.h>
+#include <unirender/Factory.h>
 #include <painting2/RenderSystem.h>
 #include <tessellation/Painter.h>
 #include <js/RapidJsonHelper.h>
@@ -261,7 +261,7 @@ bool ConnectPinOP::OnMouseDrag(int x, int y)
 	return false;
 }
 
-bool ConnectPinOP::OnDraw(const ur2::Device& dev, ur2::Context& ctx) const
+bool ConnectPinOP::OnDraw(const ur::Device& dev, ur::Context& ctx) const
 {
 	if (m_selected_pin)
 	{
@@ -270,7 +270,7 @@ bool ConnectPinOP::OnDraw(const ur2::Device& dev, ur2::Context& ctx) const
 			tess::Painter pt;
 			pt2::RenderSystem::DrawShape(pt, m_curve, m_selected_pin->GetColor().ToABGR());
 
-			pt2::RenderSystem::DrawPainter(dev, ctx, ur2::DefaultRenderState2D(), pt);
+			pt2::RenderSystem::DrawPainter(dev, ctx, ur::DefaultRenderState2D(), pt);
 		}
 	}
 	else

@@ -32,7 +32,7 @@ void StageFuncNode::UpdateParentAABB(const NodePtr& node)
     );
 }
 
-void StageFuncNode::InsertSceneObj(const ur2::Device& dev, const n0::SceneNodePtr& node)
+void StageFuncNode::InsertSceneObj(const ur::Device& dev, const n0::SceneNodePtr& node)
 {
     // load function nodes
     auto& cnode = node->GetUniqueComp<bp::CompNode>();

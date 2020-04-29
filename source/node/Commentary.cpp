@@ -20,7 +20,7 @@ Commentary::Commentary()
     m_style.panel_bg_col = BG_COLOR_COMMENTARY;
 }
 
-void Commentary::Draw(const ur2::Device& dev, ur2::Context& ctx,
+void Commentary::Draw(const ur::Device& dev, ur::Context& ctx,
                       const n2::RenderParams& rp) const
 {
     Node::Draw(dev, ctx, rp);
@@ -78,7 +78,7 @@ void Commentary::RemoveExpiredChild()
     }
 }
 
-void Commentary::DrawCommentTitle(ur2::Context& ctx, const n2::RenderParams& rp) const
+void Commentary::DrawCommentTitle(ur::Context& ctx, const n2::RenderParams& rp) const
 {
     sm::Matrix2D mat;
 

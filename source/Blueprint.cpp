@@ -57,7 +57,7 @@ void Blueprint::Init()
 
 	// node2
 	n2::RenderSystem::Instance()->AddDrawCompFunc(
-		[](const ur2::Device& dev, ur2::Context& ctx, const n0::SceneNode& node, const n2::RenderParams& rp)
+		[](const ur::Device& dev, ur::Context& ctx, const n0::SceneNode& node, const n2::RenderParams& rp)
 	{
 		if (node.HasUniqueComp<CompNode>())
         {

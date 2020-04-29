@@ -12,7 +12,7 @@
 namespace bp
 {
 
-WxToolbarPanel::WxToolbarPanel(const ur2::Device& dev, wxWindow* parent,
+WxToolbarPanel::WxToolbarPanel(const ur::Device& dev, wxWindow* parent,
                                const ee0::SubjectMgrPtr& graph_sub_mgr)
     : wxPanel(parent)
     , m_graph_sub_mgr(graph_sub_mgr)
@@ -42,7 +42,7 @@ void WxToolbarPanel::OnNotify(uint32_t msg, const ee0::VariantSet& variants)
 	}
 }
 
-void WxToolbarPanel::InitLayout(const ur2::Device& dev, const ee0::SubjectMgrPtr& graph_sub_mgr)
+void WxToolbarPanel::InitLayout(const ur::Device& dev, const ee0::SubjectMgrPtr& graph_sub_mgr)
 {
     auto sizer = new wxBoxSizer(wxVERTICAL);
 

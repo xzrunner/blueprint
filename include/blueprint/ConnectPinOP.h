@@ -32,7 +32,7 @@ public:
     //virtual bool OnMouseRightDown(int x, int y) override;
 	virtual bool OnMouseDrag(int x, int y) override;
 
-	virtual bool OnDraw(const ur2::Device& dev, ur2::Context& ctx) const;
+	virtual bool OnDraw(const ur::Device& dev, ur::Context& ctx) const;
 
 private:
 	std::shared_ptr<Pin> QueryPinByPos(const n0::SceneNodePtr& node,

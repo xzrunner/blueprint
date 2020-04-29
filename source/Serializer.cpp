@@ -25,7 +25,7 @@
 namespace bp
 {
 
-void Serializer::LoadFromJson(const ur2::Device& dev, ee0::WxStagePage& stage, const n0::SceneNodePtr& root,
+void Serializer::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage, const n0::SceneNodePtr& root,
                               const rapidjson::Value& val, const std::string& dir)
 {
     SetupConnCB();
@@ -90,7 +90,7 @@ void Serializer::StoreToJson(const n0::SceneNodePtr& root, const std::string& di
 void Serializer::SetupConnCB()
 {
     ns::CompSerializer::Instance()->AddFromJsonFunc(n0::CompComplex::TYPE_NAME,
-        [](const ur2::Device& dev, n0::NodeComp& comp, const std::string& dir, const rapidjson::Value& val)
+        [](const ur::Device& dev, n0::NodeComp& comp, const std::string& dir, const rapidjson::Value& val)
     {
         auto& ccomplex = static_cast<n0::CompComplex&>(comp);
 

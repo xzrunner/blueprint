@@ -35,7 +35,7 @@ void NodeHelper::RemoveDefaultNode(const bp::Pin& p)
     }
 }
 
-void NodeHelper::LoadFunctionNode(const ur2::Device& dev, const n0::SceneNodePtr& obj, const bp::NodePtr& node)
+void NodeHelper::LoadFunctionNode(const ur::Device& dev, const n0::SceneNodePtr& obj, const bp::NodePtr& node)
 {
     assert(node->get_type() == rttr::type::get<bp::node::Function>());
 

@@ -15,7 +15,7 @@
 #include <memory>
 
 namespace mm { class LinearAllocator; }
-namespace ur2 { class Device; class Context; }
+namespace ur { class Device; class Context; }
 namespace pt2 { class WindowContext; }
 namespace pt3 { class WindowContext; }
 namespace n2 { class RenderParams; }
@@ -41,7 +41,7 @@ public:
 	Node(const std::string& title);
 	virtual ~Node() {}
 
-	virtual void Draw(const ur2::Device& dev, ur2::Context& ctx,
+	virtual void Draw(const ur::Device& dev, ur::Context& ctx,
         const n2::RenderParams& rp) const;
 	virtual bool Update(const UpdateParams& params) { return false; }
 
