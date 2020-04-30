@@ -190,6 +190,7 @@ bool WxGraphPage<T>::BeforeDeleteNodeConn(const ee0::VariantSet& variants)
     const std::shared_ptr<Connecting>* conn = static_cast<const std::shared_ptr<Connecting>*>(var.m_val.pv);
     GD_ASSERT(conn, "err conn");
 
+    assert(conn);
     m_eval->OnDisconnecting(**conn);
 
     return true;

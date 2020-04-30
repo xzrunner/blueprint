@@ -187,7 +187,11 @@ void RenderSystem::DrawConnecting(const ur::Device& dev, ur::Context& ctx,
     // input
     for (auto& i : node.GetAllInput()) {
         for (auto& c : i->GetConnecting()) {
-            auto& from_pos = c->GetFrom()->GetParent().GetPos();
+            auto from = c->GetFrom();
+            if (!from) {
+                continue;
+            }
+            auto& from_pos = from->GetParent().GetPos();
             if (!sm::is_point_in_rect(from_pos, screen_region)) {
                 DrawConnecting(pt, *c);
             }

@@ -519,12 +519,14 @@ void ConnectPinOP::ClearSelectedConns()
     {
         auto node = nwp.GetNode()->GetUniqueComp<CompNode>().GetNode();
         for (auto& port : node->GetAllInput()) {
-            for (auto& conn : port->GetConnecting()) {
+            auto conns = port->GetConnecting();
+            for (auto& conn : conns) {
                 Disconnect(conn);
             }
         }
         for (auto& port : node->GetAllOutput()) {
-            for (auto& conn : port->GetConnecting()) {
+            auto conns = port->GetConnecting();
+            for (auto& conn : conns) {
                 Disconnect(conn);
             }
         }
