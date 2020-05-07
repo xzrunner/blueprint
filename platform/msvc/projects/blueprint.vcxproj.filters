@@ -381,6 +381,12 @@
     <ClInclude Include="..\..\..\include\blueprint\Variant.h">
       <Filter>dataset\variant</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\PropDesc.h">
+      <Filter>dataset\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\PropDescImpl.h">
+      <Filter>dataset\variant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">

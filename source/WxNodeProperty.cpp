@@ -1,5 +1,6 @@
 #include "blueprint/WxNodeProperty.h"
 #include "blueprint/VarType.h"
+#include "blueprint/PropDescImpl.h"
 
 #include <ee0/SubjectMgr.h>
 #include <ee0/ReflectPropTypes.h>
@@ -84,49 +85,72 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
 
     for (auto& prop : node->GetProps())
     {
-        switch (prop.type)
+        auto& var = prop.var;
+        switch (var.type)
         {
         case VarType::Bool:
         {
-            auto c_prop = new wxBoolProperty(prop.name, wxPG_LABEL, prop.b);
+            auto c_prop = new wxBoolProperty(var.name, wxPG_LABEL, var.b);
             m_pg->Append(c_prop);
             m_pg->SetPropertyAttribute(c_prop, wxPG_BOOL_USE_CHECKBOX, true, wxPG_RECURSE);
         }
             break;
         case VarType::Int:
-            m_pg->Append(new wxIntProperty(prop.name, wxPG_LABEL, prop.i));
+        {
+            std::shared_ptr<PropEnum> p_enum = nullptr;
+            for (auto& d : prop.descs) {
+                if (d->GetType() == PropDesc::Type::Enum) {
+                    p_enum = std::static_pointer_cast<PropEnum>(d);
+                    break;
+                }
+            }
+            if (p_enum)
+            {
+                wxArrayString choices;
+                for (auto& t : p_enum->types) {
+                    choices.push_back(t);
+                }
+                auto prop = new wxEnumProperty(var.name, wxPG_LABEL, choices);
+                prop->SetValue(var.i);
+                m_pg->Append(prop);
+            }
+            else
+            {
+                m_pg->Append(new wxIntProperty(var.name, wxPG_LABEL, var.i));
+            }
+        }
             break;
         case VarType::Float:
-            m_pg->Append(new wxFloatProperty(prop.name, wxPG_LABEL, prop.f));
+            m_pg->Append(new wxFloatProperty(var.name, wxPG_LABEL, var.f));
             break;
         case VarType::Float2:
         {
-            auto c_prop = new wxStringProperty(prop.name, wxPG_LABEL, wxT("<composed>"));
+            auto c_prop = new wxStringProperty(var.name, wxPG_LABEL, wxT("<composed>"));
             m_pg->Append(c_prop);
             c_prop->SetExpanded(false);
-            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("X"), wxPG_LABEL, prop.f2[0]));
-            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Y"), wxPG_LABEL, prop.f2[1]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("X"), wxPG_LABEL, var.f2[0]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Y"), wxPG_LABEL, var.f2[1]));
         }
             break;
         case VarType::Float3:
         {
-            auto c_prop = new wxStringProperty(prop.name, wxPG_LABEL, wxT("<composed>"));
+            auto c_prop = new wxStringProperty(var.name, wxPG_LABEL, wxT("<composed>"));
             m_pg->Append(c_prop);
             c_prop->SetExpanded(false);
-            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("X"), wxPG_LABEL, prop.f3[0]));
-            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Y"), wxPG_LABEL, prop.f3[1]));
-            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Z"), wxPG_LABEL, prop.f3[2]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("X"), wxPG_LABEL, var.f3[0]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Y"), wxPG_LABEL, var.f3[1]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Z"), wxPG_LABEL, var.f3[2]));
         }
             break;
         case VarType::Float4:
         {
-            auto c_prop = new wxStringProperty(prop.name, wxPG_LABEL, wxT("<composed>"));
+            auto c_prop = new wxStringProperty(var.name, wxPG_LABEL, wxT("<composed>"));
             m_pg->Append(c_prop);
             c_prop->SetExpanded(false);
-            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("X"), wxPG_LABEL, prop.f4[0]));
-            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Y"), wxPG_LABEL, prop.f4[1]));
-            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Z"), wxPG_LABEL, prop.f4[2]));
-            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("W"), wxPG_LABEL, prop.f4[3]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("X"), wxPG_LABEL, var.f4[0]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Y"), wxPG_LABEL, var.f4[1]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Z"), wxPG_LABEL, var.f4[2]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("W"), wxPG_LABEL, var.f4[3]));
         }
             break;
         default:
@@ -226,32 +250,33 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
 
     for (auto& prop : m_node->GetProps())
     {
-        if (prop.name != key) {
+        auto& var = prop.var;
+        if (var.name != key) {
             continue;
         }
 
-        auto wx_prop = m_pg->GetProperty(prop.name);
+        auto wx_prop = m_pg->GetProperty(var.name);
         assert(wx_prop);
-        switch (prop.type)
+        switch (var.type)
         {
         case VarType::Bool:
         {
             auto b = wxANY_AS(val, bool);
-            const_cast<bp::Variant&>(prop).b = b;
+            const_cast<bp::Variant&>(var).b = b;
             wx_prop->SetValue(b);
         }
             break;
         case VarType::Int:
         {
             auto i = wxANY_AS(val, int);
-            const_cast<bp::Variant&>(prop).i = i;
+            const_cast<bp::Variant&>(var).i = i;
             wx_prop->SetValue(i);
         }
             break;
         case VarType::Float:
         {
             auto f = wxANY_AS(val, float);
-            const_cast<bp::Variant&>(prop).f = f;
+            const_cast<bp::Variant&>(var).f = f;
             wx_prop->SetValue(f);
         }
             break;
@@ -265,7 +290,7 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
             float xy[2];
             xy[0] = std::stof(tokens[0]);
             xy[1] = std::stof(tokens[1]);
-            memcpy(const_cast<bp::Variant&>(prop).f2, xy, sizeof(float) * 2);
+            memcpy(const_cast<bp::Variant&>(var).f2, xy, sizeof(float) * 2);
             wx_prop->SetValue(str);
         }
             break;
@@ -280,7 +305,7 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
             xyz[0] = std::stof(tokens[0]);
             xyz[1] = std::stof(tokens[1]);
             xyz[2] = std::stof(tokens[2]);
-            memcpy(const_cast<bp::Variant&>(prop).f3, xyz, sizeof(float) * 3);
+            memcpy(const_cast<bp::Variant&>(var).f3, xyz, sizeof(float) * 3);
             wx_prop->SetValue(str);
         }
             break;
@@ -296,7 +321,7 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
             xyzw[1] = std::stof(tokens[1]);
             xyzw[2] = std::stof(tokens[2]);
             xyzw[3] = std::stof(tokens[3]);
-            memcpy(const_cast<bp::Variant&>(prop).f4, xyzw, sizeof(float) * 4);
+            memcpy(const_cast<bp::Variant&>(var).f4, xyzw, sizeof(float) * 4);
             wx_prop->SetValue(str);
         }
             break;

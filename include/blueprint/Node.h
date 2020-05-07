@@ -25,6 +25,7 @@ namespace bp
 {
 
 class Pin;
+struct PropDesc;
 
 struct UpdateParams
 {
@@ -38,6 +39,13 @@ struct UpdateParams
 
 class Node
 {
+public:
+    struct Property
+    {
+        Variant var;
+        std::vector<std::shared_ptr<PropDesc>> descs;
+    };
+
 public:
 	Node(const std::string& title);
 	virtual ~Node() {}
@@ -113,7 +121,7 @@ protected:
 	std::vector<std::shared_ptr<Pin>> m_all_input;
 	std::vector<std::shared_ptr<Pin>> m_all_output;
 
-    std::vector<Variant> m_props;
+    std::vector<Property> m_props;
 
 public:
 	static const uint32_t STYLE_SMALL_TITLE_FONT = 0x00000001;

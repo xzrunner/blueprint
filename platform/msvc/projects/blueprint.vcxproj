@@ -65,6 +65,8 @@
     <ClInclude Include="..\..\..\include\blueprint\NSCompNode.h" />
     <ClInclude Include="..\..\..\include\blueprint\Pin.h" />
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinOP.h" />
+    <ClInclude Include="..\..\..\include\blueprint\PropDesc.h" />
+    <ClInclude Include="..\..\..\include\blueprint\PropDescImpl.h" />
     <ClInclude Include="..\..\..\include\blueprint\Variant.h" />
     <ClInclude Include="..\..\..\include\blueprint\VarType.h" />
     <ClInclude Include="..\..\..\include\blueprint\RenderSystem.h" />
