@@ -3,17 +3,17 @@
 namespace bp
 {
 
-enum class VariantType
+enum class VarType
 {
     Void = 0,
     Bool,
     Int,
-    Float1,
+    Float,
     Float2,
     Float3,
     Float4,
 };
 
-void prop_types_regist_rttr();
+void var_type_regist_rttr();
 
 }

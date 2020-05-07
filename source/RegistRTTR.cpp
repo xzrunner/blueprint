@@ -32,7 +32,7 @@
 #include "blueprint/node/Output.h"
 #include "blueprint/node/Abs.h"
 
-#include "blueprint/ReflectPropTypes.h"
+#include "blueprint/VarType.h"
 
 #include <ee0/ReflectPropTypes.h>
 
@@ -237,7 +237,7 @@ namespace bp
 
 void regist_rttr()
 {
-    prop_types_regist_rttr();
+    var_type_regist_rttr();
 }
 
 }

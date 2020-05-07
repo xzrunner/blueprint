@@ -1,5 +1,5 @@
 #include "blueprint/WxNodeProperty.h"
-#include "blueprint/ReflectPropTypes.h"
+#include "blueprint/VarType.h"
 
 #include <ee0/SubjectMgr.h>
 #include <ee0/ReflectPropTypes.h>
@@ -156,9 +156,9 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
 		}
 		auto ui_info = ui_info_obj.get_value<ee0::UIMetaInfo>();
         auto prop_type = prop.get_type();
-        if (prop_type == rttr::type::get<VariantType>() && key == ui_info.desc)
+        if (prop_type == rttr::type::get<VarType>() && key == ui_info.desc)
         {
-            prop.set_value(m_node, static_cast<VariantType>(wxANY_AS(val, int)));
+            prop.set_value(m_node, static_cast<VarType>(wxANY_AS(val, int)));
             dirty = true;
         }
         else if (UpdateView(prop, *property))

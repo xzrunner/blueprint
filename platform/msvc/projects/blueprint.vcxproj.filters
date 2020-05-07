@@ -79,6 +79,9 @@
     <Filter Include="view\toolbar">
       <UniqueIdentifier>{a3f38d1a-a372-4537-907c-889392568d2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dataset\variant">
+      <UniqueIdentifier>{bd103f5b-6e2b-4d98-a757-967fb3512189}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -154,9 +157,6 @@
     <ClCompile Include="..\..\..\source\RegistRTTR.cpp">
       <Filter>tools\rtti</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\ReflectPropTypes.cpp">
-      <Filter>tools\rtti</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\ScriptEnv.cpp">
       <Filter>tools</Filter>
     </ClCompile>
@@ -180,6 +180,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\WxToolbarPanel.cpp">
       <Filter>view\toolbar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\VarType.cpp">
+      <Filter>dataset\variant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -342,9 +345,6 @@
     <ClInclude Include="..\..\..\include\blueprint\node\Script.h">
       <Filter>node\tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\ReflectPropTypes.h">
-      <Filter>tools\rtti</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\ScriptEnv.h">
       <Filter>tools</Filter>
     </ClInclude>
@@ -375,6 +375,10 @@
     <ClInclude Include="..\..\..\include\blueprint\WxToolbarPanel.h">
       <Filter>view\toolbar</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\VarType.h">
+      <Filter>dataset\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\Variant.h">
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">

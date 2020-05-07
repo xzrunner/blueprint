@@ -2,7 +2,7 @@
 
 #include "blueprint/Node.h"
 #include "blueprint/Pin.h"
-#include "blueprint/ReflectPropTypes.h"
+#include "blueprint/VarType.h"
 
 namespace bp
 {
@@ -27,7 +27,7 @@ public:
     void  SetText(const std::string& text) { m_text = text; }
 
     auto GetRetType() const { return m_ret_type; }
-    void SetRetType(VariantType type) { m_ret_type = type; }
+    void SetRetType(VarType type) { m_ret_type = type; }
 
     enum InputID
     {
@@ -38,7 +38,7 @@ public:
 private:
     std::string m_text;
 
-    VariantType m_ret_type = VariantType::Void;
+    VarType m_ret_type = VarType::Void;
 
     RTTR_ENABLE(Node)
 
