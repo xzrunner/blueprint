@@ -2,6 +2,7 @@
 
 #include "blueprint/typedef.h"
 #include "blueprint/NodeStyle.h"
+#include "blueprint/Variant.h"
 
 #include <cu/cu_macro.h>
 #include <SM_Vector.h>
@@ -54,6 +55,8 @@ public:
 
 	auto& GetAllInput() const { return m_all_input; }
 	auto& GetAllOutput() const { return m_all_output; }
+
+    auto& GetProps() const { return m_props; }
 
     bool UpdateExtInputPorts(bool is_connecting);
     void PrepareExtInputPorts(int count);
@@ -109,6 +112,8 @@ protected:
 
 	std::vector<std::shared_ptr<Pin>> m_all_input;
 	std::vector<std::shared_ptr<Pin>> m_all_output;
+
+    std::vector<Variant> m_props;
 
 public:
 	static const uint32_t STYLE_SMALL_TITLE_FONT = 0x00000001;

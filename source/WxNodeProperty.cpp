@@ -10,6 +10,7 @@
 #include <blueprint/NodeHelper.h>
 #include <blueprint/node/Function.h>
 
+#include <cpputil/StringHelper.h>
 #include <node0/SceneNode.h>
 #include <node2/CompBoundingBox.h>
 
@@ -48,12 +49,12 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
 		auto ui_info = ui_info_obj.get_value<ee0::UIMetaInfo>();
         auto prop_type = prop.get_type();
 
-        if (prop_type == rttr::type::get<VariantType>())
+        if (prop_type == rttr::type::get<VarType>())
         {
             const wxChar* TYPES[] = { wxT("Void"), wxT("Bool"), wxT("Int"),
                 wxT("Float1"), wxT("Float2"), wxT("Float3"), wxT("Float4"), NULL };
             auto type_prop = new wxEnumProperty(ui_info.desc, wxPG_LABEL, TYPES);
-            auto type = prop.get_value(node).get_value<VariantType>();
+            auto type = prop.get_value(node).get_value<VarType>();
             type_prop->SetValue(static_cast<int>(type));
             m_pg->Append(type_prop);
         }
@@ -80,6 +81,58 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
             );
         }
 	}
+
+    for (auto& prop : node->GetProps())
+    {
+        switch (prop.type)
+        {
+        case VarType::Bool:
+        {
+            auto c_prop = new wxBoolProperty(prop.name, wxPG_LABEL, prop.b);
+            m_pg->Append(c_prop);
+            m_pg->SetPropertyAttribute(c_prop, wxPG_BOOL_USE_CHECKBOX, true, wxPG_RECURSE);
+        }
+            break;
+        case VarType::Int:
+            m_pg->Append(new wxIntProperty(prop.name, wxPG_LABEL, prop.i));
+            break;
+        case VarType::Float:
+            m_pg->Append(new wxFloatProperty(prop.name, wxPG_LABEL, prop.f));
+            break;
+        case VarType::Float2:
+        {
+            auto c_prop = new wxStringProperty(prop.name, wxPG_LABEL, wxT("<composed>"));
+            m_pg->Append(c_prop);
+            c_prop->SetExpanded(false);
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("X"), wxPG_LABEL, prop.f2[0]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Y"), wxPG_LABEL, prop.f2[1]));
+        }
+            break;
+        case VarType::Float3:
+        {
+            auto c_prop = new wxStringProperty(prop.name, wxPG_LABEL, wxT("<composed>"));
+            m_pg->Append(c_prop);
+            c_prop->SetExpanded(false);
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("X"), wxPG_LABEL, prop.f3[0]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Y"), wxPG_LABEL, prop.f3[1]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Z"), wxPG_LABEL, prop.f3[2]));
+        }
+            break;
+        case VarType::Float4:
+        {
+            auto c_prop = new wxStringProperty(prop.name, wxPG_LABEL, wxT("<composed>"));
+            m_pg->Append(c_prop);
+            c_prop->SetExpanded(false);
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("X"), wxPG_LABEL, prop.f4[0]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Y"), wxPG_LABEL, prop.f4[1]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("Z"), wxPG_LABEL, prop.f4[2]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("W"), wxPG_LABEL, prop.f4[3]));
+        }
+            break;
+        default:
+            assert(0);
+        }
+    }
 }
 
 void WxNodeProperty::Clear()
@@ -170,6 +223,88 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
             dirty = true;
         }
 	}
+
+    for (auto& prop : m_node->GetProps())
+    {
+        if (prop.name != key) {
+            continue;
+        }
+
+        auto wx_prop = m_pg->GetProperty(prop.name);
+        assert(wx_prop);
+        switch (prop.type)
+        {
+        case VarType::Bool:
+        {
+            auto b = wxANY_AS(val, bool);
+            const_cast<bp::Variant&>(prop).b = b;
+            wx_prop->SetValue(b);
+        }
+            break;
+        case VarType::Int:
+        {
+            auto i = wxANY_AS(val, int);
+            const_cast<bp::Variant&>(prop).i = i;
+            wx_prop->SetValue(i);
+        }
+            break;
+        case VarType::Float:
+        {
+            auto f = wxANY_AS(val, float);
+            const_cast<bp::Variant&>(prop).f = f;
+            wx_prop->SetValue(f);
+        }
+            break;
+        case VarType::Float2:
+        {
+            std::vector<std::string> tokens;
+            auto str = wxANY_AS(val, wxString).ToStdString();
+            cpputil::StringHelper::Split(str, ";", tokens);
+            assert(tokens.size() == 2);
+
+            float xy[2];
+            xy[0] = std::stof(tokens[0]);
+            xy[1] = std::stof(tokens[1]);
+            memcpy(const_cast<bp::Variant&>(prop).f2, xy, sizeof(float) * 2);
+            wx_prop->SetValue(str);
+        }
+            break;
+        case VarType::Float3:
+        {
+            std::vector<std::string> tokens;
+            auto str = wxANY_AS(val, wxString).ToStdString();
+            cpputil::StringHelper::Split(str, ";", tokens);
+            assert(tokens.size() == 3);
+
+            float xyz[3];
+            xyz[0] = std::stof(tokens[0]);
+            xyz[1] = std::stof(tokens[1]);
+            xyz[2] = std::stof(tokens[2]);
+            memcpy(const_cast<bp::Variant&>(prop).f3, xyz, sizeof(float) * 3);
+            wx_prop->SetValue(str);
+        }
+            break;
+        case VarType::Float4:
+        {
+            std::vector<std::string> tokens;
+            auto str = wxANY_AS(val, wxString).ToStdString();
+            cpputil::StringHelper::Split(str, ";", tokens);
+            assert(tokens.size() == 4);
+
+            float xyzw[4];
+            xyzw[0] = std::stof(tokens[0]);
+            xyzw[1] = std::stof(tokens[1]);
+            xyzw[2] = std::stof(tokens[2]);
+            xyzw[3] = std::stof(tokens[3]);
+            memcpy(const_cast<bp::Variant&>(prop).f4, xyzw, sizeof(float) * 4);
+            wx_prop->SetValue(str);
+        }
+            break;
+        default:
+            assert(0);
+        }
+        dirty = true;
+    }
 
     if (dirty)
     {

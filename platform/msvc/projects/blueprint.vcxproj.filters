@@ -379,6 +379,8 @@
       <Filter>dataset\variant</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\Variant.h">
+      <Filter>dataset\variant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">
