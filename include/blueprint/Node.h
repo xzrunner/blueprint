@@ -54,8 +54,8 @@ public:
         const n2::RenderParams& rp) const;
 	virtual bool Update(const UpdateParams& params) { return false; }
 
-    virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) {}
-    virtual void LoadFromJson(const std::string& dir, const rapidjson::Value& val) {}
+    virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc);
+    virtual void LoadFromJson(const std::string& dir, const rapidjson::Value& val);
 
 	virtual void Refresh() {}
 
