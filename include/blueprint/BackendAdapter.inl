@@ -60,6 +60,23 @@ void BackendAdapter<T>::InitNodePins(Node& node, const std::string& name)
 }
 
 template<typename T>
+void BackendAdapter<T>::InitNodePins(Node& dst, const dag::Node<T>& src)
+{
+    auto& imports = src.GetImports();
+    auto& exports = src.GetExports();
+
+    std::vector<PinDesc> input(imports.size()), output(exports.size());
+    for (size_t i = 0, n = imports.size(); i < n; ++i) {
+        input[i] = m_pin_back2front(imports[i]);
+    }
+    for (size_t i = 0, n = exports.size(); i < n; ++i) {
+        output[i] = m_pin_back2front(exports[i]);
+    }
+
+    InitNodePins(dst, input, output);
+}
+
+template<typename T>
 void BackendAdapter<T>::InitPinsImpl(Node& node, bool is_input, const std::vector<PinDesc>& pins)
 {
     auto& dst = is_input ?

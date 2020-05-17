@@ -26,6 +26,7 @@ public:
     void InitNodePins(Node& node, const std::vector<PinDesc>& input,
         const std::vector<PinDesc>& output);
     void InitNodePins(Node& node, const std::string& name);
+    void InitNodePins(Node& dst, const dag::Node<T>& src);
 
 private:
     void InitPinsImpl(Node& node, bool is_input,
