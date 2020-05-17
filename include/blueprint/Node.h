@@ -84,6 +84,9 @@ public:
     auto& GetName() const { return m_name; }
     void  SetName(const std::string& name) { m_name = name; }
 
+    auto& GetGroup() const { return m_group; }
+    void  SetGroup(const std::string& group) { m_group = group; }
+
 public:
 	struct Style
 	{
@@ -150,6 +153,7 @@ private:
 	mutable uint32_t m_flags = 0;
 
     std::string m_name;
+    std::string m_group;
 
 	RTTR_ENABLE()
 

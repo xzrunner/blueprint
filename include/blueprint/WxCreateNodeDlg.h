@@ -32,6 +32,19 @@ private:
 	bool IsNodeMatched(const Node& node) const;
 
 private:
+    struct Item
+    {
+        Item(const std::string& name, const std::string& type, const std::string& group)
+            : name(name), type(type), group(group) {}
+
+        std::string name, type, group;
+        std::vector<Item> children;
+    };
+
+    std::vector<Item> NodesToGroups() const;
+    void InsertItem(const wxTreeItemId& parent, const Item& item, int idx);
+
+private:
 	std::shared_ptr<Pin> m_pair = nullptr;
 	const std::vector<NodePtr>& m_nodes;
 
