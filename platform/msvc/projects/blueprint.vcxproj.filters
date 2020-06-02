@@ -387,6 +387,9 @@
     <ClInclude Include="..\..\..\include\blueprint\PropDescImpl.h">
       <Filter>dataset\variant</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\SerializeHelper.h">
+      <Filter>tools\serialize</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">
@@ -403,6 +406,9 @@
     </None>
     <None Include="..\..\..\include\blueprint\WxGraphPage.inl">
       <Filter>view\editor</Filter>
+    </None>
+    <None Include="..\..\..\include\blueprint\SerializeHelper.inl">
+      <Filter>tools\serialize</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -67,6 +67,7 @@
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinOP.h" />
     <ClInclude Include="..\..\..\include\blueprint\PropDesc.h" />
     <ClInclude Include="..\..\..\include\blueprint\PropDescImpl.h" />
+    <ClInclude Include="..\..\..\include\blueprint\SerializeHelper.h" />
     <ClInclude Include="..\..\..\include\blueprint\Variant.h" />
     <ClInclude Include="..\..\..\include\blueprint\VarType.h" />
     <ClInclude Include="..\..\..\include\blueprint\RenderSystem.h" />
@@ -122,6 +123,7 @@
     <None Include="..\..\..\include\blueprint\BackendGraph.inl" />
     <None Include="..\..\..\include\blueprint\NodeHelper.inl" />
     <None Include="..\..\..\include\blueprint\node\Function.inl" />
+    <None Include="..\..\..\include\blueprint\SerializeHelper.inl" />
     <None Include="..\..\..\include\blueprint\WxGraphPage.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
