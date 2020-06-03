@@ -15,9 +15,9 @@ namespace bp
 class SerializeHelper
 {
 public:
-    template <typename T>
-    static void SetupNodes(const std::vector<n0::SceneNodePtr>& nodes, std::vector<bp::NodePtr>& front_nodes,
-        std::vector<std::shared_ptr<dag::Node<T>>>& back_nodes);
+    template <typename TFront, typename TBack>
+    static void SetupNodes(const std::vector<n0::SceneNodePtr>& nodes, const std::string& f_name, const std::string& b_name,
+        std::vector<bp::NodePtr>& front_nodes, std::vector<std::shared_ptr<dag::Node<TBack>>>& back_nodes);
 
     template <typename T>
     static void SetupConnections(const std::string& filepath, const std::vector<n0::SceneNodePtr>& nodes,
