@@ -35,6 +35,7 @@
     <ClInclude Include="..\..\..\include\blueprint\node\Boolean.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Combine.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\CompareNotEqual.h" />
+    <ClInclude Include="..\..\..\include\blueprint\node\SubGraph.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\Divide.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\For.h" />
     <ClInclude Include="..\..\..\include\blueprint\node\For2.h" />
@@ -67,6 +68,7 @@
     <ClInclude Include="..\..\..\include\blueprint\ConnectPinOP.h" />
     <ClInclude Include="..\..\..\include\blueprint\PropDesc.h" />
     <ClInclude Include="..\..\..\include\blueprint\PropDescImpl.h" />
+    <ClInclude Include="..\..\..\include\blueprint\SceneTree.h" />
     <ClInclude Include="..\..\..\include\blueprint\SerializeHelper.h" />
     <ClInclude Include="..\..\..\include\blueprint\Variant.h" />
     <ClInclude Include="..\..\..\include\blueprint\VarType.h" />
@@ -97,6 +99,7 @@
     <ClCompile Include="..\..\..\source\NodeLayout.cpp" />
     <ClCompile Include="..\..\..\source\NodeSelectOP.cpp" />
     <ClCompile Include="..\..\..\source\node\Commentary.cpp" />
+    <ClCompile Include="..\..\..\source\node\SubGraph.cpp" />
     <ClCompile Include="..\..\..\source\node\Function.cpp" />
     <ClCompile Include="..\..\..\source\node\Input.cpp" />
     <ClCompile Include="..\..\..\source\node\Output.cpp" />
@@ -123,6 +126,7 @@
     <None Include="..\..\..\include\blueprint\BackendGraph.inl" />
     <None Include="..\..\..\include\blueprint\NodeHelper.inl" />
     <None Include="..\..\..\include\blueprint\node\Function.inl" />
+    <None Include="..\..\..\include\blueprint\SceneTree.inl" />
     <None Include="..\..\..\include\blueprint\SerializeHelper.inl" />
     <None Include="..\..\..\include\blueprint\WxGraphPage.inl" />
   </ItemGroup>

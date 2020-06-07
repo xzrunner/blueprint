@@ -1,8 +1,9 @@
 #pragma once
 
-#include <ee0/WxStagePage.h>
-
 #include "blueprint/BackendGraph.h"
+#include "blueprint/SceneTree.h"
+
+#include <ee0/WxStagePage.h>
 
 namespace n0 { class CompComplex; }
 
@@ -23,10 +24,16 @@ public:
     virtual void Traverse(std::function<bool(const ee0::GameObj&)> func,
         const ee0::VariantSet& variants = ee0::VariantSet(), bool inverse = false) const override;
 
-    auto& GetEval() const { return m_eval; }
+    std::shared_ptr<BackendGraph<T>> GetEval() const {
+        return m_stree ? m_stree->GetCurrEval() : nullptr;
+    }
 
 protected:
     virtual void OnEvalChangeed() {}
+
+    void SetFront2BackCB(const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back) {
+        m_stree->SetFront2BackCB(front2back);
+    }
 
 private:
     bool ClearAllSceneObjs();
@@ -37,19 +44,21 @@ private:
     bool BeforeDeleteNodeConn(const ee0::VariantSet& variants);
     bool UpdateNodeProp(const ee0::VariantSet& variants);
 
+    bool PathPushToNext(const ee0::VariantSet& variants);
+    bool PathPopToPrev(const ee0::VariantSet& variants);
+
     void UpdateAABB(const ee0::GameObj& obj);
 
     void InsertScenNode(n0::CompComplex& root,
         const n0::SceneNodePtr& node);
-
-protected:
-    std::shared_ptr<bp::BackendGraph<T>> m_eval = nullptr;
 
 private:
     ee0::SubjectMgrPtr m_preview_sub_mgr    = nullptr;
     uint32_t           m_preview_update_msg = 0;
 
     n0::SceneNodePtr m_root = nullptr;
+
+    std::shared_ptr<SceneTree<T>> m_stree = nullptr;
 
 }; // WxGraphPage
 

@@ -295,6 +295,30 @@ bool ConnectPinOP::OnDraw(const ur::Device& dev, ur::Context& ctx) const
 	return false;
 }
 
+void ConnectPinOP::Connect(const std::shared_ptr<Pin>& pin, const Node& node)
+{
+	if (pin->IsInput())
+	{
+		auto& output = node.GetAllOutput();
+		for (auto& o : output) {
+			if (o->CanTypeCast(*pin)) {
+				MakeConnecting(o, pin);
+				break;
+			}
+		}
+	}
+	else
+	{
+		auto& input = node.GetAllInput();
+		for (auto& i : input) {
+			if (i->CanTypeCast(*pin)) {
+				MakeConnecting(pin, i);
+				break;
+			}
+		}
+	}
+}
+
 std::shared_ptr<Pin> ConnectPinOP::QueryPinByPos(const n0::SceneNodePtr& node,
 	                                                const sm::vec2& pos, sm::vec2& p_center)
 {
@@ -443,7 +467,7 @@ bool ConnectPinOP::CreateNodeWithMousePos()
 bool ConnectPinOP::CreateNode(int x, int y)
 {
 	auto base = m_stage.GetScreenPosition();
-	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y), m_selected_pin, m_nodes);
+	WxCreateNodeDlg dlg(&m_stage, base + wxPoint(x, y), m_selected_pin, m_nodes, m_is_port_matched);
 	if (dlg.ShowModal() != wxID_OK) {
 		m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 		return false;
@@ -486,26 +510,11 @@ bool ConnectPinOP::CreateNode(int x, int y)
 	// connect
     if (m_selected_pin)
     {
-	    if (m_selected_pin->IsInput())
-	    {
-		    auto& output = bp_node->GetAllOutput();
-		    for (auto& pin : output) {
-			    if (pin->CanTypeCast(*m_selected_pin)) {
-				    MakeConnecting(pin, m_selected_pin);
-				    break;
-			    }
-		    }
-	    }
-	    else
-	    {
-		    auto& input = bp_node->GetAllInput();
-		    for (auto& pin : input) {
-			    if (pin->CanTypeCast(*m_selected_pin)) {
-				    MakeConnecting(m_selected_pin, pin);
-				    break;
-			    }
-		    }
-	    }
+        BeforeConnect(m_selected_pin, *bp_node, *node);
+        Connect(m_selected_pin, *bp_node);
+        node->GetUniqueComp<n2::CompBoundingBox>().SetSize(
+            *node, sm::rect(style.width, style.height)
+        );
     }
 
     m_stage.GetSubjectMgr()->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);

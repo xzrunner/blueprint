@@ -18,8 +18,8 @@ class Node;
 class WxCreateNodeDlg : public wxDialog
 {
 public:
-	WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos,
-        const std::shared_ptr<Pin>& pair, const std::vector<NodePtr>& nodes);
+	WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos, const std::shared_ptr<Pin>& pair,
+        const std::vector<NodePtr>& nodes, std::function<bool(const bp::Node&, const bp::Pin&)> is_port_matched = nullptr);
 
 	std::string GetSelectedType() const;
 
@@ -51,6 +51,8 @@ private:
 	wxTreeCtrl* m_tree;
 
     std::map<std::string, std::string> m_name2type;
+
+    std::function<bool(const bp::Node&, const bp::Pin&)> m_is_port_matched = nullptr;
 
 }; // WxCreateNodeDlg
 

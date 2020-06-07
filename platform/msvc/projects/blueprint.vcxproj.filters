@@ -82,6 +82,9 @@
     <Filter Include="dataset\variant">
       <UniqueIdentifier>{bd103f5b-6e2b-4d98-a757-967fb3512189}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools\tree">
+      <UniqueIdentifier>{f00632e1-e7ba-4a06-98ac-614f6a69427c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\CompNode.cpp">
@@ -166,9 +169,6 @@
     <ClCompile Include="..\..\..\source\RegistPt0RTTR.cpp">
       <Filter>tools\rtti</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\TreeHelper.cpp">
-      <Filter>tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\Serializer.cpp">
       <Filter>tools\serialize</Filter>
     </ClCompile>
@@ -183,6 +183,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\VarType.cpp">
       <Filter>dataset\variant</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\SubGraph.cpp">
+      <Filter>node\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\TreeHelper.cpp">
+      <Filter>tools\tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -351,9 +357,6 @@
     <ClInclude Include="..\..\..\include\blueprint\node\For2.h">
       <Filter>node\tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\blueprint\TreeHelper.h">
-      <Filter>tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\blueprint\Serializer.h">
       <Filter>tools\serialize</Filter>
     </ClInclude>
@@ -390,6 +393,15 @@
     <ClInclude Include="..\..\..\include\blueprint\SerializeHelper.h">
       <Filter>tools\serialize</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\node\SubGraph.h">
+      <Filter>node\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\TreeHelper.h">
+      <Filter>tools\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\blueprint\SceneTree.h">
+      <Filter>tools\tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\blueprint\NodeHelper.inl">
@@ -409,6 +421,9 @@
     </None>
     <None Include="..\..\..\include\blueprint\SerializeHelper.inl">
       <Filter>tools\serialize</Filter>
+    </None>
+    <None Include="..\..\..\include\blueprint\SceneTree.inl">
+      <Filter>tools\tree</Filter>
     </None>
   </ItemGroup>
 </Project>

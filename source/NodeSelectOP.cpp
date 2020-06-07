@@ -2,12 +2,14 @@
 #include "blueprint/CompNode.h"
 #include "blueprint/Connecting.h"
 #include "blueprint/TreeHelper.h"
+#include "blueprint/MessageID.h"
 #include "blueprint/node/SetReference.h"
 #include "blueprint/node/GetReference.h"
 #include "blueprint/node/SetValue.h"
 #include "blueprint/node/GetValue.h"
 #include "blueprint/node/Function.h"
 #include "blueprint/node/Commentary.h"
+#include "blueprint/node/SubGraph.h"
 
 #include <ee0/WxStagePage.h>
 #include <ee0/MsgHelper.h>
@@ -48,6 +50,11 @@ bool NodeSelectOP::OnMouseLeftDClick(int x, int y)
         selected_bp = selected->GetUniqueComp<CompNode>().GetNode();
         return true;
     });
+
+    if (selected_bp->get_type().is_derived_from<node::SubGraph>()) {
+        ee0::MsgHelper::SendObjMsg(*m_stage.GetSubjectMgr(), selected, MSG_BP_SCENE_ROOT_TO_NEXT_LEVEL);
+        return false;
+    }
 
     assert(selected && selected_bp);
     if (selected_bp->get_type() == rttr::type::get<node::Function>())

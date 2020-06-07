@@ -12,10 +12,12 @@ namespace bp
 
 WxCreateNodeDlg::WxCreateNodeDlg(wxWindow* parent, const wxPoint& pos,
                                  const std::shared_ptr<Pin>& pair,
-	                             const std::vector<NodePtr>& nodes)
+	                             const std::vector<NodePtr>& nodes,
+                                 std::function<bool(const bp::Node&, const bp::Pin&)> is_port_matched)
 	: wxDialog(parent, wxID_ANY, "Create Node", pos, wxSize(200, 400))
 	, m_pair(pair)
 	, m_nodes(nodes)
+    , m_is_port_matched(is_port_matched)
 {
 	InitLayout();
 }
@@ -84,7 +86,8 @@ bool WxCreateNodeDlg::IsNodeMatched(const Node& node) const
 			}
 		}
 	}
-	return false;
+
+    return m_is_port_matched ? m_is_port_matched(node, *m_pair) : false;
 }
 
 std::vector<WxCreateNodeDlg::Item>

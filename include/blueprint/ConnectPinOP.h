@@ -34,7 +34,13 @@ public:
 
 	virtual bool OnDraw(const ur::Device& dev, ur::Context& ctx) const;
 
+protected:
+    virtual void BeforeConnect(const std::shared_ptr<Pin>& pin,
+        const Node& bp_node, const n0::SceneNode& node) {}
+
 private:
+    void Connect(const std::shared_ptr<Pin>& pin, const Node& node);
+
 	std::shared_ptr<Pin> QueryPinByPos(const n0::SceneNodePtr& node,
 		const sm::vec2& pos, sm::vec2& p_center);
 	void QueryConnsByRect(const sm::rect& rect, std::vector<std::shared_ptr<Connecting>>& conns);
@@ -61,9 +67,13 @@ private:
 
     void GetAllSelected(std::vector<n0::SceneNodePtr>& selected);
 
-private:
-	ee0::WxStagePage& m_stage;
+protected:
+    std::function<bool(const bp::Node&, const bp::Pin&)> m_is_port_matched = nullptr;
 
+protected:
+    ee0::WxStagePage& m_stage;
+
+private:
 	std::vector<NodePtr> m_nodes;
 
 	std::shared_ptr<Pin> m_selected_pin = nullptr;
