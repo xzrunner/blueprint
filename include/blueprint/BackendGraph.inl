@@ -14,7 +14,7 @@ BackendGraph<T>::BackendGraph(const std::string& back_name, const std::string& f
 }
 
 template <typename T>
-void BackendGraph<T>::OnAddNode(const Node& front, const n0::SceneNodePtr& snode, bool need_update)
+void BackendGraph<T>::OnAddNode(const Node& front, bool need_update)
 {
     auto back = CreateBackFromFront(front);
     if (!back) {

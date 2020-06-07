@@ -4,7 +4,6 @@
 
 #include <dag/Node.h>
 #include <dag/Graph.h>
-#include <node0/typedef.h>
 
 #include <boost/noncopyable.hpp>
 
@@ -21,8 +20,7 @@ public:
         const std::string& front_name);
 
     // update nodes
-    void OnAddNode(const Node& node, const n0::SceneNodePtr& snode,
-        bool need_update = true);
+    void OnAddNode(const Node& node, bool need_update = true);
     void OnRemoveNode(const Node& node);
     void OnClearAllNodes();
 
