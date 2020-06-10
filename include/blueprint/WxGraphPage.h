@@ -28,6 +28,10 @@ public:
         return m_stree ? m_stree->GetCurrEval() : nullptr;
     }
 
+    n0::SceneNodePtr GetTreeRoot() const {
+        return m_stree ? m_stree->GetRootNode() : nullptr;
+    }
+
 protected:
     virtual void OnEvalChangeed() {}
 

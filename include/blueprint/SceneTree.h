@@ -29,6 +29,8 @@ public:
 
     void SetFront2BackCB(const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back);
 
+    n0::SceneNodePtr GetRootNode() const { return m_path.parts.empty() ? nullptr : m_path.parts[0].node; }
+
 private:
     bool IsCurrChild(const n0::SceneNodePtr& node) const;
 

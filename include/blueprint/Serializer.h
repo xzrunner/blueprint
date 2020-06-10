@@ -10,6 +10,7 @@ namespace ee0 { class WxStagePage; }
 namespace bp
 {
 
+template<typename T>
 class Serializer
 {
 public:
@@ -24,3 +25,5 @@ private:
 }; // Serializer
 
 }
+
+#include "blueprint/Serializer.inl"

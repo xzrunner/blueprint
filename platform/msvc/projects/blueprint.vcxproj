@@ -99,7 +99,6 @@
     <ClCompile Include="..\..\..\source\NodeLayout.cpp" />
     <ClCompile Include="..\..\..\source\NodeSelectOP.cpp" />
     <ClCompile Include="..\..\..\source\node\Commentary.cpp" />
-    <ClCompile Include="..\..\..\source\node\SubGraph.cpp" />
     <ClCompile Include="..\..\..\source\node\Function.cpp" />
     <ClCompile Include="..\..\..\source\node\Input.cpp" />
     <ClCompile Include="..\..\..\source\node\Output.cpp" />
@@ -112,7 +111,6 @@
     <ClCompile Include="..\..\..\source\RegistSmRTTR.cpp" />
     <ClCompile Include="..\..\..\source\RenderSystem.cpp" />
     <ClCompile Include="..\..\..\source\ScriptEnv.cpp" />
-    <ClCompile Include="..\..\..\source\Serializer.cpp" />
     <ClCompile Include="..\..\..\source\TranslateNodeState.cpp" />
     <ClCompile Include="..\..\..\source\TreeHelper.cpp" />
     <ClCompile Include="..\..\..\source\wrap_Blueprint.cpp" />
@@ -126,8 +124,10 @@
     <None Include="..\..\..\include\blueprint\BackendGraph.inl" />
     <None Include="..\..\..\include\blueprint\NodeHelper.inl" />
     <None Include="..\..\..\include\blueprint\node\Function.inl" />
+    <None Include="..\..\..\include\blueprint\node\SubGraph.inl" />
     <None Include="..\..\..\include\blueprint\SceneTree.inl" />
     <None Include="..\..\..\include\blueprint\SerializeHelper.inl" />
+    <None Include="..\..\..\include\blueprint\Serializer.inl" />
     <None Include="..\..\..\include\blueprint\WxGraphPage.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

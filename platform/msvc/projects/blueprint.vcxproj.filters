@@ -169,9 +169,6 @@
     <ClCompile Include="..\..\..\source\RegistPt0RTTR.cpp">
       <Filter>tools\rtti</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\Serializer.cpp">
-      <Filter>tools\serialize</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\WxNodeProperty.cpp">
       <Filter>view\toolbar</Filter>
     </ClCompile>
@@ -183,9 +180,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\VarType.cpp">
       <Filter>dataset\variant</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\SubGraph.cpp">
-      <Filter>node\tools</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\TreeHelper.cpp">
       <Filter>tools\tree</Filter>
@@ -424,6 +418,12 @@
     </None>
     <None Include="..\..\..\include\blueprint\SceneTree.inl">
       <Filter>tools\tree</Filter>
+    </None>
+    <None Include="..\..\..\include\blueprint\node\SubGraph.inl">
+      <Filter>node\tools</Filter>
+    </None>
+    <None Include="..\..\..\include\blueprint\Serializer.inl">
+      <Filter>tools\serialize</Filter>
     </None>
   </ItemGroup>
 </Project>

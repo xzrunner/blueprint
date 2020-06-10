@@ -11,6 +11,7 @@ BackendGraph<T>::BackendGraph(const std::string& back_name, const std::string& f
     : m_back_name(back_name)
     , m_front_name(front_name)
 {
+    m_eval = std::make_shared<dag::Graph<T>>();
 }
 
 template <typename T>
@@ -21,7 +22,7 @@ void BackendGraph<T>::OnAddNode(const Node& front, bool need_update)
         return;
     }
 
-    m_eval.AddNode(back);
+    m_eval->AddNode(back);
 
     m_front2back.insert({ &front, back });
 
@@ -43,7 +44,7 @@ void BackendGraph<T>::OnRemoveNode(const Node& node)
         return;
     }
 
-    m_eval.RemoveNode(itr->second);
+    m_eval->RemoveNode(itr->second);
     m_front2back.erase(itr);
 
     Update();
@@ -52,7 +53,7 @@ void BackendGraph<T>::OnRemoveNode(const Node& node)
 template <typename T>
 void BackendGraph<T>::OnClearAllNodes()
 {
-    m_eval.ClearAllNodes();
+    m_eval->ClearAllNodes();
     m_front2back.clear();
 
     Update();
@@ -69,14 +70,14 @@ void BackendGraph<T>::OnNodePropChanged(const NodePtr& node)
     UpdatePropBackFromFront(*node, *itr->second);
 
     if (node->GetName() != itr->second->GetName()) {
-        //m_eval.Rename(itr->second->GetName(), node->GetName());
+        //m_eval->Rename(itr->second->GetName(), node->GetName());
         if (itr->second->GetName() != node->GetName()) {
             node->SetName(itr->second->GetName());
         }
     }
 
-    m_eval.PropChanged(itr->second);
-    //m_eval.MakeDirty();
+    m_eval->PropChanged(itr->second);
+    //m_eval->MakeDirty();
 
     Update();
 }
@@ -97,7 +98,7 @@ void BackendGraph<T>::OnConnected(const Connecting& conn)
     //    t_itr->second->AddInputPorts(t_itr->first->GetAllInput().size() - t_itr->first->GetAllOutput().size());
     //}
 
-    m_eval.Connect(
+    m_eval->Connect(
         { f_itr->second, f_pin->GetPosIdx() },
         { t_itr->second, t_pin->GetPosIdx() }
     );
@@ -117,7 +118,7 @@ void BackendGraph<T>::OnDisconnecting(const Connecting& conn)
         return;
     }
 
-    m_eval.Disconnect(
+    m_eval->Disconnect(
         { f_itr->second, f_pin->GetPosIdx() },
         { t_itr->second, t_pin->GetPosIdx() }
     );
@@ -158,7 +159,7 @@ void BackendGraph<T>::OnRebuildConnection()
         }
     }
 
-    m_eval.RebuildConnections(conns);
+    m_eval->RebuildConnections(conns);
 
     Update();
 }
@@ -175,7 +176,7 @@ template <typename T>
 void BackendGraph<T>::Update()
 {
     if (m_update_enable) {
-        m_eval.Update(m_ctx);
+        m_eval->Update(m_ctx);
     }
 }
 

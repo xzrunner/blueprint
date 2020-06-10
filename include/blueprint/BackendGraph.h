@@ -32,7 +32,7 @@ public:
     void OnDisconnecting(const Connecting& conn);
     void OnRebuildConnection();
 
-    auto& GetEval() const { return m_eval; }
+    auto GetEval() const { return m_eval; }
 
     std::shared_ptr<dag::Node<T>>
         QueryBackNode(const Node& front_node) const;
@@ -60,7 +60,7 @@ private:
     std::string m_back_name;
     std::string m_front_name;
 
-    dag::Graph<T> m_eval;
+    std::shared_ptr<dag::Graph<T>> m_eval = nullptr;
 
     std::unordered_map<const Node*, std::shared_ptr<dag::Node<T>>> m_front2back;
 

@@ -1,32 +1,25 @@
-#include "blueprint/Serializer.h"
-#include "blueprint/CommentaryNodeHelper.h"
-#include "blueprint/NSCompNode.h"
-#include "blueprint/MessageID.h"
-#include "blueprint/CompNode.h"
+#pragma once
 
-#include <ee0/WxStagePage.h>
-#include <ee0/SubjectMgr.h>
-#include <ee0/MessageID.h>
+#include "blueprint/CompNode.h"
+#include "blueprint/MessageID.h"
+#include "blueprint/CommentaryNodeHelper.h"
+#include "blueprint/node/SubGraph.h"
+
 #include <ee0/MsgHelper.h>
 
 #include <memmgr/LinearAllocator.h>
-#include <node0/SceneNode.h>
-#include <node0/CompComplex.h>
 #include <node2/AABBSystem.h>
 #include <node2/CompBoundingBox.h>
 #include <ns/CompFactory.h>
 #include <ns/CompSerializer.h>
 #include <ns/N0CompComplex.h>
-#include <sx/ResFileHelper.h>
-#include <js/RapidJsonHelper.h>
-
-#include <boost/filesystem.hpp>
 
 namespace bp
 {
 
-void Serializer::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage, const n0::SceneNodePtr& root,
-                              const rapidjson::Value& val, const std::string& dir)
+template<typename T>
+void Serializer<T>::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage, const n0::SceneNodePtr& root,
+                                 const rapidjson::Value& val, const std::string& dir)
 {
     SetupConnCB();
 
@@ -46,6 +39,30 @@ void Serializer::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage, co
     else
     {
         casset = root->GetSharedCompPtr<n0::CompAsset>();
+    }
+
+    // update subgraph
+    assert(casset->TypeID() == n0::GetAssetUniqueTypeID<n0::CompComplex>());
+    auto ccomplex = std::static_pointer_cast<n0::CompComplex>(casset);
+    for (auto& c : ccomplex->GetAllChildren())
+    {
+        if (!c->HasUniqueComp<CompNode>()) {
+            continue;
+        }
+        auto bp_node = c->GetUniqueComp<CompNode>().GetNode();
+        if (!bp_node->get_type().is_derived_from<node::SubGraph<T>>()) {
+            continue;
+        }
+        assert(c->HasSharedComp<n0::CompComplex>());
+        auto& c_ccomplex = c->GetSharedComp<n0::CompComplex>();
+        std::vector<bp::NodePtr> bp_nodes;
+        for (auto& cc : c_ccomplex.GetAllChildren()) {
+            if (cc->HasUniqueComp<CompNode>()) {
+                bp_nodes.push_back(cc->GetUniqueComp<CompNode>().GetNode());
+            }
+        }
+        auto sub_graph = std::static_pointer_cast<node::SubGraph<T>>(bp_node);
+        sub_graph->SetChildren(bp_nodes);
     }
 
     // FIXME: reinsert, for send insert msg to other panel
@@ -76,8 +93,9 @@ void Serializer::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage, co
 	sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
 }
 
-void Serializer::StoreToJson(const n0::SceneNodePtr& root, const std::string& dir,
-                             rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc)
+template<typename T>
+void Serializer<T>::StoreToJson(const n0::SceneNodePtr& root, const std::string& dir,
+                                rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc)
 {
     SetupConnCB();
 
@@ -87,7 +105,8 @@ void Serializer::StoreToJson(const n0::SceneNodePtr& root, const std::string& di
     );
 }
 
-void Serializer::SetupConnCB()
+template<typename T>
+void Serializer<T>::SetupConnCB()
 {
     ns::CompSerializer::Instance()->AddFromJsonFunc(n0::CompComplex::TYPE_NAME,
         [](const ur::Device& dev, n0::NodeComp& comp, const std::string& dir, const rapidjson::Value& val)

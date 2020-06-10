@@ -122,7 +122,7 @@ void WxGraphPage<T>::OnNotify(uint32_t msg, const ee0::VariantSet& variants)
 
 template <typename T>
 void WxGraphPage<T>::Traverse(std::function<bool(const ee0::GameObj&)> func,
-                           const ee0::VariantSet& variants , bool inverse) const
+                              const ee0::VariantSet& variants , bool inverse) const
 {
     m_root->GetSharedComp<n0::CompComplex>().Traverse(func, inverse);
 }
@@ -161,7 +161,7 @@ bool WxGraphPage<T>::InsertSceneObj(const ee0::VariantSet& variants)
 
         // prepare ccomplex
         auto type = bp_node->get_type();
-        if (type.is_derived_from<node::SubGraph>())
+        if (type.is_derived_from<node::SubGraph<T>>())
         {
             if (!(*obj)->HasSharedComp<n0::CompComplex>()) {
                 (*obj)->AddSharedComp<n0::CompComplex>();

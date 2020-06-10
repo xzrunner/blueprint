@@ -49,8 +49,8 @@ bool SceneTree<T>::Add(const n0::SceneNodePtr& node)
         if (curr.node->HasUniqueComp<bp::CompNode>())
         {
             auto bp_parent = curr.node->GetUniqueComp<bp::CompNode>().GetNode();
-            if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph>()) {
-                std::static_pointer_cast<node::SubGraph>(bp_parent)->AddChild(bp_node);
+            if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph<T>>()) {
+                std::static_pointer_cast<node::SubGraph<T>>(bp_parent)->AddChild(bp_node);
             }
         }
 
@@ -65,13 +65,13 @@ bool SceneTree<T>::Add(const n0::SceneNodePtr& node)
         //    assert(curr_node->HasUniqueComp<bp::CompNode>());
         //    auto parent = prev_eval->QueryBackNode(*curr_node->GetUniqueComp<bp::CompNode>().GetNode());
         //    auto child = m_path.parts.back().eval->QueryBackNode(*bp_node);
-        //    assert(parent->get_type().is_derived_from<sop::node::SubGraph>());
-        //    sop::node::SubGraph::AddChild(std::static_pointer_cast<sop::node::SubGraph>(parent), child);
+        //    assert(parent->get_type().is_derived_from<sop::node::SubGraph<T>>());
+        //    sop::node::SubGraph<T>::AddChild(std::static_pointer_cast<sop::node::SubGraph<T>>(parent), child);
         //}
 
         // prepare ccomplex
         auto type = bp_node->get_type();
-        if (type.is_derived_from<node::SubGraph>())
+        if (type.is_derived_from<node::SubGraph<T>>())
         {
             if (!node->HasSharedComp<n0::CompComplex>()) {
                 node->AddSharedComp<n0::CompComplex>();
@@ -112,9 +112,9 @@ bool SceneTree<T>::Remove(const n0::SceneNodePtr& node)
             if (curr.node->HasUniqueComp<bp::CompNode>())
             {
                 auto bp_parent = curr.node->GetUniqueComp<bp::CompNode>().GetNode();
-                if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph>()) {
+                if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph<T>>()) {
                     auto& bp_node = node->GetUniqueComp<bp::CompNode>().GetNode();
-                    std::static_pointer_cast<node::SubGraph>(bp_parent)->RemoveChild(bp_node);
+                    std::static_pointer_cast<node::SubGraph<T>>(bp_parent)->RemoveChild(bp_node);
                 }
             }
 
@@ -126,17 +126,17 @@ bool SceneTree<T>::Remove(const n0::SceneNodePtr& node)
             //if (curr.node->HasUniqueComp<bp::CompNode>() && m_path.parts.size() > 1)
             //{
             //    auto bp_parent = curr.node->GetUniqueComp<bp::CompNode>().GetNode();
-            //    if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph>())
+            //    if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph<T>>())
             //    {
-            //        auto subnetwork = std::static_pointer_cast<node::SubGraph>(bp_parent);
+            //        auto subnetwork = std::static_pointer_cast<node::SubGraph<T>>(bp_parent);
 
             //        auto& prev_eval = m_path.parts[m_path.parts.size() - 2].eval;
             //        auto& curr_node = m_path.parts.back().node;
             //        assert(curr_node->HasUniqueComp<bp::CompNode>());
             //        auto parent = prev_eval->QueryBackNode(*curr_node->GetUniqueComp<bp::CompNode>().GetNode());
             //        auto child = m_path.parts.back().eval->QueryBackNode(*bp_node);
-            //        assert(parent->get_type().is_derived_from<node::SubGraph>());
-            //        RebuildBackFromFront(std::static_pointer_cast<node::SubGraph>(parent), subnetwork, *curr.eval);
+            //        assert(parent->get_type().is_derived_from<node::SubGraph<T>>());
+            //        RebuildBackFromFront(std::static_pointer_cast<node::SubGraph<T>>(parent), subnetwork, *curr.eval);
             //    }
             //}
         }
@@ -163,8 +163,8 @@ bool SceneTree<T>::Clear()
     if (curr.node->HasUniqueComp<bp::CompNode>())
     {
         auto bp_parent = curr.node->GetUniqueComp<bp::CompNode>().GetNode();
-        if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph>()) {
-            std::static_pointer_cast<node::SubGraph>(bp_parent)->ClearAllChildren();
+        if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph<T>>()) {
+            std::static_pointer_cast<node::SubGraph<T>>(bp_parent)->ClearAllChildren();
         }
     }
 
@@ -179,8 +179,8 @@ bool SceneTree<T>::Clear()
         auto& curr_node = m_path.parts.back().node;
         assert(curr_node->HasUniqueComp<bp::CompNode>());
         auto parent = prev_eval->QueryBackNode(*curr_node->GetUniqueComp<bp::CompNode>().GetNode());
-        assert(parent->get_type().is_derived_from<node::SubGraph>());
-        std::static_pointer_cast<node::SubGraph>(parent)->ClearChildren();
+        assert(parent->get_type().is_derived_from<node::SubGraph<T>>());
+        std::static_pointer_cast<node::SubGraph<T>>(parent)->ClearChildren();
     }
 
     return dirty;
@@ -195,7 +195,7 @@ bool SceneTree<T>::Push(const n0::SceneNodePtr& node)
 
     auto& bp_node = node->GetUniqueComp<bp::CompNode>().GetNode();
     auto type = bp_node->get_type();
-    if (!type.is_derived_from<node::SubGraph>()) {
+    if (!type.is_derived_from<node::SubGraph<T>>()) {
         return false;
     }
 
@@ -216,12 +216,12 @@ bool SceneTree<T>::Push(const n0::SceneNodePtr& node)
             //if (node->HasUniqueComp<bp::CompNode>())
             //{
             //    auto bp_parent = node->GetUniqueComp<bp::CompNode>().GetNode();
-            //    if (bp_parent->get_type().is_derived_from<node::SubGraph>())
+            //    if (bp_parent->get_type().is_derived_from<node::SubGraph<T>>())
             //    {
-            //        auto src = std::static_pointer_cast<node::SubGraph>(bp_parent);
+            //        auto src = std::static_pointer_cast<node::SubGraph<T>>(bp_parent);
             //        auto dst = GetCurrEval()->QueryBackNode(*src);
-            //        assert(dst && dst->get_type().is_derived_from<node::SubGraph>());
-            //        auto dst_sub_nw = std::static_pointer_cast<node::SubGraph>(dst);
+            //        assert(dst && dst->get_type().is_derived_from<node::SubGraph<T>>());
+            //        auto dst_sub_nw = std::static_pointer_cast<node::SubGraph<T>>(dst);
             //        RebuildBackFromFront(dst_sub_nw, src, *eval);
             //    }
             //}

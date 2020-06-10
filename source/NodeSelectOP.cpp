@@ -16,6 +16,7 @@
 #include <ee0/CameraHelper.h>
 
 #include <node0/SceneNode.h>
+#include <node0/CompComplex.h>
 #include <node2/CompTransform.h>
 
 #include <queue>
@@ -51,7 +52,8 @@ bool NodeSelectOP::OnMouseLeftDClick(int x, int y)
         return true;
     });
 
-    if (selected_bp->get_type().is_derived_from<node::SubGraph>()) {
+    if (selected->HasSharedComp<n0::CompComplex>()) {
+    //if (selected_bp->get_type().is_derived_from<node::SubGraph<T>>()) {
         ee0::MsgHelper::SendObjMsg(*m_stage.GetSubjectMgr(), selected, MSG_BP_SCENE_ROOT_TO_NEXT_LEVEL);
         return false;
     }
