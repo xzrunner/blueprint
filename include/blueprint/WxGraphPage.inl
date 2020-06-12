@@ -42,7 +42,8 @@ namespace bp
 template <typename T>
 WxGraphPage<T>::WxGraphPage(wxWindow* parent, const ee0::GameObj& root,
                             const ee0::SubjectMgrPtr& preview_sub_mgr, uint32_t preview_update_msg,
-                            const std::string& back_name, const std::string& front_name)
+                            const std::string& back_name, const std::string& front_name,
+                            const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back)
     : ee0::WxStagePage(parent)
     , m_preview_sub_mgr(preview_sub_mgr)
     , m_preview_update_msg(preview_update_msg)
@@ -50,7 +51,7 @@ WxGraphPage<T>::WxGraphPage(wxWindow* parent, const ee0::GameObj& root,
 {
     Blueprint::Instance();
 
-    m_stree = std::make_shared<SceneTree<T>>(back_name, front_name);
+    m_stree = std::make_shared<SceneTree<T>>(back_name, front_name, front2back);
     m_stree->Add(root);
 
     for (auto& msg : MESSAGES) {

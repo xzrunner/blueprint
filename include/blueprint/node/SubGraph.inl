@@ -8,12 +8,11 @@ namespace node
 {
 
 template <typename T>
-SubGraph<T>::SubGraph(const std::string& title,
-                      const std::string& back_name,
-                      const std::string& front_name)
+SubGraph<T>::SubGraph(const std::string& title, const std::string& back_name, const std::string& front_name,
+                      const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back)
     : Node(title)
 {
-    m_graph = std::make_shared<BackendGraph<T>>(back_name, front_name);
+    m_graph = std::make_shared<BackendGraph<T>>(back_name, front_name, front2back);
 }
 
 template <typename T>

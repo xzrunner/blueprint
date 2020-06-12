@@ -9,53 +9,52 @@ namespace bp
 {
 
 template <typename T>
-SceneTree<T>::SceneTree(const std::string& back_name, const std::string& front_name)
+SceneTree<T>::SceneTree(const std::string& back_name, const std::string& front_name,
+                        const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back)
     : m_back_name(back_name)
     , m_front_name(front_name)
+    , m_front2back_cb(front2back)
 {
 }
 
 template <typename T>
 bool SceneTree<T>::Add(const n0::SceneNodePtr& node)
 {
-    if (m_path.parts.empty())
+    if (m_path.empty())
     {
-        auto eval = std::make_shared<BackendGraph<T>>(m_back_name, m_front_name);
-        eval->SetFront2BackCB(m_front2back_cb);
-
-        m_eval_cache.insert({ node, eval });
-        m_path.parts.push_back(PathPart<T>(node, eval));
-
+        auto eval = std::make_shared<BackendGraph<T>>(m_back_name, m_front_name, m_front2back_cb);
+        m_root_graph = eval;
+        m_path.push_back(node);
         return true;
     }
 
-    assert(!m_path.parts.empty());
+    assert(!m_path.empty());
 
     //// reset flags
     //ClearNodeDisplayTag();
 
     // update scene node
-    auto& curr = m_path.parts.back();
-    assert(curr.node->HasSharedComp<n0::CompComplex>());
-    auto& ccomplex = curr.node->GetSharedComp<n0::CompComplex>();
+    auto& curr = m_path.back();
+    assert(curr->HasSharedComp<n0::CompComplex>());
+    auto& ccomplex = curr->GetSharedComp<n0::CompComplex>();
     ccomplex.AddChild(node);
 
     if (node->HasUniqueComp<bp::CompNode>())
     {
         auto& bp_node = node->GetUniqueComp<bp::CompNode>().GetNode();
-        auto& curr = m_path.parts.back();
+        auto& curr = m_path.back();
 
         // update front
-        if (curr.node->HasUniqueComp<bp::CompNode>())
+        if (curr->HasUniqueComp<bp::CompNode>())
         {
-            auto bp_parent = curr.node->GetUniqueComp<bp::CompNode>().GetNode();
+            auto bp_parent = curr->GetUniqueComp<bp::CompNode>().GetNode();
             if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph<T>>()) {
                 std::static_pointer_cast<node::SubGraph<T>>(bp_parent)->AddChild(bp_node);
             }
         }
 
         // front eval cb
-        m_path.parts.back().eval->OnAddNode(*bp_node);
+        GetCurrEval()->OnAddNode(*bp_node);
 
         //// update back
         //if (m_path.parts.size() > 1)
@@ -90,28 +89,28 @@ bool SceneTree<T>::Add(const n0::SceneNodePtr& node)
 template <typename T>
 bool SceneTree<T>::Remove(const n0::SceneNodePtr& node)
 {
-    if (m_path.parts.empty()) {
+    if (m_path.empty()) {
         return false;
     }
 
-    if (node == m_path.parts.front().node)
+    if (node == m_path.front())
     {
         return Clear();
     }
     else
     {
         // update scene node
-        auto& curr = m_path.parts.back();
-        assert(curr.node->HasSharedComp<n0::CompComplex>());
-        auto& ccomplex = curr.node->GetSharedComp<n0::CompComplex>();
+        auto& curr = m_path.back();
+        assert(curr->HasSharedComp<n0::CompComplex>());
+        auto& ccomplex = curr->GetSharedComp<n0::CompComplex>();
         bool dirty = ccomplex.RemoveChild(node);
 
         if (dirty && node->HasUniqueComp<bp::CompNode>())
         {
             // update front
-            if (curr.node->HasUniqueComp<bp::CompNode>())
+            if (curr->HasUniqueComp<bp::CompNode>())
             {
-                auto bp_parent = curr.node->GetUniqueComp<bp::CompNode>().GetNode();
+                auto bp_parent = curr->GetUniqueComp<bp::CompNode>().GetNode();
                 if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph<T>>()) {
                     auto& bp_node = node->GetUniqueComp<bp::CompNode>().GetNode();
                     std::static_pointer_cast<node::SubGraph<T>>(bp_parent)->RemoveChild(bp_node);
@@ -120,12 +119,12 @@ bool SceneTree<T>::Remove(const n0::SceneNodePtr& node)
 
             // front eval cb
             auto& bp_node = node->GetUniqueComp<bp::CompNode>().GetNode();
-            curr.eval->OnRemoveNode(*bp_node);
+            GetCurrEval()->OnRemoveNode(*bp_node);
 
             //// update back
-            //if (curr.node->HasUniqueComp<bp::CompNode>() && m_path.parts.size() > 1)
+            //if (curr->HasUniqueComp<bp::CompNode>() && m_path.parts.size() > 1)
             //{
-            //    auto bp_parent = curr.node->GetUniqueComp<bp::CompNode>().GetNode();
+            //    auto bp_parent = curr->GetUniqueComp<bp::CompNode>().GetNode();
             //    if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph<T>>())
             //    {
             //        auto subnetwork = std::static_pointer_cast<node::SubGraph<T>>(bp_parent);
@@ -148,35 +147,34 @@ bool SceneTree<T>::Remove(const n0::SceneNodePtr& node)
 template <typename T>
 bool SceneTree<T>::Clear()
 {
-    if (m_path.parts.empty()) {
+    if (m_path.empty()) {
         return false;
     }
 
     // update scene node
-    auto& curr = m_path.parts.back();
-    assert(curr.node->HasSharedComp<n0::CompComplex>());
-    auto& ccomplex = curr.node->GetSharedComp<n0::CompComplex>();
+    auto& curr = m_path.back();
+    assert(curr && curr->HasSharedComp<n0::CompComplex>());
+    auto& ccomplex = curr->GetSharedComp<n0::CompComplex>();
     bool dirty = !ccomplex.GetAllChildren().empty();
 	ccomplex.RemoveAllChildren();
 
     // update front
-    if (curr.node->HasUniqueComp<bp::CompNode>())
+    if (curr->HasUniqueComp<bp::CompNode>())
     {
-        auto bp_parent = curr.node->GetUniqueComp<bp::CompNode>().GetNode();
+        auto bp_parent = curr->GetUniqueComp<bp::CompNode>().GetNode();
         if (bp_parent && bp_parent->get_type().is_derived_from<node::SubGraph<T>>()) {
             std::static_pointer_cast<node::SubGraph<T>>(bp_parent)->ClearAllChildren();
         }
     }
 
     // front eval cb
-    assert(curr.eval);
-    curr.eval->OnClearAllNodes();
+    GetCurrEval()->OnClearAllNodes();
 
     // update back
-    if (m_path.parts.size() > 1)
+    if (m_path.size() > 1)
     {
-        auto& prev_eval = m_path.parts[m_path.parts.size() - 2].eval;
-        auto& curr_node = m_path.parts.back().node;
+        auto& prev_eval = GetEval(m_path[m_path.size() - 2]);
+        auto& curr_node = m_path.back().node;
         assert(curr_node->HasUniqueComp<bp::CompNode>());
         auto parent = prev_eval->QueryBackNode(*curr_node->GetUniqueComp<bp::CompNode>().GetNode());
         assert(parent->get_type().is_derived_from<node::SubGraph<T>>());
@@ -200,42 +198,8 @@ bool SceneTree<T>::Push(const n0::SceneNodePtr& node)
     }
 
     assert(IsCurrChild(node));
-    auto itr = m_eval_cache.find(node);
-    if (itr == m_eval_cache.end())
-    {
-        auto eval = std::make_shared<BackendGraph<T>>(m_back_name, m_front_name);
-        if (node->HasSharedComp<n0::CompComplex>())
-        {
-            for (auto& c : node->GetSharedComp<n0::CompComplex>().GetAllChildren()) {
-                if (c->HasUniqueComp<bp::CompNode>()) {
-                    auto& bp_node = c->GetUniqueComp<bp::CompNode>().GetNode();
-                    eval->OnAddNode(*bp_node, false);
-                }
-            }
-
-            //if (node->HasUniqueComp<bp::CompNode>())
-            //{
-            //    auto bp_parent = node->GetUniqueComp<bp::CompNode>().GetNode();
-            //    if (bp_parent->get_type().is_derived_from<node::SubGraph<T>>())
-            //    {
-            //        auto src = std::static_pointer_cast<node::SubGraph<T>>(bp_parent);
-            //        auto dst = GetCurrEval()->QueryBackNode(*src);
-            //        assert(dst && dst->get_type().is_derived_from<node::SubGraph<T>>());
-            //        auto dst_sub_nw = std::static_pointer_cast<node::SubGraph<T>>(dst);
-            //        RebuildBackFromFront(dst_sub_nw, src, *eval);
-            //    }
-            //}
-        }
-
-        m_eval_cache.insert({ node, eval });
-        m_path.parts.push_back({ node, eval });
-
-        eval->OnRebuildConnection();
-    }
-    else
-    {
-        m_path.parts.push_back({ node, itr->second });
-    }
+    assert(!m_path.empty() && m_root_graph);
+    m_path.push_back(node);
 
     SetupCurrNode();
 
@@ -245,12 +209,12 @@ bool SceneTree<T>::Push(const n0::SceneNodePtr& node)
 template <typename T>
 n0::SceneNodePtr SceneTree<T>::Pop()
 {
-    if (m_path.parts.empty()) {
+    if (m_path.empty()) {
         return nullptr;
     }
 
-    auto ret = m_path.parts.back().node;
-    m_path.parts.pop_back();
+    auto ret = m_path.back();
+    m_path.pop_back();
 
     SetupCurrNode();
 
@@ -260,11 +224,11 @@ n0::SceneNodePtr SceneTree<T>::Pop()
 template <typename T>
 bool SceneTree<T>::SetDepth(size_t depth)
 {
-    if (depth >= m_path.parts.size()) {
+    if (depth >= m_path.size()) {
         return false;
     }
 
-    m_path.parts.erase(m_path.parts.begin() + depth + 1, m_path.parts.end());
+    m_path.erase(m_path.begin() + depth + 1, m_path.end());
 
     SetupCurrNode();
 
@@ -272,25 +236,49 @@ bool SceneTree<T>::SetDepth(size_t depth)
 }
 
 template <typename T>
-void SceneTree<T>::SetFront2BackCB(const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back)
+std::shared_ptr<BackendGraph<T>> SceneTree<T>::GetCurrEval() const
 {
-    m_front2back_cb = front2back;
-
-    for (auto& p : m_path.parts) {
-        p.eval->SetFront2BackCB(m_front2back_cb);
+    switch (m_path.size())
+    {
+    case 0:
+        return nullptr;
+    case 1:
+        return m_root_graph;
+    default:
+        return GetEval(m_path.back());
     }
+}
+
+template <typename T>
+std::shared_ptr<BackendGraph<T>>
+SceneTree<T>::GetEval(const n0::SceneNodePtr& node)
+{
+    if (!node) {
+        return nullptr;
+    }
+
+    assert(node->HasUniqueComp<CompNode>());
+    auto& cnode = node->GetUniqueComp<CompNode>();
+    auto bp_node = cnode.GetNode();
+    if (!bp_node) {
+        return nullptr;
+    }
+
+    assert(bp_node->get_type().is_derived_from<node::SubGraph<T>>());
+    auto sg_node = std::static_pointer_cast<node::SubGraph<T>>(bp_node);
+    return sg_node->GetGraph();
 }
 
 template <typename T>
 bool SceneTree<T>::IsCurrChild(const n0::SceneNodePtr& node) const
 {
-    if (m_path.parts.empty()) {
+    if (m_path.empty()) {
         return false;
     }
 
-    auto curr = m_path.parts.back();
-    assert(curr.node->HasSharedComp<n0::CompComplex>());
-    auto& ccomplex = curr.node->GetSharedComp<n0::CompComplex>();
+    auto curr = m_path.back();
+    assert(curr->HasSharedComp<n0::CompComplex>());
+    auto& ccomplex = curr->GetSharedComp<n0::CompComplex>();
     for (auto& child : ccomplex.GetAllChildren()) {
         if (child == node) {
             return true;
@@ -302,13 +290,13 @@ bool SceneTree<T>::IsCurrChild(const n0::SceneNodePtr& node) const
 template <typename T>
 void SceneTree<T>::SetupCurrNode()
 {
-    if (m_path.parts.empty()) {
+    if (m_path.empty()) {
         return;
     }
 
-    auto curr = m_path.parts.back();
-    assert(curr.node->HasSharedComp<n0::CompComplex>());
-    auto& ccomplex = curr.node->GetSharedComp<n0::CompComplex>();
+    auto curr = m_path.back();
+    assert(curr->HasSharedComp<n0::CompComplex>());
+    auto& ccomplex = curr->GetSharedComp<n0::CompComplex>();
     for (auto& c : ccomplex.GetAllChildren())
     {
         n0::NodeFlagsHelper::SetFlag<n0::NodeNotVisible>(*c, false);

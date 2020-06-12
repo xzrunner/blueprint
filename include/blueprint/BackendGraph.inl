@@ -7,9 +7,11 @@ namespace bp
 {
 
 template <typename T>
-BackendGraph<T>::BackendGraph(const std::string& back_name, const std::string& front_name)
+BackendGraph<T>::BackendGraph(const std::string& back_name, const std::string& front_name,
+                              const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back)
     : m_back_name(back_name)
     , m_front_name(front_name)
+    , m_front2back_cb(front2back)
 {
     m_eval = std::make_shared<dag::Graph<T>>();
 }

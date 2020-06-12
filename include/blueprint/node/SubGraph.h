@@ -12,8 +12,8 @@ template<typename T>
 class SubGraph : public Node
 {
 public:
-    SubGraph(const std::string& title,
-        const std::string& back_name, const std::string& front_name);
+    SubGraph(const std::string& title, const std::string& back_name, const std::string& front_name,
+        const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back);
 
     auto& GetChildren() const { return m_children; }
     void SetChildren(const std::vector<bp::NodePtr>& children);
@@ -22,6 +22,7 @@ public:
     void RemoveChild(const bp::NodePtr& child);
     void ClearAllChildren();
 
+    auto GetGraph() const { return m_graph; }
     std::shared_ptr<dag::Graph<T>> GetBackGraph() const;
 
 protected:

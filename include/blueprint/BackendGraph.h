@@ -16,8 +16,8 @@ template <typename T>
 class BackendGraph : boost::noncopyable
 {
 public:
-    BackendGraph(const std::string& back_name,
-        const std::string& front_name);
+    BackendGraph(const std::string& back_name, const std::string& front_name,
+        const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back);
 
     // update nodes
     void OnAddNode(const Node& node, bool need_update = true);
@@ -41,10 +41,6 @@ public:
 
     void SetContext(const std::shared_ptr<dag::Context>& ctx) {
         m_ctx = ctx;
-    }
-
-    void SetFront2BackCB(const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back) {
-        m_front2back_cb = front2back;
     }
 
 private:

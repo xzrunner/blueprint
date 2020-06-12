@@ -16,28 +16,19 @@ class WxGraphPage : public ee0::WxStagePage
 public:
 	WxGraphPage(wxWindow* parent, const ee0::GameObj& root,
         const ee0::SubjectMgrPtr& preview_sub_mgr, uint32_t preview_update_msg,
-        const std::string& back_name, const std::string& front_name);
+        const std::string& back_name, const std::string& front_name,
+        const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back);
     virtual ~WxGraphPage();
 
     virtual void OnNotify(uint32_t msg, const ee0::VariantSet& variants) override;
 
     virtual void Traverse(std::function<bool(const ee0::GameObj&)> func,
-        const ee0::VariantSet& variants = ee0::VariantSet(), bool inverse = false) const override;
+        const ee0::VariantSet& variants =ee0::VariantSet(), bool inverse = false) const override;
 
-    std::shared_ptr<BackendGraph<T>> GetEval() const {
-        return m_stree ? m_stree->GetCurrEval() : nullptr;
-    }
-
-    n0::SceneNodePtr GetTreeRoot() const {
-        return m_stree ? m_stree->GetRootNode() : nullptr;
-    }
+    auto GetSceneTree() const { return m_stree; }
 
 protected:
     virtual void OnEvalChangeed() {}
-
-    void SetFront2BackCB(const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back) {
-        m_stree->SetFront2BackCB(front2back);
-    }
 
 private:
     bool ClearAllSceneObjs();
