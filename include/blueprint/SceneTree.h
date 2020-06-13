@@ -34,6 +34,8 @@ public:
         m_root_graph = root_graph;
     }
 
+    auto GetFrontToBackCB() const { return m_front2back_cb; }
+
 private:
     bool IsCurrChild(const n0::SceneNodePtr& node) const;
 

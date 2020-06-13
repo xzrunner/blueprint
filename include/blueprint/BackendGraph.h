@@ -43,6 +43,10 @@ public:
         m_ctx = ctx;
     }
 
+    void SetFrontToBackCB(const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back) {
+        m_front2back_cb = front2back;
+    }
+
 private:
     void Update();
 
