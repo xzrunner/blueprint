@@ -1,6 +1,7 @@
 #pragma once
 
 #include "blueprint/NodeLayout.h"
+#include "blueprint/Pin.h"
 
 #include <dag/Node.h>
 
