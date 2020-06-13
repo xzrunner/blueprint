@@ -8,6 +8,8 @@
 #include <ee0/MsgHelper.h>
 
 #include <memmgr/LinearAllocator.h>
+#include <node0/NodeFlags.h>
+#include <node0/NodeFlagsHelper.h>
 #include <node2/AABBSystem.h>
 #include <node2/CompBoundingBox.h>
 #include <ns/CompFactory.h>
@@ -56,7 +58,9 @@ void Serializer<T>::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage,
         assert(c->HasSharedComp<n0::CompComplex>());
         auto& c_ccomplex = c->GetSharedComp<n0::CompComplex>();
         std::vector<bp::NodePtr> bp_nodes;
-        for (auto& cc : c_ccomplex.GetAllChildren()) {
+        for (auto& cc : c_ccomplex.GetAllChildren()) 
+        {
+            n0::NodeFlagsHelper::SetFlag<n0::NodeNotVisible>(*cc, true);
             if (cc->HasUniqueComp<CompNode>()) {
                 bp_nodes.push_back(cc->GetUniqueComp<CompNode>().GetNode());
             }
