@@ -20,9 +20,10 @@ void SerializeHelper::SetupNodes(const std::vector<n0::SceneNodePtr>& nodes, con
         }
 
         auto type = front->get_type();
-        if (!type.is_derived_from<TFront>()) {
-            continue;
-        }
+        //// fixed for SubGraph whilch is derived from bp::node::SubGraph directly
+        //if (!type.is_derived_from<TFront>()) {
+        //    continue;
+        //}
 
         // create back node
 
