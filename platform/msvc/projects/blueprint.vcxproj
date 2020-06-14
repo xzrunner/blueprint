@@ -105,6 +105,7 @@
     <ClCompile Include="..\..\..\source\NSCompNode.cpp" />
     <ClCompile Include="..\..\..\source\Pin.cpp" />
     <ClCompile Include="..\..\..\source\ConnectPinOP.cpp" />
+    <ClCompile Include="..\..\..\source\SerializeHelper.cpp" />
     <ClCompile Include="..\..\..\source\VarType.cpp" />
     <ClCompile Include="..\..\..\source\RegistPt0RTTR.cpp" />
     <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />

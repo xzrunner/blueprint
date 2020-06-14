@@ -184,6 +184,9 @@
     <ClCompile Include="..\..\..\source\TreeHelper.cpp">
       <Filter>tools\tree</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\SerializeHelper.cpp">
+      <Filter>tools\serialize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\blueprint\CompNode.h">

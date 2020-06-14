@@ -23,6 +23,8 @@ public:
     static void SetupConnections(const std::string& filepath, const std::vector<n0::SceneNodePtr>& nodes,
         std::vector<bp::NodePtr>& front_nodes, std::vector<std::shared_ptr<dag::Node<T>>>& back_nodes);
 
+    static void SetupConnCB();
+
 }; // SerializeHelper
 
 }
