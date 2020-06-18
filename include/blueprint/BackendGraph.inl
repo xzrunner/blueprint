@@ -185,6 +185,10 @@ void BackendGraph<T>::Update()
 template <typename T>
 void BackendGraph<T>::UpdatePropBackFromFront(const bp::Node& front, dag::Node<T>& back)
 {
+    if (m_front2back_cb) {
+        m_front2back_cb(front, back);
+    }
+
     auto f_type = front.get_type();
     auto b_type = back.get_type();
     if (f_type.is_derived_from<Node>() &&
@@ -196,10 +200,6 @@ void BackendGraph<T>::UpdatePropBackFromFront(const bp::Node& front, dag::Node<T
             assert(src_prop.is_valid());
             dst_prop.set_value(back, src_prop.get_value(front));
         }
-    }
-
-    if (m_front2back_cb) {
-        m_front2back_cb(front, back);
     }
 }
 
