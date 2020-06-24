@@ -22,6 +22,8 @@ void SubGraph<T>::SetChildren(const std::vector<bp::NodePtr>& children)
         return;
     }
 
+	m_children = children;
+
     m_graph->OnClearAllNodes();
     for (auto& c : children) {
         m_graph->OnAddNode(*c);
