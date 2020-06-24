@@ -136,7 +136,8 @@ void Node::StoreToJson(const std::string& dir, rapidjson::Value& val, rapidjson:
     val.AddMember("props", props_val, alloc);
 }
 
-void Node::LoadFromJson(const std::string& dir, const rapidjson::Value& val)
+void Node::LoadFromJson(const ur::Device& dev, const std::string& dir, 
+	                    const rapidjson::Value& val)
 {
     if (!val.HasMember("props")) {
         return;

@@ -55,7 +55,8 @@ public:
 	virtual bool Update(const UpdateParams& params) { return false; }
 
     virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc);
-    virtual void LoadFromJson(const std::string& dir, const rapidjson::Value& val);
+    virtual void LoadFromJson(const ur::Device& dev, const std::string& dir, 
+		const rapidjson::Value& val);
 
 	virtual void Refresh() {}
 

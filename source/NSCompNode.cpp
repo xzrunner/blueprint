@@ -60,7 +60,7 @@ void NSCompNode::LoadFromJson(const ur::Device& dev, mm::LinearAllocator& alloc,
 	std::string json_str = js::RapidJsonHelper::ValueToString(val["node_val"]);
 	js::RTTR::FromRapidJson(json_str, dir, *m_node);
 
-    m_node->LoadFromJson(dir, val["node_val"]);
+    m_node->LoadFromJson(dev, dir, val["node_val"]);
 
     if (m_node->IsExtensibleInputPorts())
     {
