@@ -2,6 +2,7 @@
 #include "blueprint/CompNode.h"
 #include "blueprint/NSCompNode.h"
 #include "blueprint/Node.h"
+#include "blueprint/SerializeHelper.h"
 #include "blueprint/node/Commentary.h"
 #include "blueprint/node/SetReference.h"
 #include "blueprint/node/GetReference.h"
@@ -87,6 +88,9 @@ void Blueprint::Init()
 		bound.Build(st.width, st.height);
 		return true;
 	});
+
+	// setup conns
+	SerializeHelper::SetupConnCB();
 }
 
 void Blueprint::InitNodes()

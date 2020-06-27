@@ -1,6 +1,5 @@
 #pragma once
 
-#include "blueprint/SerializeHelper.h"
 #include "blueprint/CompNode.h"
 #include "blueprint/MessageID.h"
 #include "blueprint/CommentaryNodeHelper.h"
@@ -22,8 +21,6 @@ template<typename T>
 void Serializer<T>::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage, const n0::SceneNodePtr& root,
                                  const rapidjson::Value& val, const std::string& dir)
 {
-    SerializeHelper::SetupConnCB();
-
     auto sub_mgr = stage.GetSubjectMgr();
 
     sub_mgr->NotifyObservers(ee0::MSG_NODE_SELECTION_CLEAR);
@@ -100,8 +97,6 @@ template<typename T>
 void Serializer<T>::StoreToJson(const n0::SceneNodePtr& root, const std::string& dir,
                                 rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc)
 {
-    SerializeHelper::SetupConnCB();
-
     assert(root->HasSharedComp<n0::CompComplex>());
     ns::CompSerializer::Instance()->ToJson(
         root->GetSharedComp<n0::CompComplex>(), dir, val, alloc, false
