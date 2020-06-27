@@ -52,7 +52,7 @@ public:
 
 	virtual void Draw(const ur::Device& dev, ur::Context& ctx,
         const n2::RenderParams& rp) const;
-	virtual bool Update(const UpdateParams& params) { return false; }
+	virtual bool Update(const ur::Device& dev) { return false; }
 
     virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc);
     virtual void LoadFromJson(const ur::Device& dev, const std::string& dir, 
