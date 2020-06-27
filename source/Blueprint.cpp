@@ -27,6 +27,7 @@
 #include "blueprint/node/Input.h"
 #include "blueprint/node/Output.h"
 #include "blueprint/node/Abs.h"
+#include "blueprint/node/SubGraph.h"
 
 #include <ns/CompIdxMgr.h>
 #include <ns/RegistCallback.h>
@@ -34,6 +35,7 @@
 #include <node2/UpdateSystem.h>
 #include <node2/CompTransform.h>
 #include <node2/AABBSystem.h>
+#include <node2/CompBoundingBox.h>
 
 namespace bp
 {
@@ -66,16 +68,35 @@ void Blueprint::Init()
 			cnode.GetNode()->Draw(dev, ctx, rp);
 		}
 	});
-	n2::UpdateSystem::Instance()->AddUpdateCompFunc([](const n0::SceneNode& node)->bool
+	n2::UpdateSystem::Instance()->AddUpdateCompFunc([](const n0::SceneNode& node, const ur::Device* dev)->bool
 	{
 		if (!node.HasUniqueComp<CompNode>()) {
 			return false;
 		}
 
+		bool dirty = false;
+
 		auto& cnode = node.GetUniqueComp<CompNode>();
+
+		auto bp_node = cnode.GetNode();
+		if (dev && bp_node->Update(*dev)) 
+		{
+			// update aabb
+			auto& st = bp_node->GetStyle();
+			node.GetUniqueComp<n2::CompBoundingBox>().SetSize(
+				node, sm::rect(st.width, st.height)
+			);
+
+			dirty = true;
+		}
+
 		auto& ctrans = node.GetUniqueComp<n2::CompTransform>();
 		auto& pos = ctrans.GetTrans().GetPosition();
-		return cnode.GetNode()->SetPos(pos);
+		if (bp_node->SetPos(pos)) {
+			dirty = true;
+		}
+
+		return dirty;
 	});
 	n2::AABBSystem::Instance()->AddGetBoundFunc([](const n0::SceneNode& node, sm::rect& bound)->bool
 	{
