@@ -12,6 +12,13 @@ SubGraph<T>::SubGraph(const std::string& title, const std::string& back_name, co
                       const std::function<void(const bp::Node&, dag::Node<T>&)>& front2back)
     : Node(title)
 {
+    m_all_input.push_back(std::make_shared<bp::Pin>(
+        true, 0, bp::PIN_ANY_VAR, "prev", *this
+    ));
+    m_all_output.push_back(std::make_shared<bp::Pin>(
+        false, 0, bp::PIN_ANY_VAR, "next", *this
+    ));
+
     m_graph = std::make_shared<BackendGraph<T>>(back_name, front_name, front2back);
 }
 
