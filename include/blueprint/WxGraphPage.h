@@ -47,6 +47,9 @@ private:
     void InsertScenNode(n0::CompComplex& root,
         const n0::SceneNodePtr& node);
 
+protected:
+    std::shared_ptr<dag::Context> m_ctx = nullptr;
+
 private:
     ee0::SubjectMgrPtr m_preview_sub_mgr    = nullptr;
     uint32_t           m_preview_update_msg = 0;

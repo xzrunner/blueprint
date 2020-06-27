@@ -33,8 +33,11 @@ public:
     void SetRootGraph(const std::shared_ptr<BackendGraph<T>>& root_graph) {
         m_root_graph = root_graph;
     }
+    auto GetRootGraph() const { return m_root_graph; }
 
     auto GetFrontToBackCB() const { return m_front2back_cb; }
+
+    void Update(const std::shared_ptr<dag::Context>& ctx);
 
 private:
     bool IsCurrChild(const n0::SceneNodePtr& node) const;

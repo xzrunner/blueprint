@@ -114,6 +114,8 @@ void WxGraphPage<T>::OnNotify(uint32_t msg, const ee0::VariantSet& variants)
 
 	if (dirty)
     {
+        m_stree->Update(m_ctx);
+
         m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
         m_preview_sub_mgr->NotifyObservers(m_preview_update_msg);
 

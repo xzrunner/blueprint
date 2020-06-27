@@ -270,6 +270,20 @@ SceneTree<T>::GetEval(const n0::SceneNodePtr& node)
 }
 
 template <typename T>
+void SceneTree<T>::Update(const std::shared_ptr<dag::Context>& ctx)
+{
+    for (int i = 1, n = m_path.size(); i < n; ++i) 
+    {
+        auto& front = m_path[i]->GetUniqueComp<bp::CompNode>().GetNode();
+        auto eval = i == 1 ? m_root_graph : GetEval(m_path[i - 1]);
+        auto back = eval->QueryBackNode(*front);
+        back->SetDirty(true);
+    }
+
+    m_root_graph->GetEval()->Update(ctx);
+}
+
+template <typename T>
 bool SceneTree<T>::IsCurrChild(const n0::SceneNodePtr& node) const
 {
     if (m_path.empty()) {
