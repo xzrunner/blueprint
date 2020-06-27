@@ -21,7 +21,9 @@ void SerializeHelper::SetupConnCB()
         seri.LoadFromJson(dev, alloc, dir, val);
         seri.StoreToMem(dev, ccomplex);
 
-        NSCompNode::LoadConnection(ccomplex.GetAllChildren(), val["nodes"]);
+        if (val.HasMember("nodes")) {
+            NSCompNode::LoadConnection(ccomplex.GetAllChildren(), val["nodes"]);
+        }
     }, true);
 
     ns::CompSerializer::Instance()->AddToJsonFunc(n0::CompComplex::TYPE_NAME,
@@ -34,7 +36,9 @@ void SerializeHelper::SetupConnCB()
         seri.LoadFromMem(ccomplex);
         seri.StoreToJson(dir, val, alloc);
 
-        NSCompNode::StoreConnection(ccomplex.GetAllChildren(), val["nodes"], alloc);
+        if (val.HasMember("nodes")) {
+            NSCompNode::StoreConnection(ccomplex.GetAllChildren(), val["nodes"], alloc);
+        }
 
         return true;
     }, true);
