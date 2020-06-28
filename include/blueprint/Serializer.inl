@@ -54,7 +54,7 @@ void Serializer<T>::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage,
         assert(c->HasSharedComp<n0::CompComplex>());
         auto& c_ccomplex = c->GetSharedComp<n0::CompComplex>();
         std::vector<bp::NodePtr> bp_nodes;
-        for (auto& cc : c_ccomplex.GetAllChildren()) 
+        for (auto& cc : c_ccomplex.GetAllChildren())
         {
             n0::NodeFlagsHelper::SetFlag<n0::NodeNotVisible>(*cc, true);
             if (cc->HasUniqueComp<CompNode>()) {
@@ -62,7 +62,7 @@ void Serializer<T>::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage,
             }
         }
         auto sub_graph = std::static_pointer_cast<node::SubGraph<T>>(bp_node);
-        sub_graph->SetChildren(bp_nodes);
+        sub_graph->SetChildren(bp_nodes, true);
     }
 
     // FIXME: reinsert, for send insert msg to other panel
