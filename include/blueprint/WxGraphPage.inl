@@ -164,9 +164,13 @@ bool WxGraphPage<T>::InsertSceneObj(const ee0::VariantSet& variants)
 
         // prepare ccomplex
         auto type = bp_node->get_type();
-        if (type.is_derived_from<node::SubGraph<T>>()) {
+        if (type.is_derived_from<node::SubGraph<T>>())
+		{
             auto sg_node = std::static_pointer_cast<node::SubGraph<T>>(bp_node);
-            sg_node->GetGraph()->SetFrontToBackCB(m_stree->GetFrontToBackCB());
+			auto graph = sg_node->GetGraph();
+			if (graph) {
+				graph->SetFrontToBackCB(m_stree->GetFrontToBackCB());
+			}
         }
     }
 
