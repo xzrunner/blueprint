@@ -65,9 +65,6 @@ void WxToolbarPanel::InitLayout(const ur::Device& dev, bool nav_bar)
 {
     auto sizer = new wxBoxSizer(wxVERTICAL);
 
-    // property
-    sizer->Add(m_node_prop = new WxNodeProperty(dev, this, m_graph_sub_mgr), wxEXPAND);
-
     // nav bar
     if (nav_bar)
     {
@@ -86,6 +83,9 @@ void WxToolbarPanel::InitLayout(const ur::Device& dev, bool nav_bar)
         });
         sizer->Add(m_nav_bar);
     }
+
+	// property
+	sizer->Add(m_node_prop = new WxNodeProperty(dev, this, m_graph_sub_mgr), wxEXPAND);
 
     SetSizer(sizer);
 }
