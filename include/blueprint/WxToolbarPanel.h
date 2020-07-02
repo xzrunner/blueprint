@@ -22,7 +22,7 @@ public:
 
     virtual void OnNotify(uint32_t msg, const ee0::VariantSet& variants) override;
 
-    void SetDefaultProp(wxPanel* default_prop);
+    void PushDefaultProp(wxPanel* default_prop);
 
 private:
     void InitLayout(const ur::Device& dev, bool nav_bar);

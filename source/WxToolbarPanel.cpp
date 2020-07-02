@@ -50,12 +50,13 @@ void WxToolbarPanel::OnNotify(uint32_t msg, const ee0::VariantSet& variants)
 	}
 }
 
-void WxToolbarPanel::SetDefaultProp(wxPanel* default_prop)
+void WxToolbarPanel::PushDefaultProp(wxPanel* default_prop)
 {
     m_default_prop = default_prop;
 
     auto sizer = GetSizer();
-    sizer->Insert(0, default_prop, wxEXPAND);
+    sizer->Add(default_prop, wxEXPAND);
+    //sizer->Insert(0, default_prop, wxEXPAND);
     default_prop->Hide();
 
     Layout();
