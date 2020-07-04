@@ -625,9 +625,11 @@ void ConnectPinOP::Disconnect(const std::shared_ptr<Connecting>& conn)
     var.m_type = ee0::VT_PVOID;
     var.m_val.pv = &conn;
     vars.SetVariant("conn", var);
-    m_stage.GetSubjectMgr()->NotifyObservers(MSG_BP_CONN_DELETE, vars);
+    m_stage.GetSubjectMgr()->NotifyObservers(MSG_BP_BEFORE_CONN_DELETE, vars);
 
     disconnect(conn);
+
+    m_stage.GetSubjectMgr()->NotifyObservers(MSG_BP_AFTER_CONN_DELETE, vars);
 }
 
 void ConnectPinOP::FlushRecords()

@@ -25,7 +25,8 @@ const uint32_t MESSAGES[] =
     ee0::MSG_SCENE_NODE_CLEAR,
 
     bp::MSG_BP_CONN_INSERT,
-    bp::MSG_BP_CONN_DELETE,
+    bp::MSG_BP_BEFORE_CONN_DELETE,
+    bp::MSG_BP_AFTER_CONN_DELETE,
     bp::MSG_BP_CONN_REBUILD,
     bp::MSG_BP_NODE_PROP_CHANGED,
     bp::MSG_BP_DISABLE_UPDATE_EVAL,
@@ -88,8 +89,11 @@ void WxGraphPage<T>::OnNotify(uint32_t msg, const ee0::VariantSet& variants)
     case MSG_BP_CONN_INSERT:
         dirty = AfterInsertNodeConn(variants);
         break;
-    case MSG_BP_CONN_DELETE:
+    case MSG_BP_BEFORE_CONN_DELETE:
         dirty = BeforeDeleteNodeConn(variants);
+        break;
+    case MSG_BP_AFTER_CONN_DELETE:
+        dirty = true;
         break;
     case MSG_BP_CONN_REBUILD:
         m_stree->GetCurrEval()->OnRebuildConnection();
