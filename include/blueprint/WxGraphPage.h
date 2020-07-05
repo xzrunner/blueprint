@@ -27,6 +27,8 @@ public:
 
     auto GetSceneTree() const { return m_stree; }
 
+    auto GetContext() const { return m_ctx; }
+
 protected:
     virtual void OnEvalChangeed() {}
 
