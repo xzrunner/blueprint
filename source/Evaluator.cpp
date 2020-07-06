@@ -17,8 +17,6 @@
 #include "blueprint/node/For2.h"
 #include "blueprint/node/Script.h"
 
-#include <cpputil/StringHelper.h>
-
 #include <chaiscript/chaiscript.hpp>
 
 #include <stack>
@@ -126,12 +124,9 @@ float Evaluator::CalcFloat(const Connecting& conn)
     }
     else if (node_type == rttr::type::get<node::Script>())
     {
-        auto text = static_cast<const node::Script&>(node).GetText();
-        cpputil::StringHelper::ReplaceAll(text, "\\n", "\n");
-        cpputil::StringHelper::ReplaceAll(text, "\\t", "\t");
-
         prepare_script_vars(node);
         try {
+            auto text = static_cast<const node::Script&>(node).GetText();
             ret = ScriptEnv::Instance()->GetChai()->eval<float>(text);
         } catch (const chaiscript::exception::eval_error &e) {
             std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
@@ -197,12 +192,9 @@ sm::vec3 Evaluator::CalcFloat3(const Connecting& conn)
     }
     else if (node_type == rttr::type::get<node::Script>())
     {
-        auto text = static_cast<const node::Script&>(node).GetText();
-        cpputil::StringHelper::ReplaceAll(text, "\\n", "\n");
-        cpputil::StringHelper::ReplaceAll(text, "\\t", "\t");
-
         prepare_script_vars(node);
         try {
+            auto text = static_cast<const node::Script&>(node).GetText();
             ret = ScriptEnv::Instance()->GetChai()->eval<sm::vec3>(text);
         } catch (const chaiscript::exception::eval_error &e) {
             std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
