@@ -63,7 +63,7 @@ private:
         Connecting,
         Connected,
     };
-    void UpdatemExtInputPorts(ConnEvent event);
+    void UpdateExtInputPorts(ConnEvent event);
 
     void GetAllSelected(std::vector<n0::SceneNodePtr>& selected);
 

@@ -146,7 +146,7 @@ bool ConnectPinOP::OnMouseLeftDown(int x, int y)
 		m_last_pos = m_first_pos;
 
         m_last_selected_pin = m_selected_pin;
-        UpdatemExtInputPorts(ConnEvent::Connecting);
+        UpdateExtInputPorts(ConnEvent::Connecting);
 	}
 
 	return false;
@@ -169,7 +169,7 @@ bool ConnectPinOP::OnMouseLeftUp(int x, int y)
         m_selected_conns.clear();
 #endif // BP_CONNECT_PIN_OP_SELECT_CONNS
 
-        UpdatemExtInputPorts(ConnEvent::Connected);
+        UpdateExtInputPorts(ConnEvent::Connected);
 
         // clear
         m_selected_pin = nullptr;
@@ -654,7 +654,7 @@ void ConnectPinOP::FlushRecords()
     m_records.clear();
 }
 
-void ConnectPinOP::UpdatemExtInputPorts(ConnEvent event)
+void ConnectPinOP::UpdateExtInputPorts(ConnEvent event)
 {
     if (!m_last_selected_pin) {
         return;
