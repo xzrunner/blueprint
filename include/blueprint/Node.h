@@ -61,6 +61,7 @@ public:
 	virtual void Refresh() {}
 
 	auto& GetTitle() const { return m_title; }
+	void  SetTitle(const std::string& title) { m_title = title; }
 
 	auto& GetAllInput() const { return m_all_input; }
 	auto& GetAllOutput() const { return m_all_output; }

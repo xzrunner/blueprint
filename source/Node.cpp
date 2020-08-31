@@ -4,17 +4,26 @@
 #include "blueprint/Connecting.h"
 #include "blueprint/RenderSystem.h"
 
+#include <ee0/ReflectPropTypes.h>
+
 #include <node2/RenderSystem.h>
 
 RTTR_REGISTRATION
 {
-	rttr::registration::class_<bp::Node::Flags>("bp_node_flags")
-		.property("only_title", &bp::Node::Flags::only_title)
-		.property("small_title_font", &bp::Node::Flags::small_title_font)
-	;
-	rttr::registration::class_<bp::Node>("bp_node")
-		.property("style", &bp::Node::GetFlags, &bp::Node::SetFlags)
-	;
+
+rttr::registration::class_<bp::Node::Flags>("bp_node_flags")
+.property("only_title", &bp::Node::Flags::only_title)
+.property("small_title_font", &bp::Node::Flags::small_title_font)
+;
+
+rttr::registration::class_<bp::Node>("bp_node")
+.property("title", &bp::Node::GetTitle, &bp::Node::SetTitle)
+(
+	rttr::metadata(ee0::UIMetaInfoTag(), ee0::UIMetaInfo("Tiele"))
+)
+.property("style", &bp::Node::GetFlags, &bp::Node::SetFlags)
+;
+
 }
 
 namespace bp
