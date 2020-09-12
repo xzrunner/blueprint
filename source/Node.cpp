@@ -177,12 +177,12 @@ void Node::LoadFromJson(const ur::Device& dev, const std::string& dir,
         else if (type == "int")
         {
             assert(var->type == VarType::Int);
-            var->b = prop_v["value"].GetInt();
+            var->i = prop_v["value"].GetInt();
         }
         else if (type == "float")
         {
             assert(var->type == VarType::Float);
-            var->b = prop_v["value"].GetFloat();
+            var->f = prop_v["value"].GetFloat();
         }
         else if (type == "float2")
         {
@@ -197,7 +197,7 @@ void Node::LoadFromJson(const ur::Device& dev, const std::string& dir,
             assert(var->type == VarType::Float3);
             assert(prop_v["value"].Size() == 3);
             for (int i = 0; i < 3; ++i) {
-                var->f2[i] = prop_v["value"][i].GetFloat();
+                var->f3[i] = prop_v["value"][i].GetFloat();
             }
         }
         else if (type == "float4")
@@ -205,7 +205,7 @@ void Node::LoadFromJson(const ur::Device& dev, const std::string& dir,
             assert(var->type == VarType::Float4);
             assert(prop_v["value"].Size() == 4);
             for (int i = 0; i < 4; ++i) {
-                var->f2[i] = prop_v["value"][i].GetFloat();
+                var->f4[i] = prop_v["value"][i].GetFloat();
             }
         }
         else
