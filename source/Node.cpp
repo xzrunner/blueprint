@@ -161,6 +161,7 @@ void Node::LoadFromJson(const ur::Device& dev, const std::string& dir,
         for (auto& prop : m_props) {
             if (prop.var.name == name) {
                 var = &prop.var;
+                break;
             }
         }
 
