@@ -9,6 +9,10 @@ namespace bp
 
 struct Variant
 {
+    Variant() {
+        memset(f4, 0, sizeof(f4));
+    }
+
     VarType type;
 
     std::string name;
