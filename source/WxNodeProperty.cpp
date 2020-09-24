@@ -65,20 +65,34 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
         }
         else
         {
-            ee0::WxPropHelper::CreateProp(m_pg, ui_info, node, prop,
-            [&](const std::string& filepath)
+            wxPGProperty* parent = nullptr;
+            if (prop_type == rttr::type::get<sm::bvec2>() ||
+                prop_type == rttr::type::get<sm::bvec3>() ||
+                prop_type == rttr::type::get<sm::bvec4>() ||
+                prop_type == rttr::type::get<sm::vec2>() ||
+                prop_type == rttr::type::get<sm::vec3>() ||
+                prop_type == rttr::type::get<sm::vec4>()) 
             {
-                if (m_node->get_type() == rttr::type::get<bp::node::Function>()) {
-                    bp::NodeHelper::LoadFunctionNode(m_dev, m_obj, m_node);
-                }
-                m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
-                ee0::MsgHelper::SendObjMsg(*m_sub_mgr, m_obj, bp::MSG_BP_NODE_PROP_CHANGED);
-            },
-            [&](const std::string& code_str)
-            {
-                m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
-                ee0::MsgHelper::SendObjMsg(*m_sub_mgr, m_obj, bp::MSG_BP_NODE_PROP_CHANGED);
+                parent = new wxStringProperty(ui_info.desc, wxPG_LABEL, wxT("<composed>"));
+                m_pg->Append(parent);
+                parent->SetExpanded(false);
             }
+
+            ee0::WxPropHelper::CreateProp(m_pg, ui_info, node, prop,
+                [&](const std::string& filepath)
+                {
+                    if (m_node->get_type() == rttr::type::get<bp::node::Function>()) {
+                        bp::NodeHelper::LoadFunctionNode(m_dev, m_obj, m_node);
+                    }
+                    m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
+                    ee0::MsgHelper::SendObjMsg(*m_sub_mgr, m_obj, bp::MSG_BP_NODE_PROP_CHANGED);
+                },
+                [&](const std::string& code_str)
+                {
+                    m_sub_mgr->NotifyObservers(ee0::MSG_SET_CANVAS_DIRTY);
+                    ee0::MsgHelper::SendObjMsg(*m_sub_mgr, m_obj, bp::MSG_BP_NODE_PROP_CHANGED);
+                },
+                parent
             );
         }
 	}
