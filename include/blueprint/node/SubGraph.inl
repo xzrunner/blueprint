@@ -21,6 +21,7 @@ SubGraph<T>::SubGraph(const std::string& title, const std::string& back_name, co
     m_all_output.push_back(std::make_shared<bp::Pin>(
         false, 0, bp::PIN_ANY_VAR, "next", *this
     ));
+    Layout();
 }
 
 template <typename T>
