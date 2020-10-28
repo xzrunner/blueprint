@@ -51,8 +51,8 @@ void Serializer<T>::LoadFromJson(const ur::Device& dev, ee0::WxStagePage& stage,
         if (!bp_node->get_type().is_derived_from<node::SubGraph<T>>()) {
             continue;
         }
-        assert(c->HasSharedComp<n0::CompComplex>());
-        auto& c_ccomplex = c->GetSharedComp<n0::CompComplex>();
+        auto& c_ccomplex = c->HasSharedComp<n0::CompComplex>() ? 
+            c->GetSharedComp<n0::CompComplex>() : c->AddSharedComp<n0::CompComplex>();
         std::vector<bp::NodePtr> bp_nodes;
         for (auto& cc : c_ccomplex.GetAllChildren())
         {
