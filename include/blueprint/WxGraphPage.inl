@@ -175,6 +175,9 @@ bool WxGraphPage<T>::InsertSceneObj(const ee0::VariantSet& variants)
 			if (graph) {
 				graph->SetFrontToBackCB(m_stree->GetFrontToBackCB());
 			}
+            if (!(*obj)->HasSharedComp<n0::CompComplex>()) {
+                (*obj)->AddSharedComp<n0::CompComplex>();
+            }
         }
     }
 
