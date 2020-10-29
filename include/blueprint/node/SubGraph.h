@@ -27,9 +27,6 @@ public:
     std::shared_ptr<dag::Graph<T>> GetBackGraph() const;
 
 protected:
-	void PrepareGraph();
-
-protected:
     std::vector<bp::NodePtr> m_children;
 
     mutable std::shared_ptr<BackendGraph<T>> m_graph = nullptr;
