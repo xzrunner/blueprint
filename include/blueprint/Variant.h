@@ -25,6 +25,9 @@ struct Variant
         float f2[2];
         float f3[3];
         float f4[4];
+        float m2[4];
+        float m3[9];
+        float m4[16];
     };
 };
 
