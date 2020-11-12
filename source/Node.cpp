@@ -136,6 +136,42 @@ void Node::StoreToJson(const std::string& dir, rapidjson::Value& val, rapidjson:
                 prop_val.AddMember("value", v, alloc);
             }
             break;
+        case VarType::Matrix2:
+        {
+            prop_val.AddMember("type", "matrix2", alloc);
+
+            rapidjson::Value v;
+            v.SetArray();
+            for (int i = 0; i < 4; ++i) {
+                v.PushBack(var.m2[i], alloc);
+            }
+            prop_val.AddMember("value", v, alloc);
+        }
+            break;
+        case VarType::Matrix3:
+        {
+            prop_val.AddMember("type", "matrix3", alloc);
+
+            rapidjson::Value v;
+            v.SetArray();
+            for (int i = 0; i < 9; ++i) {
+                v.PushBack(var.m3[i], alloc);
+            }
+            prop_val.AddMember("value", v, alloc);
+        }
+            break;
+        case VarType::Matrix4:
+        {
+            prop_val.AddMember("type", "matrix4", alloc);
+
+            rapidjson::Value v;
+            v.SetArray();
+            for (int i = 0; i < 16; ++i) {
+                v.PushBack(var.m4[i], alloc);
+            }
+            prop_val.AddMember("value", v, alloc);
+        }
+            break;
         default:
             assert(0);
         }
@@ -207,6 +243,30 @@ void Node::LoadFromJson(const ur::Device& dev, const std::string& dir,
             assert(prop_v["value"].Size() == 4);
             for (int i = 0; i < 4; ++i) {
                 var->f4[i] = prop_v["value"][i].GetFloat();
+            }
+        }
+        else if (type == "matrix2")
+        {
+            assert(var->type == VarType::Matrix2);
+            assert(prop_v["value"].Size() == 4);
+            for (int i = 0; i < 4; ++i) {
+                var->m2[i] = prop_v["value"][i].GetFloat();
+            }
+        }
+        else if (type == "matrix3")
+        {
+            assert(var->type == VarType::Matrix3);
+            assert(prop_v["value"].Size() == 9);
+            for (int i = 0; i < 9; ++i) {
+                var->m3[i] = prop_v["value"][i].GetFloat();
+            }
+        }
+        else if (type == "matrix4")
+        {
+            assert(var->type == VarType::Matrix4);
+            assert(prop_v["value"].Size() == 16);
+            for (int i = 0; i < 16; ++i) {
+                var->m4[i] = prop_v["value"][i].GetFloat();
             }
         }
         else

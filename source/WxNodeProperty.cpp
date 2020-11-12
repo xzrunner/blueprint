@@ -153,6 +153,56 @@ void WxNodeProperty::LoadFromNode(const n0::SceneNodePtr& obj, const NodePtr& no
             m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("W"), wxPG_LABEL, var.f4[3]));
         }
             break;
+        case VarType::Matrix2:
+        {
+            auto c_prop = new wxStringProperty(var.name, wxPG_LABEL, wxT("<composed>"));
+            m_pg->Append(c_prop);
+            c_prop->SetExpanded(false);
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m00"), wxPG_LABEL, var.m2[0]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m01"), wxPG_LABEL, var.m2[1]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m10"), wxPG_LABEL, var.m2[2]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m11"), wxPG_LABEL, var.m2[3]));
+        }
+            break;
+        case VarType::Matrix3:
+        {
+            auto c_prop = new wxStringProperty(var.name, wxPG_LABEL, wxT("<composed>"));
+            m_pg->Append(c_prop);
+            c_prop->SetExpanded(false);
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m00"), wxPG_LABEL, var.m3[0]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m01"), wxPG_LABEL, var.m3[1]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m02"), wxPG_LABEL, var.m3[2]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m10"), wxPG_LABEL, var.m3[3]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m11"), wxPG_LABEL, var.m3[4]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m12"), wxPG_LABEL, var.m3[5]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m20"), wxPG_LABEL, var.m3[6]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m21"), wxPG_LABEL, var.m3[7]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m22"), wxPG_LABEL, var.m3[8]));
+        }
+            break;
+        case VarType::Matrix4:
+        {
+            auto c_prop = new wxStringProperty(var.name, wxPG_LABEL, wxT("<composed>"));
+            m_pg->Append(c_prop);
+            c_prop->SetExpanded(false);
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m00"), wxPG_LABEL, var.m4[0]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m01"), wxPG_LABEL, var.m4[1]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m02"), wxPG_LABEL, var.m4[2]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m03"), wxPG_LABEL, var.m4[3]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m10"), wxPG_LABEL, var.m4[4]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m11"), wxPG_LABEL, var.m4[5]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m12"), wxPG_LABEL, var.m4[6]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m13"), wxPG_LABEL, var.m4[7]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m20"), wxPG_LABEL, var.m4[8]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m21"), wxPG_LABEL, var.m4[9]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m22"), wxPG_LABEL, var.m4[10]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m23"), wxPG_LABEL, var.m4[11]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m30"), wxPG_LABEL, var.m4[12]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m31"), wxPG_LABEL, var.m4[13]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m32"), wxPG_LABEL, var.m4[14]));
+            m_pg->AppendIn(c_prop, new wxFloatProperty(wxT("m33"), wxPG_LABEL, var.m4[15]));
+        }
+            break;
         default:
             assert(0);
         }
@@ -322,6 +372,51 @@ void WxNodeProperty::OnPropertyGridChanged(wxPropertyGridEvent& event)
             xyzw[2] = std::stof(tokens[2]);
             xyzw[3] = std::stof(tokens[3]);
             memcpy(const_cast<bp::Variant&>(var).f4, xyzw, sizeof(float) * 4);
+            wx_prop->SetValue(str);
+        }
+            break;
+        case VarType::Matrix2:
+        {
+            std::vector<std::string> tokens;
+            auto str = wxANY_AS(val, wxString).ToStdString();
+            cpputil::StringHelper::Split(str, ";", tokens);
+            assert(tokens.size() == 4);
+
+            float m2[4];
+            for (int i = 0; i < 4; ++i) {
+                m2[i] = std::stof(tokens[i]);
+            }
+            memcpy(const_cast<bp::Variant&>(var).m2, m2, sizeof(m2));
+            wx_prop->SetValue(str);
+        }
+            break;
+        case VarType::Matrix3:
+        {
+            std::vector<std::string> tokens;
+            auto str = wxANY_AS(val, wxString).ToStdString();
+            cpputil::StringHelper::Split(str, ";", tokens);
+            assert(tokens.size() == 9);
+
+            float m3[9];
+            for (int i = 0; i < 9; ++i) {
+                m3[i] = std::stof(tokens[i]);
+            }
+            memcpy(const_cast<bp::Variant&>(var).m3, m3, sizeof(m3));
+            wx_prop->SetValue(str);
+        }
+            break;
+        case VarType::Matrix4:
+        {
+            std::vector<std::string> tokens;
+            auto str = wxANY_AS(val, wxString).ToStdString();
+            cpputil::StringHelper::Split(str, ";", tokens);
+            assert(tokens.size() == 16);
+
+            float m4[16];
+            for (int i = 0; i < 16; ++i) {
+                m4[i] = std::stof(tokens[i]);
+            }
+            memcpy(const_cast<bp::Variant&>(var).m4, m4, sizeof(m4));
             wx_prop->SetValue(str);
         }
             break;
