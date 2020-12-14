@@ -198,7 +198,9 @@ void BackendGraph<T>::UpdatePropBackFromFront(const bp::Node& front, dag::Node<T
         {
             auto src_prop = f_type.get_property(dst_prop.get_name());
             assert(src_prop.is_valid());
-            dst_prop.set_value(back, src_prop.get_value(front));
+            if (dst_prop.set_value(back, src_prop.get_value(front))) {
+                back.SetDirty(true);
+            }
         }
     }
 }
